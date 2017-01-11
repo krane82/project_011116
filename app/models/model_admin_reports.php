@@ -74,6 +74,7 @@ class Model_Admin_Reports extends Model
   {
 
     $source = $_REQUEST["source"];
+    $state = $_REQUEST["State"];
     $start = strtotime($_REQUEST["start"]);
     $end = strtotime($_REQUEST["end"]) + 86400;
     $campaign_id = getCampaignID($source);
@@ -94,6 +95,9 @@ class Model_Admin_Reports extends Model
     $sql .= ' AND '. $data;
     if ($campaign_id) {
       $sql.= ' AND l.campaign_id = '.$campaign_id;
+    }
+    if ($state){
+      $sql .= " AND lf.state = '$state'";
     }
 
     $res = $con->query($sql);
@@ -291,6 +295,7 @@ class Model_Admin_Reports extends Model
 
   public function getSourceAverage()
   {
+    $state = $_REQUEST["State"];
     $source = $_POST["source"];
     $start = strtotime($_POST["start"]);
     $end = strtotime($_POST["end"]) + 86400;
@@ -298,14 +303,17 @@ class Model_Admin_Reports extends Model
     $data = "(`l`.`datetime` BETWEEN $start AND $end)";
 
     $con = $this->db();
-    $sql = 'SELECT SUM(c.cost) as total_cost, COUNT(c.id) as amount FROM `leads` as l';
+    $sql = 'SELECT SUM(c.cost) as total_cost, COUNT(c.id) as amount, lf.state as state FROM `leads` as l';
     $sql .= ' LEFT JOIN `campaigns` as c ON l.campaign_id = c.id';
+    $sql .= ' LEFT JOIN `leads_lead_fields_rel` as lf ON lf.id=l.id';
     $sql .= ' WHERE 1=1';
     $sql .= ' AND '. $data;
     if ($campaign_id){
       $sql.= ' AND l.campaign_id = '.$campaign_id;
     }
-    // var_dump($sql);
+    if ($state){
+      $sql .= " AND lf.state = '$state'";
+    }
     $res = $con->query($sql);
     if($res){
       $d = $res->fetch_assoc();

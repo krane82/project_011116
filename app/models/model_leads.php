@@ -1,5 +1,11 @@
 <?php
 class Model_Leads extends Model {
+  private $api;
+  function __construct($api)
+  {
+    $this->api = $api;
+  }
+
   public function getLeadSources() {
     $con = $this->db();
     $LeadSources = array();
@@ -22,14 +28,57 @@ class Model_Leads extends Model {
     $con->close();
     return $clients;
   }
+
+  private function getLeadInfo($id)
+  {
+    $con = $this->db();
+    $sql = "SELECT * FROM `leads_lead_fields_rel` WHERE `id`=$id";
+    $res = $con->query($sql);
+    if($res){
+      $r = $res->fetch_assoc();
+      return $r;
+    } else
+    return "Lead not found";
+  }
+
+  private function getClientById($id)
+  {
+    $con = $this->db();
+    $sql = 'SELECT cc.id, c.email, c.full_name';
+    $sql.= ' FROM `clients_criteria` as cc';
+    $sql.= ' LEFT JOIN `clients` as c ON cc.id = c.id';
+    $sql.= " WHERE cc.id=$id";
+    $res = $con->query($sql);
+    if ($res) {
+      $client = $res->fetch_assoc();
+    } else {
+      return FALSE;
+    }
+    return $client;
+  }
   
   public function senLead($client_id, $lead_id)
   {
-
-    var_dump($client_id, $lead_id);
-    
+    if(!$client_id !== 0){
+      $leadInfo = $this->getLeadInfo($lead_id);
+      $prepearedinfo = prepareLeadInfo($leadInfo);
+      // var_dump($prepearedinfo);
+      $passedcaps = $this->api->checkClientsLimits($client_id);
+      // var_dump($passedcaps);
+      $c = $this->getClientById($client_id);
+      if($passedcaps) {
+        $sended = $this->sendToClient($c["email"], $prepearedinfo, $c["full_name"]);
+        if($sended) {
+          $this->addToDeliveredTable($id, $lead_id, $readyLeadInfo);
+          return "Lead sended.";
+        } else {
+          return "mail error: $sended";
+        }
+      } else {
+        return "Cannot send over client caps...";
+      }
+    }
   }
-
 
   private function sendToClients($clients, $lead_id ,$p){
     $counter = 0;
@@ -37,7 +86,7 @@ class Model_Leads extends Model {
       foreach ($clients as $c ) {
         $id = $c["id"];
         $passedcaps = $this->checkClientsLimits($id);
-        if($passedcaps AND $counter < 5) {
+        if($passedcaps AND $counter < 4) {
           $readyLeadInfo = prepareLeadInfo($p);
           $sended = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"]);
           if($sended) {
@@ -121,7 +170,7 @@ class Model_Leads extends Model {
     }
   }
 
-  private  function getClients($post){
+  private function getClients($post){
     $clients = array();
     $con = $this->db();
     if( !empty($post["state"]) || !empty($post["postcode"]) ){
@@ -173,7 +222,5 @@ class Model_Leads extends Model {
   }
 
 }
-
-require_once('app/models/model_api.php');
 
 ?>

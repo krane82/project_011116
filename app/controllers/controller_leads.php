@@ -3,8 +3,10 @@ class Controller_leads extends Controller
 {
   function __construct()
   {
-    $this->model = new Model_Leads();
-    $this->api = new Model_Api();
+      require_once('app/models/model_api.php');
+    $api = new Model_Api();
+    $this->model = new Model_Leads($api);
+    // $this->api = new Model_Api();
     $this->view = new View();
   }
 
@@ -28,14 +30,13 @@ class Controller_leads extends Controller
       $sql = "SELECT * from `leads_lead_fields_rel` WHERE id=$id";
       if($res = $con->query($sql)){
        $leadinfo = $res->fetch_assoc();
-        $prepearedinfo = prepareLeadInfo($leadinfo);
-        $content = '<table class="table">';
-//        echo "<pre>" . print_r($prepearedinfo) . "</pre>";
-        foreach ($prepearedinfo as $v){
-          $content .= '<tr><td>'.$v["field_name"].'</td><td>'.$v["val"].'</td></tr>';
-        }
-        $content .= '</table>';
-        echo $content;
+       $prepearedinfo = prepareLeadInfo($leadinfo);
+       $content = '<table class="table">';
+       foreach ($prepearedinfo as $v){
+         $content .= '<tr><td>'.$v["field_name"].'</td><td>'.$v["val"].'</td></tr>';
+       }
+       $content .= '</table>';
+       echo $content;
       }
     } else {
       echo "lead not found";
@@ -45,15 +46,18 @@ class Controller_leads extends Controller
   function action_sendLead()
   {
     if(isset($_POST["client"])) {
-     
+      
       $start = strtotime($_POST["start"]);
       $end = strtotime($_POST["end"]);
+      $state = $_POST["state"];
+      $client = $_POST["client"];
        echo "Sending to $_POST[client] with $start $end";
     } else {
+      // Sending one lead to one client
       $client_id =(int)$_POST["id"];
       $lead_id = (int)$_POST["lead_id"];
       if($client_id AND $lead_id) {
-        $this->model->senLead($client_id, $lead_id);
+        echo $this->model->senLead($client_id, $lead_id);
       }
     }
   }

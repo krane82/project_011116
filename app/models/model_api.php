@@ -45,19 +45,19 @@ class Model_Api extends Model {
   private function sendToClient($mail, $p, $client_name)
   {
     if($mail) {
-      // send_m($mail, $p, $client_name);
+      send_m($mail, $p, $client_name);
       return TRUE;
     }
     return FALSE;
   }
 
-  private function checkClientsLimits($id)
+  public function checkClientsLimits($id)
   {
     $Monday = strtotime( "Monday this week" );
     $FirstOfMonth = strtotime(date('Y-m-01'));
     $now = time();
-    $sqlM = "select count(*) from `leads_delivery` where client_id = $id AND (timedate BETWEEN $FirstOfMonth AND $now)";
-    $sqlW = "select count(*) from `leads_delivery` where client_id = $id AND (timedate BETWEEN $Monday AND $now)";
+    $sqlM = "SELECT count(*) FROM `leads_delivery` WHERE client_id = $id AND (timedate BETWEEN $FirstOfMonth AND $now)";
+    $sqlW = "SELECT count(*) FROM `leads_delivery` WHERE client_id = $id AND (timedate BETWEEN $Monday AND $now)";
     $sqlCaps = "SELECT weekly, monthly  FROM `clients_criteria` WHERE id=$id";
 
     $con = $this->db();
@@ -146,9 +146,9 @@ class Model_Api extends Model {
       $end = strtotime(date("Y-m-t", $now));
     }
 
-    echo "<pre>";
-    var_dump($clients);
-    echo "</pre>";
+    // echo "<pre>";
+    // var_dump($clients);
+    // echo "</pre>";
 
     $sql =  'SELECT c.id as id, IFNULL(c.lead_cost,0) as lead_cost, IF(COUNT(*)=0,0,SUM(IF(lr.approval=0,1,0))/COUNT(*)) as percentage, ((COUNT(*) - SUM(IF(lr.approval=0,1,0)))*c.lead_cost) as revenue FROM `leads_delivery` as ld';
     $sql .= ' INNER JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
