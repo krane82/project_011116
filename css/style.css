@@ -1,0 +1,117 @@
+.addsuccess.bg-success, .success {
+  margin: 10px 0;
+}
+
+.addsuccess.bg-success p, .success p{
+  padding: 12px;
+}
+.delete-campaign, .edit-campaign-fields, .edit-campaign {
+  font-size: 1.3em;
+  padding: 0 4px;
+  color: green;
+}
+.delete-campaign {
+  color: red;
+}
+.edit-campaign-fields {
+  color: blue;
+}
+
+.delete-client, .edit-client {
+  font-size: 1.3em;
+  padding: 0 4px;
+  color: green;
+}
+.delete-client {
+  color: red;
+}
+
+#embed-code {
+  width: 100%;
+  margin-top: 15px;
+}
+.dataTables_filter {
+  display: none !important;
+}
+
+.addsuccess {
+  margin: 10px 0;
+  background-color: #22BAA0;
+  color: #fff;
+  margin-bottom: 0px;
+  padding: 0px 0px 0px 5px;
+}
+
+#main-wrapper {
+  padding: 20px;
+}
+
+#approvals tr td:last-child, #approvals tr th:last-child {
+  text-align: center;
+}
+
+#approvals tr td:last-child .btn {
+  min-width: 143px;
+  margin-bottom: 3px;
+}
+
+#approvals .bg-warning {
+  padding: 5px;
+}
+
+.pdfive {
+  padding: 5px;
+}
+.pdten {
+  padding: 10px;
+}
+.icon {
+  float: left;
+  margin-top: 12px;
+  margin-right: 10px;
+}
+
+tr.green {
+    background-color: rgba(106, 245, 81, 0.25);
+}
+tr.red {
+    background-color: rgba(243, 154, 154, 0.72);
+}
+input.searchbox {
+    width: 100%;
+    padding: 1px;
+    margin-left: -2px;
+    margin-bottom: 0px;
+}
+
+/* css */
+
+@media all and (max-width: 768px) {
+
+  .size-medium {
+    width: 100% !important;
+  }
+  
+  .navbar-toggle {
+    margin-top: 15px !important;
+  }
+
+  ul#menu-main-manu {
+    width: 100% !important;
+  }
+
+  .home-slider .fl-module-content {
+    margin-left: 10px !important;
+  }
+
+}
+
+.fl-builder-panel, .fl-builder-lightbox, .fl-builder-bar {
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: normal;
+}
