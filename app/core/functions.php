@@ -4,14 +4,14 @@ function send_m($clientEmail, $p, $name, $alttext = '')
   $mail = new PHPMailer;
 //  $mail->isSendmail();
   $mail->IsSMTP(); // telling the class to use SMTP
-  $mail->SMTPDebug  = 1;                     // enables SMTP debug information (for testing)
+  // $mail->SMTPDebug  = 1;                     // enables SMTP debug information (for testing)
   // 1 = errors and messages
   // 2 = messages only
   $mail->SMTPAuth   = true;                  // enable SMTP authentication
-  $mail->Host       = "mail.smtp2go.com"; // sets the SMTP server
-  $mail->Port       = 2525;                    // set the SMTP port for the GMAIL server
+  $mail->Host       = "mail.smtp2go.com";    // sets the SMTP server
+  $mail->Port       = 8025;                    
   $mail->Username   = "leads@energysmart.com.au"; // SMTP account username
-  $mail->Password   = "FdSrcUgCG46zHS5x";        // SMTP account password
+  $mail->Password   = "c2J6ejV1c3pjNDN6";        // SMTP account password
 
   $mail->isHTML(true);
 
@@ -19,7 +19,7 @@ function send_m($clientEmail, $p, $name, $alttext = '')
 
   $mail->SetFrom('leads@energysmart.com.au', 'New Qualified Lead');
 
-  $mail->AddAddress($clientEmail);
+  $mail->AddAddress($clientEmail, $name);
 
   $mail->Subject = "New Qualified Lead - Please contact ASAP";
 

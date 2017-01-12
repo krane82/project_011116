@@ -46,12 +46,11 @@ class Controller_leads extends Controller
   function action_sendLead()
   {
     if(isset($_POST["client"])) {
-      
       $start = strtotime($_POST["start"]);
       $end = strtotime($_POST["end"]);
       $state = $_POST["state"];
       $client = $_POST["client"];
-       echo "Sending to $_POST[client] with $start $end";
+      echo "Sending to $_POST[client] with $start $end";
     } else {
       // Sending one lead to one client
       $client_id =(int)$_POST["id"];

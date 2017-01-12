@@ -29,7 +29,7 @@ class Model_Api extends Model {
   }
 
 
-  private function addToDeliveredTable($id, $lead_id, $p){
+  public function addToDeliveredTable($id, $lead_id, $p){
     $con = $this->db();
     $now = time();
     $sql = "INSERT INTO `leads_delivery` (lead_id, client_id, timedate) VALUES ($lead_id, $id, $now)";
@@ -98,7 +98,7 @@ class Model_Api extends Model {
     }
   }
 
-  private function getClients($post){
+  public function getClients($post){
     $clients = array();
     $con = $this->db();
     if( !empty($post["state"]) || !empty($post["postcode"]) ){
@@ -117,9 +117,6 @@ class Model_Api extends Model {
     } else {
       return FALSE;
     }
-
-
-
     $res = $con->query($sql);
     if ($res) {
       while( $res->fetch_assoc())
@@ -145,11 +142,6 @@ class Model_Api extends Model {
       $start = $end;
       $end = strtotime(date("Y-m-t", $now));
     }
-
-    // echo "<pre>";
-    // var_dump($clients);
-    // echo "</pre>";
-
     $sql =  'SELECT c.id as id, IFNULL(c.lead_cost,0) as lead_cost, IF(COUNT(*)=0,0,SUM(IF(lr.approval=0,1,0))/COUNT(*)) as percentage, ((COUNT(*) - SUM(IF(lr.approval=0,1,0)))*c.lead_cost) as revenue FROM `leads_delivery` as ld';
     $sql .= ' INNER JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
     $sql .= ' INNER JOIN clients as c ON ld.client_id=c.id';
@@ -167,16 +159,13 @@ class Model_Api extends Model {
       }
     } 
 
-
-    // $order = [24, 62, 60];
-
     if(count($order)){
 
-      usort($clients, function ($a, $b) use ($order) {
-        $pos_a = array_search($a['id'], $order);
-        $pos_b = array_search($b['id'], $order);
-        return $pos_a - $pos_b;
-      });
+    usort($clients, function ($a, $b) use ($order) {
+      $pos_a = array_search($a['id'], $order);
+      $pos_b = array_search($b['id'], $order);
+      return $pos_a - $pos_b;
+    });
 
     // function custom_compare($a, $b){
     //   global $order;
@@ -197,17 +186,7 @@ class Model_Api extends Model {
     // }
 
     // usort($clients, "custom_compare");
-
-    // echo "<h3>Order list</h2><pre>";
-    // print_r($order);
-    // echo "</pre>";
-
-    // echo "<h3>Clients sorted</h2><pre>";
-    // var_dump($clients);
-    // echo "</pre>";
-    // exit();
     }
-
     // Returnig ordered clients
     return $clients;
   }

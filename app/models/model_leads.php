@@ -52,7 +52,7 @@ class Model_Leads extends Model {
     if ($res) {
       $client = $res->fetch_assoc();
     } else {
-      return FALSE;
+      return 'Db error when trying to get client email';
     }
     return $client;
   }
@@ -69,7 +69,7 @@ class Model_Leads extends Model {
       if($passedcaps) {
         $sended = $this->sendToClient($c["email"], $prepearedinfo, $c["full_name"]);
         if($sended) {
-          $this->addToDeliveredTable($id, $lead_id, $readyLeadInfo);
+          $this->api->addToDeliveredTable($id, $lead_id, $readyLeadInfo);
           return "Lead sended.";
         } else {
           return "mail error: $sended";
@@ -78,40 +78,31 @@ class Model_Leads extends Model {
         return "Cannot send over client caps...";
       }
     }
+    if($client_id === 0){
+      $leadInfo = $this->getLeadInfo($lead_id);
+      $clients = $this->api->getClients($leadInfo);
+      $result = $this->sendToClients($clients, $lead_id, $p);
+      return $result;
+    }
   }
 
   private function sendToClients($clients, $lead_id ,$p){
     $counter = 0;
-    if(is_array($clients)) {
-      foreach ($clients as $c ) {
-        $id = $c["id"];
-        $passedcaps = $this->checkClientsLimits($id);
-        if($passedcaps AND $counter < 4) {
-          $readyLeadInfo = prepareLeadInfo($p);
-          $sended = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"]);
-          if($sended) {
-            $counter++;
-            $this->addToDeliveredTable($id, $lead_id, $readyLeadInfo);
-          }
+    $sendedTo = '';
+    foreach ($clients as $c) {
+      $id = $c["id"];
+      $passedcaps = $this->checkClientsLimits($id);
+      if($passedcaps AND $counter < 4) {
+        $readyLeadInfo = prepareLeadInfo($p);
+        $sended = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"]);
+        if($sended) {
+          $counter++;
+          $sendedTo .= "Lead #$lead_id sended to $c[fullname] $c[email] <br>\n ";
+          $this->api->addToDeliveredTable($id, $lead_id, $readyLeadInfo);
         }
       }
-    } else {
-      $this->addToDeliveredTable($id, $lead_id, $readyLeadInfo);
     }
-  }
-
-
-  private function addToDeliveredTable($id, $lead_id, $p){
-    $con = $this->db();
-    $now = time();
-    $sql = "INSERT INTO `leads_delivery` (lead_id, client_id, timedate) VALUES ($lead_id, $id, $now)";
-    $sql_r = "INSERT INTO `leads_rejection` (lead_id, client_id, date, approval) VALUES ($lead_id, $id, $now, 1)";
-    if($con->query($sql) && $con->query($sql_r)) { $delivered=1; }
-    if($delivered){
-      return TRUE;
-    } else {
-      return FALSE;
-    }
+    return $sendedTo;
   }
 
   private function sendToClient($mail, $p, $client_name)
