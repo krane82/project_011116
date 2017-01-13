@@ -4,14 +4,16 @@ function send_m($clientEmail, $p, $name, $alttext = '')
   $mail = new PHPMailer;
 //  $mail->isSendmail();
   $mail->IsSMTP(); // telling the class to use SMTP
-  // $mail->SMTPDebug  = 1;                     // enables SMTP debug information (for testing)
-  // 1 = errors and messages
-  // 2 = messages only
+  $path = $_SERVER['DOCUMENT_ROOT'];
+  $path .= "/credentials.php";
+  require_once($path);
+
+  $mail->IsSMTP(); // telling the class to use SMTP
   $mail->SMTPAuth   = true;                  // enable SMTP authentication
-  $mail->Host       = "mail.smtp2go.com";    // sets the SMTP server
-  $mail->Port       = 8025;                    
-  $mail->Username   = "leads@energysmart.com.au"; // SMTP account username
-  $mail->Password   = "c2J6ejV1c3pjNDN6";        // SMTP account password
+  $mail->Host       = MAIL_HOST;    // sets the SMTP server
+  $mail->Port       = MAIL_PORT;                    
+  $mail->Username   = MAIL_USER;    // SMTP account username
+  $mail->Password   = MAIL_PASS;        // SMTP account password
 
   $mail->isHTML(true);
 

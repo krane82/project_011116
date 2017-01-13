@@ -55,9 +55,7 @@ class Controller_leads extends Controller
       // Sending one lead to one client
       $client_id =(int)$_POST["id"];
       $lead_id = (int)$_POST["lead_id"];
-      if($client_id AND $lead_id) {
-        echo $this->model->senLead($client_id, $lead_id);
-      }
+      echo $this->model->senLead($client_id, $lead_id);
     }
   }
 

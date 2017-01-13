@@ -25,8 +25,21 @@
             </select>
           </div>
           <div class="form-group">
+            <label class="control-label" for="state">
+              Select State</label>
+            <select name="state" id="state" class="form-control">
+              <option value="">All</option>
+              <option value="NSW">NSW</option>
+              <option value="VIC">VIC</option>
+              <option value="WA">WA</option>
+              <option value="QLD">QLD</option>
+              <option value="SA">SA</option>
+              <option value="ACT">ACT</option>
+              <option value="TAS">TAS</option>
+            </select>
+          </div>
+          <div class="form-group">
             <input type="submit" class="btn btn-primary" value="View leads">
-            <!--<button class="btn btn-primary">Download leads</button>-->
           </div>
         </form>
       </div>
@@ -125,6 +138,7 @@
             <input type="submit" class="btn btn-primary">
           </div>
         </form>
+        <div class="result"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -156,6 +170,7 @@
         }
     });
   }
+  var loader = $('<div class="loader">Loading...</div>');
   $(document).ready(function () {
     var sendLeadForm = $('#sendLeadForm');
     $('#sendLead').on('shown.bs.modal', function (e) {
@@ -163,12 +178,13 @@
     });
     sendLeadForm.submit(function (e) {
       e.preventDefault();
+      $(".result").html(loader);
       $.ajax({
         type: "POST",
         url: '<?php echo __HOST__ . '/leads/sendLead/' ?>',
         data: { id: $('#clients').val(), lead_id: $('#lead_id').val() },
         success: function (data) {
-          console.log(data);
+          $(".result").html(data);
 //          sendLeadForm.find('.modal-body').innerHTML(data);
         }
       });
@@ -186,16 +202,6 @@
         return;
       }
       if(counter == 0){
-
-//        $.ajax({
-//          type: "POST",
-//          url: '<?php //echo __HOST__ . '/leads/getLeads/' ?>//',
-//          data: form.serialize(), // serializes the form's elements.
-//          success: function (data) {
-//            console.log(data); // show response from the php script.
-//          }
-//        });
-        
         table = table.DataTable( {
           "processing": true,
           "serverSide": true,

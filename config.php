@@ -11,3 +11,4 @@ define( 'SEND_ERRORS_TO', '' );
 //define( 'SITENAME', '' );
 define( 'ADMINEMAIL', 'rapyo@ukr.net' );
 date_default_timezone_set('Australia/Sydney');
+require_once('credentials.php');

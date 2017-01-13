@@ -59,12 +59,10 @@ class Model_Leads extends Model {
   
   public function senLead($client_id, $lead_id)
   {
-    if(!$client_id !== 0){
+    if($client_id !== 0){
       $leadInfo = $this->getLeadInfo($lead_id);
       $prepearedinfo = prepareLeadInfo($leadInfo);
-      // var_dump($prepearedinfo);
       $passedcaps = $this->api->checkClientsLimits($client_id);
-      // var_dump($passedcaps);
       $c = $this->getClientById($client_id);
       if($passedcaps) {
         $sended = $this->sendToClient($c["email"], $prepearedinfo, $c["full_name"]);
@@ -81,7 +79,9 @@ class Model_Leads extends Model {
     if($client_id === 0){
       $leadInfo = $this->getLeadInfo($lead_id);
       $clients = $this->api->getClients($leadInfo);
-      $result = $this->sendToClients($clients, $lead_id, $p);
+      // print_r($clients);
+      // exit;
+      $result = $this->sendToClients($clients, $lead_id, $leadInfo);
       return $result;
     }
   }
@@ -97,7 +97,7 @@ class Model_Leads extends Model {
         $sended = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"]);
         if($sended) {
           $counter++;
-          $sendedTo .= "Lead #$lead_id sended to $c[fullname] $c[email] <br>\n ";
+          $sendedTo .= "Lead #$lead_id sended to $c[full_name] : $c[email]<br>\n";
           $this->api->addToDeliveredTable($id, $lead_id, $readyLeadInfo);
         }
       }
