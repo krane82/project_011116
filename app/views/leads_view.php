@@ -212,7 +212,8 @@
               return $.extend( {}, d, {
                 "st": $('input[name=start]').val(),
                 "en": $('input[name=end]').val(),
-                "source": $('#sources').val()
+                "source": $('#sources').val(),
+                "state": $('#state').val()
               } );
           }
           },
@@ -248,7 +249,8 @@
               return $.extend( {}, d, {
                 "st": $('input[name=start]').val(),
                 "en": $('input[name=end]').val(),
-                "source": $('#sources').val()
+                "source": $('#sources').val(),
+                "state": $('#state').val()
               } );
             }
           },

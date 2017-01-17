@@ -64,29 +64,11 @@ class Controller_leads extends Controller
     $source = $_POST["source"];
     $start = strtotime($_POST["st"]);
     $end = strtotime($_POST["en"]) + 86400;
+    $state = $_POST["state"];
     $campaign_id = getCampaignID($source);
     $table = 'leads';
-  //    $table = <<<EOT
-  //    SELECT  l.id, lf.state AS state, c.name AS campaign_name, l.datetime as date FROM leads l
-  //    LEFT JOIN campaigns c
-  //    ON l.campaign_id = c.id
-  //    LEFT JOIN leads_lead_fields_rel lf
-  //    ON lf.id=l.id
-  //    WHERE (l.datetime BETWEEN $start AND $end)
-  //EOT;
-//    if($campign_id){
-//      $table = <<<EOT
-// (
-//    SELECT  l.id, lf.state AS state, c.name AS campaign_name FROM leads l
-//    LEFT JOIN campaigns c
-//    ON l.campaign_id = c.id
-//    LEFT JOIN leads_lead_fields_rel lf
-//    ON lf.id=l.id
-//    WHERE l.campaign_id = $campign_id
-//    AND (l.datetime BETWEEN $start AND $end)
-// ) temp
-//EOT;
-//    }
+      // print_r($_POST); exit();
+
 
     $primaryKey = 'id';
 
@@ -113,8 +95,10 @@ class Controller_leads extends Controller
     );
 
     $joinQuery = "FROM `{$table}` AS `l` LEFT JOIN `campaigns` AS `c` ON (`l`.`campaign_id` = `c`.`id`) LEFT JOIN `leads_lead_fields_rel` AS `lf` ON `lf`.`id`=`l`.`id`";
-    $where = ' (`l`.`datetime` BETWEEN '.$start.' AND '.$end.') ';
-    if($source) $where .= "AND `l`.`campaign_id`=".$campaign_id;
+    $where = ' (`l`.`datetime` BETWEEN '.$start.' AND '.$end.')';
+    if($source) $where .= " AND `l`.`campaign_id`=".$campaign_id;
+    if($state) $where .= " AND `lf`.`state`='$state'";
+
 
     echo json_encode(
       SSP::simple( $_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where )
