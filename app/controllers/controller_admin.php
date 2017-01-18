@@ -41,23 +41,23 @@ class Controller_Admin extends Controller
       $this->view->generate('danied_view.php', 'template_view.php', '');
     }
   }
-  function action_changemails() {
-    $con = $this->db();
-    $sql = "SELECT id from `users`";
-    if($res = $con->query($sql)){
-      foreach ($res as $r){
-        $result[] = $r;
-      }
-    }
-    foreach ($result as $r) {
-      $id = $r["id"];
-      $sql = "UPDATE `clients` SET `email` = 'reasonbeatmaker@gmail.com' WHERE `clients`.`id` =".$id;
-      $res = $con->query($sql);
-      if($res) echo "clients.true";
-    }
 
-//    print_r( $result );
-  }
+   function action_changemails() {
+     $con = $this->db();
+     $sql = "SELECT id from `clients`";
+     if($res = $con->query($sql)){
+       foreach ($res as $r){
+         $result[] = $r;
+       }
+     }
+     foreach ($result as $r) {
+       $id = $r["id"];
+       $sql = "UPDATE `clients` SET `email` = 'reasonbeatmaker@gmail.com' WHERE `clients`.`id` =".$id;
+       $res = $con->query($sql);
+       if($res) echo "clients.true";
+     }
+   }
+  
   function action_logout()
   {
     session_start();

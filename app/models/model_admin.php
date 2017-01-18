@@ -95,6 +95,7 @@ class Model_Admin extends Model {
     $sql .= ' GROUP BY ld.client_id';
     $sql .= ' ORDER BY revenue DESC, percentage ASC, lead_cost DESC';
 
+    // print($sql); die;
 
 
     $con  = $this->db();

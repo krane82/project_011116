@@ -8,7 +8,8 @@ class Model_Api extends Model {
       return FALSE;
     }
     $clients = $this->getClients($p);
-    $this->sendToClients($clients, $lead_id, $p);
+    $resp =  $this->sendToClients($clients, $lead_id, $p);
+    return $resp;
   }
 
 
@@ -26,6 +27,7 @@ class Model_Api extends Model {
         }
       }
     }
+    return "Sended to $counter clients";
   }
 
 
@@ -45,7 +47,7 @@ class Model_Api extends Model {
   private function sendToClient($mail, $p, $client_name)
   {
     if($mail) {
-      send_m($mail, $p, $client_name);
+//      send_m($mail, $p, $client_name);
       return TRUE;
     }
     return FALSE;
@@ -130,6 +132,8 @@ class Model_Api extends Model {
       return FALSE;
     }
 
+
+
     // GET destribution ORDER
     $now = time();
     $st = new DateTime(date('Y-m-01', $now));
@@ -157,7 +161,9 @@ class Model_Api extends Model {
           $order[] = $v["id"];
         }
       }
-    } 
+    }
+
+
 
     if(count($order)){
 

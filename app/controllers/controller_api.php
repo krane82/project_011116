@@ -16,7 +16,7 @@ class Controller_Api extends Controller {
     {
       $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
       if(getCampaignID($_POST['source'])) {
-        $this->model->proccess_lead($_POST);
+        echo $this->model->proccess_lead($_POST);
       }
     }
     else

@@ -17,14 +17,21 @@
 <br>
 <div class="panel panel-white ">
 <table class="table">
-<tr><td>Client </td><td>Cost per lead </td><td>Rejection (%)  </td><td>Total revenue
-</td></tr>
+<tr>
+<td>Client </td>
+<td>Cost per lead </td>
+<td>Rejection (%)  </td>
+<td>Total revenue</td>
+</tr>
 <?php 
 $c = 0;
 foreach ($order as $k => $v) {
   $c < 4 ? $class = 'green' : $class = 'red';
   echo "<tr class='$class'>";
-  echo "<td>". $v["client"] ."</td>" . "<td>". $v["lead_cost"] ."</td>" . "<td>". number_format($v["percentage"] * 100, 0) . "%" ."</td>" . "<td>" . $v["revenue"] ."$". "</td>";
+  echo "<td>". $v["client"] ."</td>" . 
+       "<td>". $v["lead_cost"] ."</td>" . 
+       "<td>". number_format($v["percentage"] * 100, 0) . "%" ."</td>" . 
+       "<td>" . $v["revenue"] ."$". "</td>";
   echo "</tr>";
   $c++;
 } ?>
