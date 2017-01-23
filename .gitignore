@@ -4,3 +4,4 @@ tags
 *.DS_Store
 ftpsync.settings
 credentials.php
+logs/*

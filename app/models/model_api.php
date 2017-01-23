@@ -119,6 +119,7 @@ class Model_Api extends Model {
     } else {
       return FALSE;
     }
+
     $res = $con->query($sql);
     if ($res) {
       while( $res->fetch_assoc())
@@ -133,6 +134,31 @@ class Model_Api extends Model {
     }
 
 
+    // LOGS
+    #start buffering (all activity to the buffer)
+    ob_start() ;
+    $fileName = date("Y-m-d-h-i-s");
+    $fileName .= "log.html";
+
+    $myfile = fopen($fileName, "w");
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>LOG</title>
+    </head>
+    <body>
+    
+
+
+    <?php
+                                                
+    echo "CLIENTS : \n";
+    var_dump($clients);
+    echo "===========\n";
+    echo "===========POST===========\n";
+    var_dump($_POST);
+    echo "\n=================\n";
 
     // GET destribution ORDER
     $now = time();
@@ -163,8 +189,6 @@ class Model_Api extends Model {
       }
     }
 
-
-
     if(count($order)){
 
     usort($clients, function ($a, $b) use ($order) {
@@ -172,6 +196,25 @@ class Model_Api extends Model {
       $pos_b = array_search($b['id'], $order);
       return $pos_a - $pos_b;
     });
+
+    echo  "\n===============$order================\n";
+    var_dump($order);
+    echo  "\n================================\n";
+
+    echo  "\n======CLIENTS SORTED===========\n";
+    var_dump($clients);
+    echo  "\n================================\n";
+    echo "</body></html>";
+
+
+    # dump buffered $classvar to $outStringVar
+    $outStringVar = ob_get_contents();
+
+    fwrite($myfile, $outStringVar);
+    fclose($myfile);
+    # clean the buffer & stop buffering output
+    ob_end_clean() ;
+    // END LOGS
 
     // function custom_compare($a, $b){
     //   global $order;

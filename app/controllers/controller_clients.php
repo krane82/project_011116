@@ -81,6 +81,7 @@ class Controller_CLients extends Controller {
     }
     $con->close();
   }
+  
   function action_update_user_active(){
     $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
     $id = $_POST["id"];

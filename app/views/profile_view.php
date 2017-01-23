@@ -5,7 +5,7 @@
 
 ?>
 
-  <button type="submit" id="Update" class="btn btn-primary">Update profile</button>
+  <button type="submit" id="Update" class="btn btn-primary">Edit profile</button>
 </div>
 
 <script>

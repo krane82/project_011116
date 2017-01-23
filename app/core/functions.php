@@ -2,7 +2,7 @@
 function send_m($clientEmail, $p, $name, $alttext = '')
 {
   $mail = new PHPMailer;
-//  $mail->isSendmail();
+  //  $mail->isSendmail();
   $mail->IsSMTP(); // telling the class to use SMTP
   $path = $_SERVER['DOCUMENT_ROOT'];
   $path .= "/credentials.php";

@@ -18,17 +18,13 @@ class Controller_Profile extends Controller {
     else
     {
       session_destroy();
-      //    echo "Access Denied! Please <a href='/login'>login</a>";
       $this->view->generate('danied_view.php', 'client_template_view.php', $data);
-      //    Route::ErrorPage404();
     }
   }
 
   function action_UpdateProfile(){
-//  function action_update_profile(){
     $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
     if($id = $_COOKIE["user_id"]){
-
       $sql = ' SELECT clients.id, users.password, clients.email, clients.campaign_name, clients.full_name, clients.phone, clients.city, clients.state, clients.country, clients.lead_cost, clients_criteria.postcodes, clients_criteria.states_filter, clients_billing.xero_id, clients_billing.xero_name, clients_criteria.monthly ,clients_criteria.weekly';
       $sql.= ' FROM `clients`';
       $sql.= ' LEFT JOIN `clients_billing` ON clients.id = clients_billing.id';
@@ -58,15 +54,19 @@ class Controller_Profile extends Controller {
       echo "<form action='" .__HOST__. "/profile/UpdateProfileSuccess' method='post'>";
       while($row = $res->fetch_assoc()) {
         foreach ($row as $k=>$v) {
-//          echo "$k <hr>";
           if($k == "id"){
             echo "<input type='hidden' name='$k' value='$v' />";
           } elseif($k == "lead_cost" || $k == "xero_id" || $k == "xero_name" ) {
-
-          } elseif ($k == "password") {
+            // blank - only admin can change
+            } elseif ($k == "password") {
             echo "<div class='form-group'>";
             echo "<label for='$k'>Password</label>";
             echo "<input type='password' class=\"form-control\" id='$k' name='$k' value='' placeholder='Leave blank if you dont wanna change it'/>";
+            echo "</div>";
+          } elseif ($k == "postcodes") {
+            echo "<div class='form-group'>";
+            echo "<label for='$k'>".$form_keys["$k"]."</label>";
+            echo "<textarea class='form-control' name='postcodes' type='text'>$v</textarea>";
             echo "</div>";
           } else {
             echo "<div class='form-group'>";
@@ -85,14 +85,10 @@ class Controller_Profile extends Controller {
     $chekedPOST = $this->model->checkdata($_POST);
     $id = $chekedPOST["id"];
     $client_name = $chekedPOST["campaign_name"];
-    $cost = (int)$chekedPOST["cost"];
-    $status = $chekedPOST["status"];
+    $status = 1;
     $email = $chekedPOST["email"];
     $full_name = $chekedPOST["full_name"];
-    $lead_cost = $chekedPOST["lead_cost"];
     $password = md5($chekedPOST["password"]);
-    $xero_id = (int)$chekedPOST["xero_id"];
-    $xero_name = $chekedPOST["xero_name"];
     $phone = phone_valid($chekedPOST["phone"]);
     $city = $chekedPOST["city"];
     $state = $chekedPOST["state"];
@@ -103,16 +99,10 @@ class Controller_Profile extends Controller {
     $weekly = (int)$chekedPOST["weekly"];
     $monthly = (int)$chekedPOST["monthly"];
 
-    $sql = "UPDATE `clients`";
-    $sql.= " SET campaign_name='$client_name', email='$email', full_name='$full_name', phone='$phone', city='$city', state='$state', country='$country'";
-    $sql.= " WHERE id='$id'";
     $con = $this->db();
 
-
-    if($con->query($sql)) $res = 1;
-
-    $sql1 = "UPDATE `clients_billing`";
-    $sql1.= " SET xero_id = '$xero_id', xero_name='$xero_name'";
+    $sql1 = "UPDATE `clients`";
+    $sql1.= " SET campaign_name='$client_name', email='$email', full_name='$full_name', phone='$phone', city='$city', state='$state', country='$country'";
     $sql1.= " WHERE id='$id'";
 
     if($con->query($sql1)) $res1 = 1;
@@ -125,28 +115,32 @@ class Controller_Profile extends Controller {
 
 
     $sql3 = "UPDATE `users`";
-    $sql3.= " SET email = '$email', password='$password', status='$status', full_name='$full_name'";
+    $sql3.= " SET email = '$email', password='$password', active='$status', full_name='$full_name'";
     $sql3.= " WHERE id='$id'";
     $res3 = $con->query($sql3);
 
-    if($chekedPOST["password"]){
+    if(empty($_POST["password"])){
       $sql3 = "UPDATE `users`";
-      $sql3.= " SET email = '$email', status='$status', full_name='$full_name'";
+      $sql3.= " SET email = '$email', active='$status', full_name='$full_name'";
       $sql3.= " WHERE id='$id'";
     }else{
       $sql3 = "UPDATE `users`";
-      $sql3.= " SET email = '$email', password='$password', status='$status', full_name='$full_name'";
+      $sql3.= " SET email = '$email', password='$password', active='$status', full_name='$full_name'";
       $sql3.= " WHERE id='$id'";
     }
 
-
-
     if($con->query($sql3)) $res3 = 1;
 
-    if($res && $res1 && $res2 && $res3 ) {
+    if($res1 && $res2 && $res3 ) {
+      echo $this->model->UserChangeNotif($chekedPOST);
+      // exit();
       header('Location: /profile');
     } else {
-      echo "DB error";
+      var_dump($id);
+      var_dump($res1);
+      var_dump($res2);
+      var_dump($res3);
+      echo "<script>alert('DB error')</script>";
       $con->close();
       header('Location: /profile');
       exit;

@@ -24,10 +24,11 @@ class Controller_Client extends Controller
   {
     $con = $this->db();
     $client = $_COOKIE["user_id"];
-    $start = strtotime($_POST["start"]);
-    $end = strtotime($_POST["end"]) + 86400;
     $timestamp = time();
-    if(empty($_POST["start"])){
+    if(!empty($_POST["start"])){
+      $start = strtotime($_POST["start"]);
+      $end = strtotime($_POST["end"]) + 86400;
+    } else {
       echo "<h2 class='text-center'>Today stats</h2><hr>";
       $start = strtotime("midnight", $timestamp);
       $end = strtotime("tomorrow", $start) - 1;

@@ -9,6 +9,6 @@ define( 'DB_NAME', 'leadpoint_new' );
 define( 'SEND_ERRORS_TO', '' );
 //define( 'DISPLAY_DEBUG', false );
 //define( 'SITENAME', '' );
-define( 'ADMINEMAIL', 'rapyo@ukr.net' );
+define( 'ADMINEMAIL', 'tonkoshkurik@yandex.ua' );
 date_default_timezone_set('Australia/Sydney');
 require_once('credentials.php');
