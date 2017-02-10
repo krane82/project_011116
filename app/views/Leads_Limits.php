@@ -11,7 +11,7 @@
         /*td {width:200px; border:solid 1px green}
     </style>
 </head>
-<h1 class="text-center">Table of leads</h1>
+<h1 class="text-center">Clients Caps</h1>
 <div class="dataTables_wrapper no-footer">
 <table class="display table table-condensed table-striped table-hover table-bordered pull-left dataTable no-footer">
 <thead>

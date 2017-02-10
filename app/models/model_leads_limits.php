@@ -16,8 +16,8 @@ public function getLimits()
     $sql="select c.id, c.campaign_name, cri.weekly, cri.monthly, count(ld.timedate) as thisMonth
  from clients c
 left join clients_criteria cri on c.id=cri.id left join leads_delivery ld on c.id=ld.client_id
- and ld.timedate > 1381031749 group by c.campaign_name";
-    $sql1="select c.id, count(lw.timedate) as thisWeek from clients c left join leads_delivery lw on c.id=lw.client_id and lw.timedate > 1381031749 group by c.id";
+ and ld.timedate > '".$beginOfMonth."' group by c.campaign_name";
+    $sql1="select c.id, count(lw.timedate) as thisWeek from clients c left join leads_delivery lw on c.id=lw.client_id and lw.timedate > '".$Monday."' group by c.id";
     $result=array();
     $res=$con->query($sql);
     $res1=$con->query($sql1);
