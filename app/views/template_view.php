@@ -193,15 +193,21 @@
       <ul class="menu accordion-menu">
 
         <li><a href="/admin/dashboard" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>
-        <li><a href="/clients" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Clients</p></a></li>
+        <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Clients</p><span class="arrow"></span></a>
+          <ul class="sub-menu">
+          <li><a href="/clients/">Clients</a>
+          <li><a href="<?php echo __HOST__; ?>/Leads_Limits/">Clients Caps</a>
+        </li>
+          </ul>
 
-        <li><a href="/campaigns/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-briefcase"></span><p>Campaigns</p></a>
-<!--          <ul class="sub-menu">-->
+          <!--          <ul class="sub-menu">-->
 <!--            <li><a href="ui-alerts">Alerts</a></li>-->
 <!--            <li><a href="ui-buttons">Buttons</a></li>-->
 <!--            <li><a href="ui-icons">Icons</a></li>-->
 <!--          </ul>-->
         </li>
+        <li><a href="/campaigns/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-briefcase"></span><p>Campaigns</p></a></li>
+
         <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-th"></span><p>Leads</p><span class="arrow"></span></a>
           <ul class="sub-menu">
             <li><a href="<?php echo __HOST__; ?>/leads/">Leads Delivery</a></li>
