@@ -32,5 +32,19 @@ left join clients_criteria cri on c.id=cri.id left join leads_delivery ld on c.i
     }
 return $result;
 }
+public function getMaches($begin=false,$end=false)
+{
+    $con = $this->db();
+    $sql="SELECT le.id, le.postcode, cli.campaign_name FROM leads_lead_fields_rel as le LEFT JOIN leads_delivery as led on le.id=led.lead_id LEFT JOIN clients cli on led.client_id=cli.id";
+    $res=$con->query($sql);
+    $result=array();
+    while($row=$res->fetch_assoc())
+    {
+        $result[$row['id']]['count']++;
+        $result[$row['id']]['postcode']=$row['postcode'];
+        if($row['campaign_name'])$result[$row['id']]['client'].=' '.$row['campaign_name'].',';
+    }
+    return $result;
+}
 
 }

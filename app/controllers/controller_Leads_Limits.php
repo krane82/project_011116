@@ -19,4 +19,10 @@ class Controller_Leads_Limits
         $this->view->generate('Leads_Limits.php', 'template_view.php', $data);
     }
     
-}
+	function action_matches()
+	{
+		$data = $this->model->getMaches();
+        print('hello');
+		$this->view->generate('matches.php', 'template_view.php', $data);
+	}
+	}

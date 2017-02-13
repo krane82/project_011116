@@ -20,10 +20,11 @@ class Model_Api extends Model {
       $passedcaps = $this->checkClientsLimits($id);
       if($passedcaps AND $counter < 4) {
         $readyLeadInfo = prepareLeadInfo($p);
-        $sended = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"]);
-        if($sended) {
+        $sent = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"]);
+        if($sent) {
           $counter++;
           $this->addToDeliveredTable($id, $lead_id, $readyLeadInfo);
+		  
         }
       }
     }
@@ -34,8 +35,8 @@ class Model_Api extends Model {
   public function addToDeliveredTable($id, $lead_id, $p){
     $con = $this->db();
     $now = time();
-    $sql = "INSERT INTO `leads_delivery` (lead_id, client_id, timedate) VALUES ($lead_id, $id, $now)";
-    $sql_r = "INSERT INTO `leads_rejection` (lead_id, client_id, date, approval) VALUES ($lead_id, $id, $now, 1)";
+    $sql = "INSERT INTO `leads_delivery` (lead_id, client_id, timedate, postcode) VALUES ($lead_id, $id, $now, $p[postcode])";
+    $sql_r = "INSERT INTO `leads_rejection` (lead_id, client_id, date, approval, postcode) VALUES ($lead_id, $id, $now, 1,$p[postcode])";
     if($con->query($sql) && $con->query($sql_r)) { $delivered=1; }
     if($delivered){
       return TRUE;
