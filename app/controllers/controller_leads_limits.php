@@ -1,11 +1,4 @@
 <?php
-
-/**
- * Created by PhpStorm.
- * User: Admin
- * Date: 10.02.2017
- * Time: 10:43
- */
 class Controller_Leads_Limits
 {
     function __construct()

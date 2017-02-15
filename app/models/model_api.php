@@ -48,7 +48,7 @@ class Model_Api extends Model {
   private function sendToClient($mail, $p, $client_name)
   {
     if($mail) {
-//      send_m($mail, $p, $client_name);
+     send_m($mail, $p, $client_name);
       return TRUE;
     }
     return FALSE;
@@ -110,8 +110,8 @@ class Model_Api extends Model {
       $sql.= ' LEFT JOIN `clients` as c ON cc.id = c.id';
       if(!empty($post["state"]) AND !empty($post["postcode"])) {
         $sql .= ' WHERE ( cc.states_filter LIKE "%' . $post["state"] . '%" OR cc.postcodes LIKE "%'.$post["postcode"].'%" )';
-      } else if(!empty($post["state"])) {
-        $sql .= ' WHERE cc.states_filter LIKE "%' . $post["state"] . '%"';
+      // } else if(!empty($post["state"])) {
+      //   $sql .= ' WHERE cc.states_filter LIKE "%' . $post["state"] . '%"';
       } else if(!empty($post["postcode"])){
         $sql.= ' WHERE cc.postcodes LIKE "%'.$post["postcode"].'%"';
       }
@@ -143,6 +143,7 @@ class Model_Api extends Model {
 
     $myfile = fopen($fileName, "w");
     ?>
+
     <!DOCTYPE html>
     <html>
     <head>

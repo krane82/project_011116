@@ -1,5 +1,5 @@
 <?php
-function send_m($clientEmail, $p, $name, $alttext = '')
+function send_m($clientEmail, $p, $name, $tracking_number, $alttext = '')
 {
   $mail = new PHPMailer;
   //  $mail->isSendmail();
@@ -529,10 +529,15 @@ function phone_valid($phone)
   return $justNums;
 }
 
-function postcodes_valid($postcodes)
+// only for Australian postcodes
+function postcodes_valid($postcode)
 {
-  $justNums = preg_replace("/[^0-9,]/", '', $postcodes);
-  return $justNums;
+  $valid_post = preg_match("/^(0[289][0-9]{2})|([1345689][0-9]{3})|(2[0-8][0-9]{2})|(290[0-9])|(291[0-4])|(7[0-4][0-9]{2})|(7[8-9][0-9]{2})$/", $postcode);
+  if($valid_post) {
+    return $postcode;
+  } else {
+    return FALSE;
+  }
 }
 
 
