@@ -13,16 +13,52 @@ class Controller_Leads_Limits
         $this->model = new Model_Leads_Limits();
         $this->view = new View();
     }
+
     function action_index()
     {
         $data = $this->model->getLimits();
         $this->view->generate('Leads_Limits.php', 'template_view.php', $data);
     }
-    
-	function action_matches()
-	{
-		$data = $this->model->getMaches();
-        print('hello');
-		$this->view->generate('matches.php', 'template_view.php', $data);
-	}
-	}
+
+    function action_matches()
+    {
+        $data = $this->model->getMaches();
+        $this->view->generate('matches.php', 'template_view.php', $data);
+    }
+
+    function action_matchesAjax()
+    {
+        $start = strtotime($_POST["st"]);
+        $end = strtotime($_POST["en"]) + 86400;
+        $table = 'leads_lead_fields_rel';
+        // print_r($_POST); exit();
+//le.id, le.postcode, cli.campaign_name FROM leads_lead_fields_rel as le LEFT JOIN leads_delivery as led on le.id=led.lead_id LEFT JOIN clients cli on led.client_id=cli.id";
+//SELECT le.postcode, count(le.id), cli.campaign_name FROM leads_lead_fields_rel as le LEFT JOIN leads_delivery as led on le.id=led.lead_id LEFT JOIN clients cli on led.client_id=cli.id group by le.postcode
+
+        $primaryKey = 'id';
+
+        $columns = array(
+            array('db' => 'le.postcode', 'dt' => 0, 'field' => 'postcode'),
+            array('db' => 'count(le.id)', 'dt' => 1, 'field' => 'count(le.id)'),
+            array('db' => 'group_concat(cli.campaign_name)', 'dt' => 2, 'field' => 'group_concat(cli.campaign_name)')
+        );
+
+        $sql_details = array(
+            'user' => DB_USER,
+            'pass' => DB_PASS,
+            'db' => DB_NAME,
+            'host' => DB_HOST
+        );
+
+        //$joinQuery = "FROM `{$table}` AS `l` LEFT JOIN `campaigns` AS `c` ON (`l`.`campaign_id` = `c`.`id`) LEFT JOIN `leads_lead_fields_rel` AS `lf` ON `lf`.`id`=`l`.`id`";
+        //$joinQuery = "FROM `{$table}` AS `le` LEFT JOIN `leads_delivery` AS `led` ON (`le`.`id` = `led`.`lead_id`) LEFT JOIN `clients` `cli` ON `led`.`client_id`=`cli`.`id`";
+        $joinQuery = "FROM `{$table}` AS `le` LEFT JOIN `leads_delivery` AS `led` ON (`le`.`id` = `led`.`lead_id`) LEFT JOIN `clients` `cli` ON `led`.`client_id`=`cli`.`id`";
+        $where = ' (`led`.`timedate` BETWEEN ' . $start . ' AND ' . $end . ')';
+        $groupBy='le.postcode';
+
+        echo json_encode(
+            SSP::simple($_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where, $groupBy)
+        );
+
+    }
+}

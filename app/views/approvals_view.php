@@ -174,7 +174,8 @@ $(document).ready(function () {
       });
     }
     function moreInfo(id, client_id) {
-      $.ajax({
+      console.log('hello');
+        $.ajax({
         type: "POST",
         url: '<?php echo __HOST__ . '/approvals/moreInfo/' ?>',
         data: { id: id, client_id: client_id },
