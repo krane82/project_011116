@@ -40,7 +40,8 @@ class Controller_Leads_Limits
         $columns = array(
             array('db' => 'le.postcode', 'dt' => 0, 'field' => 'postcode'),
             array('db' => 'count(le.id)', 'dt' => 1, 'field' => 'count(le.id)'),
-            array('db' => 'group_concat(cli.campaign_name)', 'dt' => 2, 'field' => 'group_concat(cli.campaign_name)')
+            array('db' => 'led.lead_id', 'dt' => 2, 'field' => 'lead_id'),
+            array('db' => 'group_concat(cli.campaign_name)', 'dt' => 3, 'field' => 'group_concat(cli.campaign_name)')
         );
 
         $sql_details = array(
@@ -54,7 +55,7 @@ class Controller_Leads_Limits
         //$joinQuery = "FROM `{$table}` AS `le` LEFT JOIN `leads_delivery` AS `led` ON (`le`.`id` = `led`.`lead_id`) LEFT JOIN `clients` `cli` ON `led`.`client_id`=`cli`.`id`";
         $joinQuery = "FROM `{$table}` AS `le` LEFT JOIN `leads_delivery` AS `led` ON (`le`.`id` = `led`.`lead_id`) LEFT JOIN `clients` `cli` ON `led`.`client_id`=`cli`.`id`";
         $where = ' (`led`.`timedate` BETWEEN ' . $start . ' AND ' . $end . ')';
-        $groupBy='le.postcode';
+        $groupBy='led.lead_id';
 
         echo json_encode(
             SSP::simple($_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where, $groupBy)
