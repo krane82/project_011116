@@ -48,7 +48,7 @@ class Controller_Leads_Limits
         //$joinQuery = "FROM `{$table}` AS `le` LEFT JOIN `leads_delivery` AS `led` ON (`le`.`id` = `led`.`lead_id`) LEFT JOIN `clients` `cli` ON `led`.`client_id`=`cli`.`id`";
         $joinQuery = "FROM `{$table}` AS `le` LEFT JOIN `leads_delivery` AS `led` ON (`le`.`id` = `led`.`lead_id`) LEFT JOIN `clients` `cli` ON `led`.`client_id`=`cli`.`id`";
         $where = ' (`led`.`timedate` BETWEEN ' . $start . ' AND ' . $end . ')';
-        $groupBy='le.postcode';
+        $groupBy='led.lead_id';
 
         echo json_encode(
             SSP::simple($_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where, $groupBy)
