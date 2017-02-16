@@ -454,6 +454,9 @@ EOD;
                                 </table>';
   }
 
+  $tracker = 'http://' . $_SERVER['HTTP_HOST'] . '/api/record?log=true&deliveryn=' . $tracking_number;
+  $content .= '<img alt="" src="'.$tracker.'" width="1" height="1" border="0" />';
+
 $content .= <<<EOD
                               </th>
                               <th class="expander"

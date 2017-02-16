@@ -15,28 +15,39 @@ class Model_Api extends Model {
 
   private function sendToClients($clients, $lead_id ,$p){
     $counter = 0;
+    $sended ='';
     foreach ($clients as $c ) {
-      $id = $c["id"];
-      $passedcaps = $this->checkClientsLimits($id);
+      $client_id = $c["id"];
+      $passedcaps = $this->checkClientsLimits($client_id);
       if($passedcaps AND $counter < 4) {
         $readyLeadInfo = prepareLeadInfo($p);
-        $sent = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"]);
+        $delivery_id = $this->getLastDeliveryID() + 1;
+        $sent = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"], $delivery_id);
         if($sent) {
           $counter++;
-          $this->addToDeliveredTable($id, $lead_id, $readyLeadInfo);
-		  
+          $this->addToDeliveredTable($client_id, $lead_id, $readyLeadInfo);
+          $sended .= "$c[full_name] : $c[email] \n <br>";
         }
       }
     }
-    return "Sended to $counter clients";
+    return "Sended to $counter clients \n" . $sended;
+  }
+
+  private function getLastDeliveryID(){
+    $sql = "SELECT `id` FROM leads_delivery ORDER BY `id` DESC LIMIT 1";
+    $db  = DB::getInstance();
+    $res = $db->get_row($sql);
+    return $res[0];
   }
 
 
-  public function addToDeliveredTable($id, $lead_id, $p){
+  public function addToDeliveredTable($client_id, $lead_id, $p){
     $con = $this->db();
     $now = time();
-    $sql = "INSERT INTO `leads_delivery` (lead_id, client_id, timedate, postcode) VALUES ($lead_id, $id, $now, $p[postcode])";
-    $sql_r = "INSERT INTO `leads_rejection` (lead_id, client_id, date, approval, postcode) VALUES ($lead_id, $id, $now, 1,$p[postcode])";
+    $sql = "INSERT INTO `leads_delivery` (lead_id, client_id, timedate) VALUES ($lead_id, $client_id, $now)";
+    var_dump($sql);
+    $sql_r = "INSERT INTO `leads_rejection` (lead_id, client_id, date, approval) VALUES ($lead_id, $client_id, $now, 1)";
+    var_dump($sql_r);
     if($con->query($sql) && $con->query($sql_r)) { $delivered=1; }
     if($delivered){
       return TRUE;
@@ -45,10 +56,10 @@ class Model_Api extends Model {
     }
   }
 
-  private function sendToClient($mail, $p, $client_name)
+  private function sendToClient($mail, $p, $client_name, $track_id)
   {
     if($mail) {
-     send_m($mail, $p, $client_name);
+      send_m($mail, $p, $client_name, $track_id);
       return TRUE;
     }
     return FALSE;
@@ -248,7 +259,7 @@ class Model_Api extends Model {
       if ($k=="phone") {
         $p["phone"] = phone_valid($v);
       } else if($k=="postcode"){
-        $p["postcode"] = (int)postcodes_valid($v);
+        $p["postcode"] = postcodes_valid($v);
       }
       else {
         $p["$k"] = trim($v);

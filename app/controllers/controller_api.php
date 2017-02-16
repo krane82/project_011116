@@ -2,69 +2,17 @@
 
 class Controller_Api extends Controller {
 
-	function __construct() {
+  function __construct() {
     $this->model = new Model_Api();
     $this->view = new View();
   }
-	
-	public function action_index() {
+
+  public function action_index() {
     echo "access denied!";
-	}
-
-  public function action_record()
-  {
-    $host = 'http://' . $_SERVER['HTTP_HOST']
-
-    //Since the tracking URL is a bit long, I usually put it in a variable of it's own
-    $tracker = $host.'/api/record?log=true&deliveryn=';
-    if( !empty( $_GET['log'] ) && $_GET['log'] == 'true' && !empty( $_GET['user'] ) && !empty( $_GET['subject'] ) )
-    {
-    header( 'Content-Type: image/gif' );
-
-    $database = $this->db();
-    //Make sure we aren't duplicating the insertion
-    $exist_count = $database->num_rows( "SELECT user FROM email_log WHERE user = '$user' AND subject = '$subject'" );
-
-    //No prior record of this message open exists
-    if( $exist_count == 0 )
-    {
-        
-        //Make an array of columns => data
-        $insert_record = array(
-            'user' => $user, 
-            'subject' => $subject
-        );
-        //Insert the information into the email_log table
-        $database->insert( 'email_log',  $insert_record );
-        
-    }
-    
-    //Get the http URI to the image
-    $graphic_http = $host .'/blank.gif';
-    
-    //Get the filesize of the image for headers
-    $filesize = filesize( THIS_ABSOLUTE_PATH . '/blank.gif' );
-    
-    //Now actually output the image requested, while disregarding if the database was affected
-    header( 'Pragma: public' );
-    header( 'Expires: 0' );
-    header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
-    header( 'Cache-Control: private',false );
-    header( 'Content-Disposition: attachment; filename="blank.gif"' );
-    header( 'Content-Transfer-Encoding: binary' );
-    header( 'Content-Length: '.$filesize );
-    readfile( $graphic_http );
-    
-    //All done, get out!
-    exit;
-  }
-}
-
-    //Add the tracker to the message.
-    $message .= '<img alt="" src="'.$tracker.'" width="1" height="1" border="0" />';
   }
 
-	public function action_in()
+
+  public function action_in()
   {
     if(isset($_POST['source']))
     {
@@ -77,6 +25,57 @@ class Controller_Api extends Controller {
     {
       echo "access not allowed";
     }
+  }
+
+
+  //  TACK OPEN MAILS
+  //  Add the tracker to the message.
+  //  $tracker = 'http://' . $_SERVER['HTTP_HOST'] . '/api/record?log=true&deliveryn=' . $track_id;
+  //  $message .= '<img alt="" src="'.$tracker.'" width="1" height="1" border="0" />';
+  public function action_record()
+  {
+    if( !empty( $_GET['log'] ) && $_GET['log'] == 'true' && !empty( $_GET['deliveryn'] ) )
+    {
+      header( 'Content-Type: image/gif' );
+
+      //Make sure we aren't duplicating the insertion
+      $id = (int)$_GET['deliveryn'];
+      $database = DB::getInstance();
+      $exist_count = $database->num_rows( "SELECT open_email FROM `leads_delivery` WHERE `id`=$id" );
+
+      if( $exist_count == 1 )
+      {
+        //Make an array of columns => data
+        $update = array(
+          'open_email' => 1
+        );
+        $where = array(
+          'id' => $id
+        );
+        //Insert the information into the email_log table
+        $database->update( 'leads_delivery',  $update, $where );
+      }
+
+      //Get the http URI to the image
+      $graphic_http = $host .'/blank.gif';
+
+      //Get the filesize of the image for headers
+      $filesize = filesize( _MAIN_DOC_ROOT_ . '/blank.gif' );
+
+      //Now actually output the image requested, while disregarding if the database was affected
+      header( 'Pragma: public' );
+      header( 'Expires: 0' );
+      header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
+      header( 'Cache-Control: private',false );
+      header( 'Content-Disposition: attachment; filename="blank.gif"' );
+      header( 'Content-Transfer-Encoding: binary' );
+      header( 'Content-Length: '.$filesize );
+      readfile( $graphic_http );
+
+      //All done, get out!
+      exit;
+    }
+
   }
 
 }
