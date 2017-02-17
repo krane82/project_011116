@@ -9,6 +9,9 @@
 <div id="area-chart"></div>
 <hr>
 <div class="row">
+<div class="daylenew"></div>
+<br/>
+<h4>This information today</h4>
 <div class="dayle"></div>
 </div>
 <br>
@@ -68,4 +71,35 @@ foreach ($order as $k => $v) {
     }
   });
 
+  $.ajax({
+    type: "POST",
+    url: '<?php echo __HOST__ . '/admin_reports/getAverageNew/' ?>',
+    success: function (data) {
+      document.querySelector('.daylenew').innerHTML = data; // show response from the php script.
+    }
+  });
+
+  //  $.ajax({
+  //   type: "POST",
+  //   url: '<?php echo __HOST__ . '/admin_reports/getAverageNewSec/' ?>',
+  //   success: function (data) {
+  //     document.querySelector('.daylenewsec').innerHTML = data; // show response from the php script.
+  //   }
+  // });
+
 </script>
+<style type="text/css">
+  .dayle{
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .daylenew{
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+/*  .daylenewsec{
+    display: inline-block;
+    vertical-align: middle; 
+  }*/
+</style>
