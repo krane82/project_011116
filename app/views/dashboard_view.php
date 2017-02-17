@@ -11,7 +11,7 @@
 <div class="row">
 <div class="daylenew"></div>
 <br/>
-<h4>This information today</h4>
+<h4>Today stats</h4>
 <div class="dayle"></div>
 </div>
 <br>
