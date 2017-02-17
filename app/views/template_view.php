@@ -323,9 +323,9 @@
 <script src="<?php echo $host; ?>/js/bootstrap-switch.min.js"></script>
 <script src="<?php echo $host; ?>/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script>
-    // $(document).ready(function(){
-    //   $("select, input:checkbox, input:radio, input:file").uniform();
-    // }
+    $(document).ready(function(){
+      $("select, input:radio, input:file").uniform();
+    });
   </script>
 </body>
 </html>
