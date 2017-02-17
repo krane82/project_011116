@@ -10,7 +10,7 @@
 <hr>
 <div class="row">
   <div class="daylenew"></div>
-  <br/>
+  <div class="clearfix"><br></div>
   <h4>Today stats</h4>
   <div class="dayle"></div>
 </div>
