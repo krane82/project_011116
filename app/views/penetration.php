@@ -31,16 +31,43 @@
 </div>
 <div id='infodiv'>
 <div class="row">
-<div class="col-lg-3" id="NSW"></div>
-<div class="col-lg-3" id="QLD"></div>
-<div class="col-lg-3" id="SA"></div>
+<div class="col-lg-4" id="NSW"></div>
+<div class="col-lg-4" id="QLD"></div>
+<div class="col-lg-4" id="SA"></div>
 </div>
+<p></p>
 <div class="row">
-<div class="col-lg-3" id="TAS"></div>
-<div class="col-lg-3" id="VIC"></div>
-<div class="col-lg-3" id="WA"></div>
+<div class="col-lg-4" id="TAS"></div>
+<div class="col-lg-4" id="VIC"></div>
+<div class="col-lg-4" id="WA"></div>
 </div>
 </div>
+    <div class="modal fade" id="penModal" role="dialog" tabindex="-1">
+        <div class="modal-dialog" style=" margin-top: 15%">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" id="penHead">
+                    
+                </div>
+                <div class="modal-body" id="penBody">
+                <table id="codesTab" class="table dataTable no-footer">
+				<thead>
+				<tr>
+				<td>Post Code</td>
+				<td>Count of deliveries</td>
+				</tr>
+				</thead>
+				<tbody id="codesTabBod" >
+				</tbody>
+				</table>
+				</div>
+                <div class="modal-footer">
+                </div>
+            </div>
+
+        </div>
+    </div>
 <script>
     $(document).ready(function () {
 		var div=document.getElementById('infodiv');
@@ -68,11 +95,18 @@
 					var VICData=Data.VIC;
 					var WAData=Data.WA;
 					if(NSWData)fill("NSW",NSWData);
+					else $('#NSW').html('<h3>No leads for this period</h3>');
 					if(QLDData)fill("QLD",QLDData);
+					else $('#QLD').html('<h3>No leads for this period</h3>');
 					if(SAData)fill("SA",SAData);
+					else $('#SA').html('<h3>No leads for this period</h3>');
 					if(TASData)fill("TAS",TASData);
+					else $('#TAS').html('<h3>No leads for this period</h3>');
 					if(VICData)fill("VIC",VICData)
-					if(WAData)fill("WA",WAData)
+					else $('#VIC').html('<h3>No leads for this period</h3>');
+					if(WAData)fill("WA",WAData);
+					else $('#WAD').html('<h3>No leads for this period</h3>');
+				console.log(JSON.stringify( NSWData));
 				}
 				});
 
@@ -90,6 +124,7 @@ fill("SA",SAData);
 fill("TAS",TASData);
 fill("VIC",VICData);
 fill("WA",WAData);
+tab=$('#codesTab').DataTable();
 function fill(name,datArray)
 {$(function () {
 	var values=[];
@@ -98,7 +133,7 @@ function fill(name,datArray)
 (datArray[2])? values.push(['2',datArray[2].count]):values.push(['2',0]);
 (datArray[3])? values.push(['3',datArray[3].count]):values.push(['3',0]);
 (datArray[4])? values.push(['4',datArray[4].count]):values.push(['4',0]);
-console.log(values);
+//console.log(values);
             $('#'+name).highcharts({
                 chart: {
                     type: 'pie',
@@ -118,7 +153,35 @@ console.log(values);
                     pie: {
                         allowPointSelect: false,
                         cursor: 'pointer',
-                        depth: 30,
+                          point: {
+                events: {
+                    click: function () {
+                        var modal=document.getElementById('penModal');
+                        var penHead=document.getElementById('penHead');
+                        var penBody=document.getElementById('penBody');
+						var start=document.getElementsByName('start');
+						var end=document.getElementsByName('end');
+						var table=document.getElementById('codesTabBod')
+						tab.destroy();
+						table.innerHTML=''
+						var tr=document.createElement('tr');
+						var td1=document.createElement('td');
+						var td2=document.createElement('td');
+						tr.appendChild(td1);
+						tr.appendChild(td2);
+						penHead.innerHTML="State: "+name+", matches: "+this.name+", period: "+start[0].value+" - "+end[0].value;
+						for(var i in datArray[this.name].codes){
+						td1.innerHTML=i;
+						td2.innerHTML=datArray[this.name].codes[i];
+						table.appendChild(tr.cloneNode(true));
+						console.log(i);
+						}
+						tab=$('#codesTab').DataTable();
+						$('#penModal').modal('show');
+                    }
+                }
+            },
+						depth: 30,
                         dataLabels: {
                             enabled: true,
                             format: '{point.name}'
@@ -129,9 +192,9 @@ console.log(values);
                     type: 'pie',
                     name: '',
                     data: values
-                }]
+                }],
             });
-});
+			});
 }
 $('.input-daterange').datepicker({
             multidate: "true"

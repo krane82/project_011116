@@ -5,7 +5,7 @@ define('_MAIN_DOC_ROOT_', __DIR__);
 define( 'DB_HOST', 'localhost' );
 define( 'DB_USER', 'root' );
 define( 'DB_PASS', '' );
-define( 'DB_NAME', 'leadpoint_new' );
+define( 'DB_NAME', 'project007' );
 define( 'SEND_ERRORS_TO', 'tonkoshkurik@yandex.ua' );
 define( 'DISPLAY_DEBUG', true );
 //define( 'SITENAME', '' );
