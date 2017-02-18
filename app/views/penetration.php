@@ -1,18 +1,3 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Admin
- * Date: 10.02.2017
- * Time: 11:15
- */
-?>
-<head>
-    <style>
-        /*td {width:200px; border:solid 1px green}
-    </style>
-    <!--script src="../libs/highcharts/themes/grid-light.js"></script-->
-</head>
-<body>
 <h1 class="text-center">PostCodes Penetration</h1>
 <div class="no-footer">
     <form id="penetr">
@@ -202,5 +187,4 @@ $('.input-daterange').datepicker({
 		   });
 </script>
 <script src="<?php echo $host; ?>/app/libs/highcharts/highcharts.js"></script>
-    <script src="<?php echo $host; ?>/app/libs/highcharts/highcharts-3d.js"></script>
-</body>
+<script src="<?php echo $host; ?>/app/libs/highcharts/highcharts-3d.js"></script>

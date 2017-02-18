@@ -1,5 +1,5 @@
-<?
-class Controller_penetration
+<?php
+class Controller_Penetration
 {
     function __construct()
     {

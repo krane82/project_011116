@@ -99,7 +99,7 @@ class Model_Api extends Model {
       return FALSE;
     }
 
-    $sqlWr = $con->query($sqlM);
+    $sqlWr = $con->query($sqlW);
     $sqlWW = $sqlWr->fetch_assoc();
 
     if($sqlWW["count(*)"] <= $caps["weekly"]){
