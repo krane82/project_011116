@@ -44,6 +44,14 @@ class Controller_Admin_Reports extends Controller
     $this->model->getAverageReports();
   }
 
+  function action_getAverageNew(){
+    $this->model->getAverageReportsNew();
+  }
+
+  // function action_getAverageNewSec(){
+  //   $this->model->getAverageReportsNewSec();
+  // }
+
   function action_getSourceAverage(){
     $this->model->getSourceAverage();
   }

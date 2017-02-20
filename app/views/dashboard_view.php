@@ -9,33 +9,36 @@
 <div id="area-chart"></div>
 <hr>
 <div class="row">
-<div class="dayle"></div>
+  <div class="daylenew"></div>
+  <div class="clearfix"><br></div>
+  <h4>Today stats</h4>
+  <div class="dayle"></div>
 </div>
 <br>
 <hr>
 <h2 class="text-center">Client Lead Distribution Order</h2>
 <br>
 <div class="panel panel-white ">
-<table class="table">
-<tr>
-<td>Client </td>
-<td>Cost per lead </td>
-<td>Rejection (%)  </td>
-<td>Total revenue</td>
-</tr>
-<?php 
-$c = 0;
-foreach ($order as $k => $v) {
-  $c < 4 ? $class = 'green' : $class = 'red';
-  echo "<tr class='$class'>";
-  echo "<td>". $v["client"] ."</td>" . 
-       "<td>". $v["lead_cost"] ."</td>" . 
-       "<td>". number_format($v["percentage"] * 100, 0) . "%" ."</td>" . 
-       "<td>" . $v["revenue"] ."$". "</td>";
-  echo "</tr>";
-  $c++;
-} ?>
-</table>
+  <table class="table">
+    <tr>
+      <td>Client </td>
+      <td>Cost per lead </td>
+      <td>Rejection (%)  </td>
+      <td>Total revenue</td>
+    </tr>
+    <?php 
+    $c = 0;
+    foreach ($order as $k => $v) {
+      $c < 4 ? $class = 'green' : $class = 'red';
+      echo "<tr class='$class'>";
+      echo "<td>". $v["client"] ."</td>" . 
+      "<td>". $v["lead_cost"] ."</td>" . 
+      "<td>". number_format($v["percentage"] * 100, 0) . "%" ."</td>" . 
+      "<td>" . $v["revenue"] ."$". "</td>";
+      echo "</tr>";
+      $c++;
+    } ?>
+  </table>
 </div>
 
 <script>
@@ -67,5 +70,21 @@ foreach ($order as $k => $v) {
       document.querySelector('.dayle').innerHTML = data; // show response from the php script.
     }
   });
+
+  $.ajax({
+    type: "POST",
+    url: '<?php echo __HOST__ . '/admin_reports/getAverageNew/' ?>',
+    success: function (data) {
+      document.querySelector('.daylenew').innerHTML = data; // show response from the php script.
+    }
+  });
+
+  //  $.ajax({
+  //   type: "POST",
+  //   url: '<?php echo __HOST__ . '/admin_reports/getAverageNewSec/' ?>',
+  //   success: function (data) {
+  //     document.querySelector('.daylenewsec').innerHTML = data; // show response from the php script.
+  //   }
+  // });
 
 </script>

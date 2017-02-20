@@ -1,4 +1,6 @@
 .idea
+.vscode
+config.php
 tags
 .tags*
 *.DS_Store

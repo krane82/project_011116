@@ -226,6 +226,7 @@ class Model_Admin_Reports extends Model
     if(!empty($_POST["start"])){
       $start = strtotime($_POST["start"]);
       $end = strtotime($_POST["end"]) + 86400;
+
     }
     else {
       $timestamp = time();
@@ -279,8 +280,10 @@ class Model_Admin_Reports extends Model
       $distributed = $res->fetch_assoc();
     }
 
+
     $rejectedP = $rejected["amount"] / $distributed["amount"];
     $ds =  $distributed["amount"] . " leads <br>Distributed";
+    // $ds_beg = "leads <br>Distributed 1 to 15 ";
     $acs = $approved['amount']. " leads Accepted by clients";
     $ras = $rejected["amount"] . " leads Rejected <br>by clients";
     $trs = $approved["total_cost"] . " total Revenue";
@@ -291,7 +294,149 @@ class Model_Admin_Reports extends Model
     echo $this->formStatView($ras, 'window-close', 'getRejected');
     echo $this->formStatView($rejectedPercent, 'window-close', 'getRejected');
     echo $this->formStatView($rev, 'shopping-cart');
+    // echo $this->formStatView($ds_beg, 'users', 'getDistributed');
+
   }
+
+  public function getAverageReportsNew()
+  {
+    $con = $this->db();
+    $now = time();
+    $st = new DateTime(date('Y-m-01', $now));
+    $start = $st->getTimestamp();
+    $st->modify("+14 days");
+    $end = $st->getTimestamp();
+    if( $now < $end ) {
+      // do nothing
+    } else {
+      $start = $end;
+      $end = strtotime(date("Y-m-t", $now));
+    }
+ 
+    $begs = date('Y-m-d', $start);
+    $ends = date('Y-m-d', $end);
+   
+    $sql = 'SELECT COUNT(*) as amount, SUM(c.lead_cost) as total_cost  FROM `leads_delivery` as ld ';
+    $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
+    $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
+    $sql .= ' WHERE (lr.approval > 0 OR lr.approval IS NULL)';
+    $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+    if (!($client == 0)) {
+      $sql .= ' AND ld.client_id =' . $client;
+    }
+
+    $res = $con->query($sql);
+    $approved = array();
+
+    if ($res) {
+      $approved = $res->fetch_assoc();
+    } else {
+      echo "No data\n";
+    }
+
+    $sql2 = 'SELECT COUNT(*) as amount FROM `leads_delivery` as ld ';
+    $sql2 .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
+    $sql2 .= ' WHERE lr.approval=0';
+    $sql2 .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+    if ($client != 0) {
+      $sql2 .= ' AND ld.client_id =' . $client;
+    }
+    $res = $con->query($sql2);
+    if ($res) {
+      $rejected = $res->fetch_assoc();
+    } else {
+      echo "0";
+    }
+//  DISTINCT
+    $sqlDestributed  = 'SELECT COUNT(ld.lead_id) as amount, SUM(c.cost) as camp_cost FROM `leads_delivery` as ld';
+    $sqlDestributed .= ' INNER JOIN `leads` as l ON l.id=ld.lead_id';
+    $sqlDestributed .= ' INNER JOIN `campaigns` as c ON c.id = l.campaign_id';
+    $sqlDestributed .= ' WHERE 1=1 AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+    if (!($client == 0)) {
+      $sqlDestributed .= ' AND ld.client_id =' . $client;
+    }
+
+    $res = $con->query($sqlDestributed);
+    if($res){
+      $distributed = $res->fetch_assoc();
+    }
+    // $date_now = date('F j, Y', $now);
+    // var_dump($date_now);
+    // var_dump(date('m/d/Y H:i:s'));
+    // $start_date = date('d', $start);
+    // if($start_date<16){
+    //   $mes = "<h4>Information behind period 2017-02-01 - 2017-02-15</h4>";
+    // }else{
+    //   $mes = "<h4>Information behind period 2017-02-16 - 2017-02-28</h4>";
+    // }
+   
+    $mes = "<h4>Information behind period ".$begs." to ".$ends."</h4>";
+
+    $sqlCountLids = "SELECT COUNT(ld.id) as amount FROM `leads` as ld";
+    $sqlCountLids .= " WHERE 1=1 AND (ld.datetime BETWEEN ".$start." AND ".$end.")";
+
+    $res = $con->query($sqlCountLids);
+    if($res){
+      $CountLids = $res->fetch_assoc();
+    }
+ 
+    $sqlCoastLids = "SELECT SUM(c.cost) as cost FROM `campaigns` as c";
+    $sqlCoastLids .= " LEFT JOIN `leads` as ld ON ld.campaign_id = c.id";
+    $sqlCoastLids .= " WHERE 1=1 AND (ld.datetime BETWEEN ".$start." AND ".$end.")";
+    $res = $con->query($sqlCoastLids);
+    if($res){
+      $CoastLids = $res->fetch_assoc();
+    }
+
+    $sqlquery = "SELECT SUM(c.lead_cost) as cost FROM `leads_delivery` as ld";
+    $sqlquery .= " LEFT JOIN `clients` as c ON ld.client_id = c.id";
+    $sqlquery .= " WHERE 1=1 AND (ld.timedate BETWEEN ".$start." AND ".$end.")";
+    $res = $con->query($sqlquery);
+    if($res){
+      $income = $res->fetch_assoc();
+    }
+
+    $resCoast = $income['cost'] - $CoastLids['cost'];
+
+
+    // $sqlincomeLids = "SELECT SUM(c.cost) as cost FROM `campaigns` as c";
+    // $sqlincomeLids .= " LEFT JOIN `leads` as ld ON ld.campaign_id = c.id";
+    // $sqlincomeLids .= " WHERE 1=1 AND (ld.datetime BETWEEN ".$start." AND ".$end.")";
+
+    $sqlAver  = 'SELECT COUNT(ld.id) as amount, SUM(c.lead_cost) as client_cost FROM `leads_delivery` as ld';
+    $sqlAver .= ' INNER JOIN `clients` as c ON c.id=ld.client_id';
+    $sqlAver .= ' WHERE 1=1 AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+    $res = $con->query($sqlAver);
+    if($res){
+      $result = $res->fetch_assoc();
+    }
+    $average = round($result['client_cost'] / $result['amount'], 2);
+
+
+    $rejectedP = $rejected["amount"] / $distributed["amount"];
+    $ds =  $distributed["amount"] . " leads <br>Distributed";
+    $acs = $approved['amount']. " leads Accepted by clients";
+    $ras = $rejected["amount"] . " leads Rejected <br>by clients";
+    $trs = $approved["total_cost"] . " total Revenue";
+    $rejectedPercent =  number_format($rejectedP * 100, 0) . '% Rejected<br> by clients';
+    $rev = $approved["total_cost"] ? $approved["total_cost"] . " $<br>Lead Revenue" : 0 . " $<br>Lead Revenue";
+    $countld = $CountLids['amount']. " leads<br> Total generated";
+    $coastld = $CoastLids['cost']. " $<br>Total cost of<br> leads generated ";
+    $totalcoast = $resCoast. " $<br> Total income of<br>leads distributed ";
+    $totalAverage = $average. " $<br>Average sales<br>per lead";
+    echo $mes;
+    echo $this->formStatView($ds, 'users', 'getDistributed');
+    echo $this->formStatView($acs, 'check', 'getAccepted');
+    echo $this->formStatView($ras, 'window-close', 'getRejected');
+    echo $this->formStatView($rejectedPercent, 'window-close', 'getRejected');
+    echo $this->formStatView($rev, 'shopping-cart');
+    echo $this->formStatView($countld);
+    echo $this->formStatView($coastld);
+    echo $this->formStatView($totalcoast);
+    echo $this->formStatView($totalAverage);
+
+  }
+
 
   public function getSourceAverage()
   {

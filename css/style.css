@@ -64,6 +64,7 @@
 }
 .pdten {
   padding: 10px;
+  height: 75px;
 }
 .icon {
   float: left;
@@ -82,6 +83,14 @@ input.searchbox {
     padding: 1px;
     margin-left: -2px;
     margin-bottom: 0px;
+}
+.dayle{
+  display: inline-block;
+  vertical-align: middle;
+}
+.daylenew{
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .loader {

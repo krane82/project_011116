@@ -196,11 +196,9 @@
         <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Clients</p><span class="arrow"></span></a>
           <ul class="sub-menu">
           <li><a href="/clients/">Clients</a>
-          <li><a href="<?php echo __HOST__; ?>/Leads_Limits/">Clients Caps</a>
-          <li><a href="<?php echo __HOST__; ?>/Leads_Limits/matches">PostCodes Matches</a>
-        </li>
+          <li><a href="<?php echo __HOST__; ?>/Leads_Limits/">Clients Caps</a> </li>
+          <li><a href="<?php echo __HOST__; ?>/Leads_Limits/matches">PostCodes Matches</a></li>
           </ul>
-
           <!--          <ul class="sub-menu">-->
 <!--            <li><a href="ui-alerts">Alerts</a></li>-->
 <!--            <li><a href="ui-buttons">Buttons</a></li>-->
@@ -213,6 +211,8 @@
           <ul class="sub-menu">
             <li><a href="<?php echo __HOST__; ?>/leads/">Leads Delivery</a></li>
             <li><a href="<?php echo __HOST__; ?>/approvals/">Leads Approvals</a></li>
+            <li><a href="<?php echo __HOST__; ?>/leads/distribution/">Leads distribution</a></li>
+          <li><a href="<?php echo __HOST__; ?>/penetration/">Penetration</a></li>
           </ul>
         </li>
         <li><a href="<?php echo __HOST__; ?>/admin_reports/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-stats"></span><p>Reports</p></a>
@@ -323,9 +323,9 @@
 <script src="<?php echo $host; ?>/js/bootstrap-switch.min.js"></script>
 <script src="<?php echo $host; ?>/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script>
-    // $(document).ready(function(){
-    //   $("select, input:checkbox, input:radio, input:file").uniform();
-    // }
+    $(document).ready(function(){
+      $("select, input:radio, input:file").uniform();
+    });
   </script>
 </body>
 </html>
