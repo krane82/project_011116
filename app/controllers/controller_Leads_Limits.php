@@ -33,8 +33,8 @@ class Controller_Leads_Limits
         $columns = array(
             array('db' => 'le.postcode', 'dt' => 0, 'field' => 'postcode'),
             array('db' => 'count(le.id)', 'dt' => 1, 'field' => 'count(le.id)'),
-            array('db' => 'led.lead_id', 'dt' => 2, 'field' => 'lead_id'),
-            array('db' => 'group_concat(cli.campaign_name)', 'dt' => 3, 'field' => 'group_concat(cli.campaign_name)')
+            array('db' => 'group_concat(cli.campaign_name)', 'dt' => 2, 'field' => 'group_concat(cli.campaign_name)'),
+			array('db' => 'led.lead_id', 'dt' => 3, 'field' => 'lead_id')
         );
 
         $sql_details = array(
