@@ -50,7 +50,9 @@ class Controller_leads extends Controller
       $end = strtotime($_POST["end"]);
       $state = $_POST["state"];
       $client = $_POST["client"];
-      echo "Sending to $_POST[client] with $start $end";
+      // need to get leads from #start to #end
+      // end automaticli send each of this with $this->sendleads(0, $lead_id)
+      echo "Sending to $_POST[client] with " . date("Y-m-t", $start) . " - " .  date("Y-m-t", $end);
     } else {
       // Sending one lead to one client
       $client_id =(int)$_POST["id"];
@@ -58,6 +60,7 @@ class Controller_leads extends Controller
       echo $this->model->senLead($client_id, $lead_id);
     }
   }
+
   function action_distribution()
   {
     $data["body_class"] = "page-header-fixed";

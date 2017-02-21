@@ -91,7 +91,11 @@
 					else $('#VIC').html('<h3>No leads for this period</h3>');
 					if(WAData)fill("WA",WAData);
 					else $('#WAD').html('<h3>No leads for this period</h3>');
+<<<<<<< HEAD
 				console.log(JSON.stringify( NSWData));
+=======
+//				console.log(JSON.stringify( NSWData));
+>>>>>>> 29d32cfdc8603ffe90272d1ab805182dd795e1a8
 				}
 				});
 
@@ -103,12 +107,33 @@ var SAData=Data.SA;
 var TASData=Data.TAS;
 var VICData=Data.VIC;
 var WAData=Data.WA;
+<<<<<<< HEAD
 fill("NSW",NSWData);
 fill("QLD",QLDData);
 fill("SA",SAData);
 fill("TAS",TASData);
 fill("VIC",VICData);
 fill("WA",WAData);
+=======
+if(NSWData)fill("NSW",NSWData);
+					else $('#NSW').html('<h3>No leads for this period</h3>');
+					if(QLDData)fill("QLD",QLDData);
+					else $('#QLD').html('<h3>No leads for this period</h3>');
+					if(SAData)fill("SA",SAData);
+					else $('#SA').html('<h3>No leads for this period</h3>');
+					if(TASData)fill("TAS",TASData);
+					else $('#TAS').html('<h3>No leads for this period</h3>');
+					if(VICData)fill("VIC",VICData)
+					else $('#VIC').html('<h3>No leads for this period</h3>');
+					if(WAData)fill("WA",WAData);
+					else $('#WAD').html('<h3>No leads for this period</h3>');
+//fill("NSW",NSWData);
+//fill("QLD",QLDData);
+//fill("SA",SAData);
+//fill("TAS",TASData);
+//fill("VIC",VICData);
+//fill("WA",WAData);
+>>>>>>> 29d32cfdc8603ffe90272d1ab805182dd795e1a8
 tab=$('#codesTab').DataTable();
 function fill(name,datArray)
 {$(function () {
