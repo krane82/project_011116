@@ -1,9 +1,16 @@
 <?php
 class Model_Api extends Model {
 
-  public function proccess_lead($post, $counter=0, $addToTable=true) {
+  public function proccess_lead($post, $counter=0, $addToTable=true, $leadId=0) {
     $p = $this->checkdata($post);
-    if ($addToTable)$lead_id = $this->addleadtotable($p);
+    if ($addToTable)
+    {
+      $lead_id = $this->addleadtotable($p);
+    }
+    else
+    {
+     $lead_id=$leadId;
+    }
     if(!$lead_id) {
       return FALSE;
     }
@@ -333,5 +340,18 @@ class Model_Api extends Model {
 //    }
 //    return $readyLeadInfo;
 //  }
-
+//Mironenko method - returns list of sent leads with count of delivers
+  public function getSentLeads()
+  {
+    $con = $this->db();
+    $range = time() - (10 * 86400);
+    $sql = "SELECT le_fi.*, count(led.lead_id) as 'count' FROM leads lea left join leads_lead_fields_rel le_fi on lea.id=le_fi.id left join leads_delivery led on lea.id=led.lead_id where lea.datetime>'" . $range . "'
+ group by(le_fi.id)";
+    $res=$con->query($sql);
+    $result = array();
+    while ($row = $res->fetch_assoc()) {
+      if($row['count']<4) $result[] = $row;
+    }
+    return $result;
+  }
 }
