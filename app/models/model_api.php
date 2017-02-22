@@ -1,20 +1,20 @@
 <?php
 class Model_Api extends Model {
 
-  public function proccess_lead($post) {
+  public function proccess_lead($post, $counter=0, $addToTable=true) {
     $p = $this->checkdata($post);
-    $lead_id = $this->addleadtotable($p);
+    if ($addToTable)$lead_id = $this->addleadtotable($p);
     if(!$lead_id) {
       return FALSE;
     }
     $clients = $this->getClients($p);
-    $resp =  $this->sendToClients($clients, $lead_id, $p);
+    $resp =  $this->sendToClients($clients, $lead_id, $p, $counter);
     return $resp;
   }
 
 
-  private function sendToClients($clients, $lead_id ,$p){
-    $counter = 0;
+  private function sendToClients($clients, $lead_id ,$p, $counter){
+//    $counter = 0;
     $sended ='';
     foreach ($clients as $c ) {
       $client_id = $c["id"];

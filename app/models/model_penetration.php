@@ -11,17 +11,17 @@ public function getCode()
 {
 	$con = $this->db();
     $beginOfMonth = strtotime(date('Y-m-01'));
-	$sql="SELECT le.state, le.postcode, COUNT( led.id ) 
-FROM  `leads_lead_fields_rel` AS le
-LEFT JOIN leads_delivery led ON le.id = led.lead_id where led.timedate>'".$beginOfMonth."'
-GROUP BY le.id
-ORDER BY le.postcode";
+	$sql="select le.id, le.state, le.postcode, 
+	count(led.id) from leads_lead_fields_rel le LEFT JOIN leads lea 
+	on le.id=lea.id LEFT JOIN leads_delivery led on le.id=led.lead_id 
+	where lea.datetime>'".$beginOfMonth."'
+GROUP BY le.id";
     $result=array();
     $res=$con->query($sql);
     while($row=$res->fetch_assoc())
     {
-	$result[$row['state']][$row['COUNT( led.id )']]['count']++;
-    $result[$row['state']][$row['COUNT( led.id )']]['codes'][$row['postcode']]++;
+	$result[$row['state']][$row['count(led.id)']]['count']++;
+    $result[$row['state']][$row['count(led.id)']]['codes'][$row['postcode']]++;
 	}
 return $result;
 }
@@ -29,20 +29,18 @@ public function getCodeAjax()
 {
     $start = strtotime($_POST["st"]);
     $end = strtotime($_POST["en"]) + 86400;
-	//$now = time();
-	//if ($start<1485907200) $start=1485907200;
 	$con = $this->db();
-	$sql="SELECT le.state, le.postcode, COUNT( led.id ) 
-FROM  `leads_lead_fields_rel` AS le
-LEFT JOIN leads_delivery led ON le.id = led.lead_id WHERE led.timedate between '".$start."' and '".$end."' 
-GROUP BY le.id
-ORDER BY le.postcode";
+	$sql="select le.id, le.state, le.postcode, 
+	count(led.id) from leads_lead_fields_rel le LEFT JOIN leads lea 
+	on le.id=lea.id LEFT JOIN leads_delivery led on le.id=led.lead_id 
+	where lea.datetime between '".$start."' and '".$end."' 
+GROUP BY le.id";
     $result=array();
     $res=$con->query($sql);
     while($row=$res->fetch_assoc())
     {
-	$result[$row['state']][$row['COUNT( led.id )']]['count']++;
-    $result[$row['state']][$row['COUNT( led.id )']]['codes'][$row['postcode']]++;
+	$result[$row['state']][$row['count(led.id)']]['count']++;
+    $result[$row['state']][$row['count(led.id)']]['codes'][$row['postcode']]++;
 	}
 return $result;
 }
