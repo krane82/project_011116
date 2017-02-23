@@ -7,8 +7,11 @@ class Controller_Cron extends Controller    {
     }
     public function action_index() {
         $leads=$this->model->getSentLeads();
+        print '<pre>';
+        //print_r($leads);
         foreach ($leads as $lead) {
-            $this->proccess_lead($lead,$lead['count'],false,$lead['id']);
+        $this->model->proccess_lead($lead, $lead['count'],false,$lead['id']);
+        print 'Done, '.$lead['id'].'<br>';
         }
         }
 }

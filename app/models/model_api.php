@@ -15,7 +15,9 @@ class Model_Api extends Model {
       return FALSE;
     }
     $clients = $this->getClients($p);
+    print 'getClients ok!';
     $resp =  $this->sendToClients($clients, $lead_id, $p, $counter);
+    print 'sendToClients ok!';
     return $resp;
   }
 
@@ -25,6 +27,9 @@ class Model_Api extends Model {
     $sended ='';
     foreach ($clients as $c ) {
       $client_id = $c["id"];
+      //here will be checking if is already delivered to current client
+      $clients=explode(',',$p['clients']);
+      if (in_array($client_id,$clients)) continue;
       $passedcaps = $this->checkClientsLimits($client_id);
       if($passedcaps AND $counter < 4) {
         $readyLeadInfo = prepareLeadInfo($p);
@@ -66,7 +71,8 @@ class Model_Api extends Model {
   private function sendToClient($mail, $p, $client_name, $track_id)
   {
     if($mail) {
-      send_m($mail, $p, $client_name, $track_id);
+      //Раскоментить нафиг на продакшене!!!
+      // send_m($mail, $p, $client_name, $track_id);
       return TRUE;
     }
     return FALSE;
@@ -343,14 +349,19 @@ class Model_Api extends Model {
 //Mironenko method - returns list of sent leads with count of delivers
   public function getSentLeads()
   {
+    //this variable is for show how many days from query do we need, will be saved in DB and added from interface
+    include "app/models/model_settings.php";
+    $settings=new Model_Settings();
+    $data=$settings->getSettings();
     $con = $this->db();
-    $range = time() - (10 * 86400);
-    $sql = "SELECT le_fi.*, count(led.lead_id) as 'count' FROM leads lea left join leads_lead_fields_rel le_fi on lea.id=le_fi.id left join leads_delivery led on lea.id=led.lead_id where lea.datetime>'" . $range . "'
- group by(le_fi.id)";
+    $range = time() - ($data['days'] * 86400);
+    $sql = "SELECT le_fi.*, count(led.lead_id) as 'count', group_concat(led.client_id) as 'clients' FROM leads lea left join leads_lead_fields_rel le_fi on lea.id=le_fi.id left join leads_delivery led on lea.id=led.lead_id where lea.datetime>'" . $range . "'
+    group by(le_fi.id)";
     $res=$con->query($sql);
     $result = array();
     while ($row = $res->fetch_assoc()) {
-      if($row['count']<4) $result[] = $row;
+      //if($row['count']<4) $result[] = $row;
+      $result[] = $row;
     }
     return $result;
   }
