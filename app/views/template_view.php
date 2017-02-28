@@ -206,6 +206,7 @@
           <ul class="sub-menu">
             <li><a href="<?php echo __HOST__; ?>/leads/">Leads Delivery</a></li>
             <li><a href="<?php echo __HOST__; ?>/approvals/">Leads Approvals</a></li>
+            <li><a href="<?php echo __HOST__; ?>/rerouting/">Lead Rerouting</a></li>
           </ul>
         </li>
         <li><a href="<?php echo __HOST__; ?>/admin_reports/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-stats"></span><p>Reports</p></a>
