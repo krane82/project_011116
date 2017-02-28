@@ -430,10 +430,10 @@ class Model_Admin_Reports extends Model
     echo $this->formStatView($ras, 'window-close', 'getRejected');
     echo $this->formStatView($rejectedPercent, 'window-close', 'getRejected');
     echo $this->formStatView($rev, 'shopping-cart');
-    echo $this->formStatView($countld);
-    echo $this->formStatView($coastld);
-    echo $this->formStatView($totalcoast);
-    echo $this->formStatView($totalAverage);
+    echo $this->formStatView($countld, 'window-close', 'getRejected');
+    echo $this->formStatView($coastld, 'window-close', 'getRejected');
+    echo $this->formStatView($totalcoast, 'window-close', 'getRejected');
+    echo $this->formStatView($totalAverage, 'window-close', 'getRejected');
 
   }
 
