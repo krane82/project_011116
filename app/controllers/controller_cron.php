@@ -10,8 +10,8 @@ class Controller_cron extends Controller
   public function action_index()
   {
 
-  	$test = $this->model->test();
-exit();
+//   	$test = $this->model->test();
+// exit();
    
   	$res = $this->model->getleads();
   	exit($res);

@@ -120,7 +120,7 @@ if(isset($_POST)){
   while($rescod = $rescode->fetch_assoc()){
     $id_lead_code[] = $rescod;
   }
-
+  var_dump($id_lead_code);
   if(count($id_lead_code)>$amount){
     $difference = $amount - $countlim['lim'];
 
@@ -134,7 +134,9 @@ if(isset($_POST)){
        $queue = array_splice($queue, $difference);
 
     // unset($queue[0]);
-
+var_dump($amount);
+var_dump(count($id_lead_code));
+exit('777');
 
     foreach($queue as $id_que){
       $que_id_lead = $id_que['id'];
@@ -158,7 +160,8 @@ if(isset($_POST)){
   }else{
 // если уже были какие то отправлены
     $difference = $amount - $countlim['lim'];
-   
+   var_dump($amount);
+exit('887');
     if(count($id_lead_code)>$difference){
       $diff = count($id_lead_code) - $difference;
       $id_lead_code = array_chunk($id_lead_code, $dif);
@@ -252,7 +255,7 @@ if(isset($_POST)){
         if($sended) {
           // $counter++;
 
-         $this->addToDeliveredTable($id, $id_leads_code, $readyLeadInfo);
+         $this->addToDeliveredTable($id, $id_leads_code, $readyLeadInfo, $amount);
         
         }
    
@@ -265,18 +268,17 @@ if(isset($_POST)){
 }
 
 
-  public function addToDeliveredTable($id, $lead_id, $p){
+  public function addToDeliveredTable($id, $lead_id, $p, $amount){
 
     $con = $this->db();
     $now = time();
 // var_dump($lead_id);
 
-
 //     $lead_id = explode(',', $lead_id);
   if(count($lead_id)>1){
   foreach($lead_id as $id_leads){
 
-    $sql = "INSERT INTO `leads_delivery` (lead_id, client_id, timedate) VALUES ($id_leads, $id, $now)";
+    $sql = "INSERT INTO `leads_delivery` (lead_id, client_id, timedate, amount) VALUES ($id_leads, $id, $now, $amount)";
     $sql_r = "INSERT INTO `leads_rejection` (lead_id, client_id, date, approval) VALUES ($id_leads, $id, $now, 1)";
 
 
@@ -290,7 +292,7 @@ if(isset($_POST)){
     }
 }else{
     $lead_id = $lead_id[0];
-    $sql = "INSERT INTO `leads_delivery` (lead_id, client_id, timedate) VALUES ($lead_id, $id, $now)";
+    $sql = "INSERT INTO `leads_delivery` (lead_id, client_id, timedate, amount) VALUES ($lead_id, $id, $now, $amount)";
     $sql_r = "INSERT INTO `leads_rejection` (lead_id, client_id, date, approval) VALUES ($lead_id, $id, $now, 1)";
    
 }
