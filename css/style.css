@@ -1,6 +1,12 @@
 .addsuccess.bg-success, .success {
   margin: 10px 0;
 }
+.input-sm{
+  width: 150px;
+}
+#getallleads{
+  width: 40%;
+}
 
 .addsuccess.bg-success p, .success p{
   padding: 12px;

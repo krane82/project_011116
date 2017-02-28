@@ -120,7 +120,7 @@ if(isset($_POST)){
   while($rescod = $rescode->fetch_assoc()){
     $id_lead_code[] = $rescod;
   }
-  var_dump($id_lead_code);
+
   if(count($id_lead_code)>$amount){
     $difference = $amount - $countlim['lim'];
 
@@ -131,12 +131,55 @@ if(isset($_POST)){
 
     
     // $queue = $id_lead_code;
-       $queue = array_splice($queue, $difference);
-
+    $queue = array_splice($queue, $difference);
     // unset($queue[0]);
-var_dump($amount);
-var_dump(count($id_lead_code));
-exit('777');
+    // $quedate = array_chunk($queue, $amount);
+    $s = 1;
+    $d = strtotime("+1 day");
+    $datetom = strtotime(date("d.m.Y", $d)); 
+    foreach ($queue as $key) {
+     $i=0;
+      $key['date'] = $datetom;
+      
+      for ($i=0; $i <= $amount; $i++) { 
+        $idkey = $key['id'];
+        $dateval = $key['date'];
+      }
+   
+      $datetom = strtotime("+".$s." day", $date);
+      $s++;
+      echo "<pre>";
+      var_dump($key);
+      var_dump($datetom);
+    }
+    // $n = 0;
+    // foreach ($quedate as $key) {
+    // $key.='date';
+
+    //       echo "<pre>";
+     
+    //   if($n % $amout == 0){
+    //     $date+1;
+    //   }
+    //   $n++;
+    //  }
+     
+
+
+
+
+   
+
+    // var_dump($quedate);
+
+    // foreach ($quedate as $key) {
+    //   var_dump($key);
+    // }
+
+
+    exit();
+
+
 
     foreach($queue as $id_que){
       $que_id_lead = $id_que['id'];
@@ -147,8 +190,8 @@ exit('777');
     
       $sql_queue = "INSERT INTO `queue`(id_lead, id_client, timedata, status) VALUES ($que_id_lead, $id_cli, $date, 1)";
   
-        $con = $this->db();
-        $res_queue = $con->query($sql_queue);
+      $con = $this->db();
+      $res_queue = $con->query($sql_queue);
       // }
     }
 
@@ -158,10 +201,11 @@ exit('777');
     $id_lead_code = array_slice($id_lead_code, 0, true);
    
   }else{
+    var_dump($queue);
+exit();
 // если уже были какие то отправлены
     $difference = $amount - $countlim['lim'];
-   var_dump($amount);
-exit('887');
+   
     if(count($id_lead_code)>$difference){
       $diff = count($id_lead_code) - $difference;
       $id_lead_code = array_chunk($id_lead_code, $dif);
@@ -273,6 +317,8 @@ exit('887');
     $con = $this->db();
     $now = time();
 // var_dump($lead_id);
+var_dump($amount);
+exit();
 
 //     $lead_id = explode(',', $lead_id);
   if(count($lead_id)>1){
