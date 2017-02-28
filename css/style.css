@@ -90,6 +90,14 @@ input.searchbox {
     margin-left: -2px;
     margin-bottom: 0px;
 }
+.dayle{
+  display: inline-block;
+  vertical-align: middle;
+}
+.daylenew{
+  display: inline-block;
+  vertical-align: middle;
+}
 
 .loader {
   margin: 100px auto;

@@ -1,9 +1,7 @@
 <?php
-
-//require_once 'core/includes.php';
+require_once 'core/includes.php';
 require_once 'core/functions.php';
 require_once 'libs/ssp.class.php';
-//require_once 'libs/DataTables/DataTables.php';
 require_once 'core/model.php';
 require_once 'core/view.php';
 require_once 'core/controller.php';

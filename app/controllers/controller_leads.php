@@ -3,7 +3,7 @@ class Controller_leads extends Controller
 {
   function __construct()
   {
-      require_once('app/models/model_api.php');
+    require_once('app/models/model_api.php');
     $api = new Model_Api();
     $this->model = new Model_Leads($api);
     // $this->api = new Model_Api();
@@ -50,13 +50,67 @@ class Controller_leads extends Controller
       $end = strtotime($_POST["end"]);
       $state = $_POST["state"];
       $client = $_POST["client"];
-      echo "Sending to $_POST[client] with $start $end";
+      // need to get leads from #start to #end
+      // end automaticli send each of this with $this->sendleads(0, $lead_id)
+      echo "Sending to $_POST[client] with " . date("Y-m-t", $start) . " - " .  date("Y-m-t", $end);
     } else {
       // Sending one lead to one client
       $client_id =(int)$_POST["id"];
       $lead_id = (int)$_POST["lead_id"];
       echo $this->model->senLead($client_id, $lead_id);
     }
+  }
+
+  function action_distribution()
+  {
+    $data["body_class"] = "page-header-fixed";
+    session_start();
+    if ($_SESSION['admin'] == md5('admin')) {
+      $this->view->generate('leads_delivery.php', 'template_view.php', $data);
+    } else {
+      session_destroy();
+      $this->view->generate('danied_view.php', 'template_view.php', $data);
+    }
+  }
+  function action_ajax_delivery()
+  {
+    $table = 'leads_delivery';
+    $primaryKey = 'id';
+
+    $columns = array(
+      array( 'db' => '`ld`.`id`',          'dt' => 0, 'field' => 'id'  ),
+      array( 'db' => '`ld`.`lead_id`',        'dt' => 1, 'field' => 'lead_id'),
+      array( 'db' => '`ll`.`postcode`',        'dt' => 2, 'field'=> 'postcode' ),
+      array('db'=>'`ld`.`timedate`', 'dt' => 3, 'formatter' => function( $d, $row ) {
+        return date('d/m/Y', $d);
+      }, 'field'=>'timedate'),
+      array('db'=> '`c`.`campaign_name`', 'dt'=>4, 'field'=>'campaign_name'),
+      array('db'=> '`ld`.`open_email`', 'dt'=>5, 'formatter'=>function($d, $row){
+        if($d) {
+          return "Opened";
+        } else {
+          return "not opened";
+        }
+      }, 'field'=>'open_email')
+    );
+
+    $sql_details = array(
+      'user' => DB_USER,
+      'pass' => DB_PASS,
+      'db'   => DB_NAME,
+      'host' => DB_HOST
+    );
+
+    $joinQuery = "FROM `{$table}` AS `ld` INNER JOIN `clients` AS `c`  ON `c`.`id`=`ld`.`client_id` LEFT JOIN `leads_lead_fields_rel` as `ll` on `ll`.`id`=`ld`.`lead_id`  group by `ld`.`id`";
+//    $where = ' (`l`.`datetime` BETWEEN '.$start.' AND '.$end.')';
+  //  if($source) $where .= " AND `l`.`campaign_id`=".$campaign_id;
+ //   if($state) $where .= " AND `lf`.`state`='$state'";
+
+
+    echo json_encode(
+      SSP::simple( $_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery )
+    );
+
   }
 
   function action_getLeads()
@@ -67,7 +121,7 @@ class Controller_leads extends Controller
     $state = $_POST["state"];
     $campaign_id = getCampaignID($source);
     $table = 'leads';
-      // print_r($_POST); exit();
+    // print_r($_POST); exit();
 
 
     $primaryKey = 'id';

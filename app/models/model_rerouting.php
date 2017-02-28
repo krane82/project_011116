@@ -137,21 +137,35 @@ if(isset($_POST)){
     $s = 1;
     $d = strtotime("+1 day");
     $datetom = strtotime(date("d.m.Y", $d)); 
+    $i=1;
     foreach ($queue as $key) {
-     $i=0;
+     
       $key['date'] = $datetom;
-      
-      for ($i=0; $i <= $amount; $i++) { 
-        $idkey = $key['id'];
-        $dateval = $key['date'];
-      }
-   
-      $datetom = strtotime("+".$s." day", $date);
-      $s++;
-      echo "<pre>";
-      var_dump($key);
-      var_dump($datetom);
+      $idkey = $key['id'];
+      $dateval = $key['date'];
+    if($i == $amount){
+    $i=0;
+    $s++;
+    $datetom = strtotime("+".$s." day", $date);
+    
+
     }
+
+   $i++;
+      // $datetom = strtotime("+".$s." day", $date);
+      // $s++;
+    
+    $sql_queue = "INSERT INTO `queue`(id_lead, id_client, timedata, status, timequeue) VALUES ($idkey, $id_cli, $date, 1, $dateval)";
+    $con = $this->db();
+    $res_queue = $con->query($sql_queue);
+    }
+
+
+
+
+
+
+
     // $n = 0;
     // foreach ($quedate as $key) {
     // $key.='date';
@@ -177,23 +191,21 @@ if(isset($_POST)){
     // }
 
 
-    exit();
-
-
-
-    foreach($queue as $id_que){
-      $que_id_lead = $id_que['id'];
-  
-      // foreach($id_que as $val){
-
-      //   $que_id_lead = $val['id'];
     
-      $sql_queue = "INSERT INTO `queue`(id_lead, id_client, timedata, status) VALUES ($que_id_lead, $id_cli, $date, 1)";
+
+
+
+    // foreach($queue as $id_que){
+    //   $que_id_lead = $id_que['id'];
   
-      $con = $this->db();
-      $res_queue = $con->query($sql_queue);
-      // }
-    }
+   
+    
+    //   $sql_queue = "INSERT INTO `queue`(id_lead, id_client, timedata, status) VALUES ($que_id_lead, $id_cli, $date, 1)";
+  
+    //   $con = $this->db();
+    //   $res_queue = $con->query($sql_queue);
+ 
+    // }
 
      // $que_id_lead = substr($que_id_lead, 0, -2);
     //$que_id_lead ---- id лидов в очередь
@@ -201,8 +213,7 @@ if(isset($_POST)){
     $id_lead_code = array_slice($id_lead_code, 0, true);
    
   }else{
-    var_dump($queue);
-exit();
+ 
 // если уже были какие то отправлены
     $difference = $amount - $countlim['lim'];
    
@@ -211,14 +222,39 @@ exit();
       $id_lead_code = array_chunk($id_lead_code, $dif);
       $queue = $id_lead_code;
       unset($queue[0]);
-    foreach($queue as $id_que){
-      foreach($id_que as $val){
-        $que_id_lead = $val['id'];
-        $sql_queue = "INSERT INTO `queue`(id_lead, id_client, timedata, status) VALUES ($que_id_lead, $id_cli, $date, 1)";
-        // $con = $this->db();
-        // $res_queue = $con->query($sql_queue);
-      }
+    $s = 1;
+    $d = strtotime("+1 day");
+    $datetom = strtotime(date("d.m.Y", $d)); 
+    $i=1;
+    foreach ($queue as $key) {
+     
+      $key['date'] = $datetom;
+      $idkey = $key['id'];
+      $dateval = $key['date'];
+    if($i == $amount){
+    $i=0;
+    $s++;
+    $datetom = strtotime("+".$s." day", $date);
+    
+
     }
+
+   $i++;
+      // $datetom = strtotime("+".$s." day", $date);
+      // $s++;
+    
+    $sql_queue = "INSERT INTO `queue`(id_lead, id_client, timedata, status, timequeue) VALUES ($idkey, $id_cli, $date, 1, $dateval)";
+    $con = $this->db();
+    $res_queue = $con->query($sql_queue);
+    }
+    // foreach($queue as $id_que){
+    //   foreach($id_que as $val){
+    //     $que_id_lead = $val['id'];
+    //     $sql_queue = "INSERT INTO `queue`(id_lead, id_client, timedata, status) VALUES ($que_id_lead, $id_cli, $date, 1)";
+    //     $con = $this->db();
+    //     $res_queue = $con->query($sql_queue);
+    //   }
+    // }
 
       $id_lead_code = array_slice($id_lead_code, 0, true);
 
@@ -317,8 +353,7 @@ exit();
     $con = $this->db();
     $now = time();
 // var_dump($lead_id);
-var_dump($amount);
-exit();
+
 
 //     $lead_id = explode(',', $lead_id);
   if(count($lead_id)>1){

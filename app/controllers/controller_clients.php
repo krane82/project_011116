@@ -140,6 +140,11 @@ class Controller_CLients extends Controller {
               echo "<label for='$k'>".$form_keys["$k"]."</label>";
               echo '<input class="form-control" type="password" name="'.$k.'"  > ' ;
               echo "</div>";
+            } else if($k=="postcodes") {
+              echo '<div class="form-group">
+                <textarea class="form-control" placeholder="Post codes" type="text" id="postcode" name="postcodes" >'. $v .'
+                </textarea> 
+              </div>';
             } else {
                 echo "<div class='form-group'>";
                 echo "<label for='$k'>".$form_keys["$k"]."</label>";

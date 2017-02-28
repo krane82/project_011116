@@ -76,7 +76,8 @@ class Model_Leads extends Model {
         return "Cannot send over client caps...";
       }
     }
-    if($client_id === 0){
+    if($client_id === 0)
+    {
       $leadInfo = $this->getLeadInfo($lead_id);
       $clients = $this->api->getClients($leadInfo);
       // print_r($clients);
