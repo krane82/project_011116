@@ -14,6 +14,7 @@ class Controller_cron extends Controller
 // exit();
    
   	$res = $this->model->getleads();
+   
   	exit($res);
   }
 

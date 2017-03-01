@@ -4,13 +4,14 @@ class Model_Cron extends Model {
 
 	public function getleads()
 	{
-		
+		date_default_timezone_set('UTC');
+		$date = date('Y-m-d');
+  		$date = strtotime($date);
 
 		$sql = "SELECT `id_lead`, `id_client` FROM `queue`";
-		$sql .= "WHERE status=1 ORDER BY timedata ASC LIMIT 10 ";
+		$sql .= "WHERE status=1 AND timequeue='$date' ORDER BY timequeue ASC";
 		$con = $this->db();
 		$res = $con->query($sql);
-		
 		if($res->num_rows>0){
 			$all = array();
 			while($result = $res->fetch_assoc())
@@ -35,7 +36,7 @@ class Model_Cron extends Model {
 	    $sql_r = "INSERT INTO `leads_rejection` (lead_id, client_id, date, approval) VALUES ($id_leads, $id, $now, 1)";
 	    $sqlupd = "UPDATE `queue` SET `status`=0 WHERE `id_lead`='$id_leads' AND `id_client`='$id'";
 
-	    if($con->query($sql) && $con->query($sql_r)) { $delivered=1; }
+	     if($con->query($sql) && $con->query($sql_r) && $con->query($sqlupd)) { $delivered=1; }
 	}
 
     if($delivered){
