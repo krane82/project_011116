@@ -38,7 +38,7 @@ public function getAllClients()
 public function leadall()
 {
 
-  date_default_timezone_set('UTC'); //---убрать
+  // date_default_timezone_set('UTC'); 
 if(isset($_POST)){
   $amount = $_POST['tes'];
   $start = $_POST['start'];

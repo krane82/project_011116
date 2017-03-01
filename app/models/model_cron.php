@@ -4,7 +4,7 @@ class Model_Cron extends Model {
 
 	public function getleads()
 	{
-		date_default_timezone_set('UTC');
+		// date_default_timezone_set('UTC');
 		$date = date('Y-m-d');
   		$date = strtotime($date);
 
