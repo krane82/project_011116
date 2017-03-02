@@ -16,15 +16,16 @@
 </div>
 <div id='infodiv'>
 <div class="row">
-<div class="col-lg-4" id="NSW"></div>
-<div class="col-lg-4" id="QLD"></div>
-<div class="col-lg-4" id="SA"></div>
+<div class="col-lg-6" id="NSW"></div>
+<div class="col-lg-6" id="QLD"></div>
 </div>
-<p></p>
 <div class="row">
-<div class="col-lg-4" id="TAS"></div>
-<div class="col-lg-4" id="VIC"></div>
-<div class="col-lg-4" id="WA"></div>
+<div class="col-lg-6" id="SA"></div>
+<div class="col-lg-6" id="TAS"></div>
+</div>
+<div class="row">
+<div class="col-lg-6" id="VIC"></div>
+<div class="col-lg-6" id="WA"></div>
 </div>
 </div>
     <div class="modal fade" id="penModal" role="dialog" tabindex="-1">
@@ -90,7 +91,7 @@
 					if(VICData)fill("VIC",VICData)
 					else $('#VIC').html('<h3>No leads for this period</h3>');
 					if(WAData)fill("WA",WAData);
-					else $('#WAD').html('<h3>No leads for this period</h3>');
+					else $('#WA').html('<h3>No leads for this period</h3>');
 //				console.log(JSON.stringify( NSWData));
 				}
 				});
@@ -114,7 +115,7 @@ if(NSWData)fill("NSW",NSWData);
 					if(VICData)fill("VIC",VICData)
 					else $('#VIC').html('<h3>No leads for this period</h3>');
 					if(WAData)fill("WA",WAData);
-					else $('#WAD').html('<h3>No leads for this period</h3>');
+					else $('#WA').html('<h3>No leads for this period</h3>');
 //fill("NSW",NSWData);
 //fill("QLD",QLDData);
 //fill("SA",SAData);
@@ -124,12 +125,18 @@ if(NSWData)fill("NSW",NSWData);
 tab=$('#codesTab').DataTable();
 function fill(name,datArray)
 {$(function () {
-	var values=[];
-(datArray[0])? values.push(['0',datArray[0].count]):values.push(['0',0]);
-(datArray[1])? values.push(['1',datArray[1].count]):values.push(['1',0]);
-(datArray[2])? values.push(['2',datArray[2].count]):values.push(['2',0]);
-(datArray[3])? values.push(['3',datArray[3].count]):values.push(['3',0]);
-(datArray[4])? values.push(['4',datArray[4].count]):values.push(['4',0]);
+	var totcount=0;
+    if(datArray[0])totcount+=datArray[0].count;
+    if(datArray[1])totcount+=datArray[1].count;
+    if(datArray[2])totcount+=datArray[2].count;
+    if(datArray[3])totcount+=datArray[3].count;
+    if(datArray[4])totcount+=datArray[4].count;
+    var values=[];
+(datArray[0])? values.push(['0 matches,'+(datArray[0].count/totcount*100).toFixed(1)+'%',datArray[0].count]):values.push(['0 matches, absent',0]);
+(datArray[1])? values.push(['1 matches,'+(datArray[1].count/totcount*100).toFixed(1)+'%',datArray[1].count]):values.push(['1 matches, absent',0]);
+(datArray[2])? values.push(['2 matches,'+(datArray[2].count/totcount*100).toFixed(1)+'%',datArray[2].count]):values.push(['2 matches, absent',0]);
+(datArray[3])? values.push(['3 matches,'+(datArray[3].count/totcount*100).toFixed(1)+'%',datArray[3].count]):values.push(['3 matches, absent',0]);
+(datArray[4])? values.push(['4 matches,'+(datArray[4].count/totcount*100).toFixed(1)+'%',datArray[4].count]):values.push(['4 matches, absent',0]);
 //console.log(values);
             $('#'+name).highcharts({
                 chart: {
@@ -158,18 +165,19 @@ function fill(name,datArray)
                         var penBody=document.getElementById('penBody');
 						var start=document.getElementsByName('start');
 						var end=document.getElementsByName('end');
-						var table=document.getElementById('codesTabBod')
+						var table=document.getElementById('codesTabBod');
 						tab.destroy();
-						table.innerHTML=''
+						table.innerHTML='';
 						var tr=document.createElement('tr');
 						var td1=document.createElement('td');
 						var td2=document.createElement('td');
 						tr.appendChild(td1);
 						tr.appendChild(td2);
-						penHead.innerHTML="State: "+name+", matches: "+this.name+", period: "+start[0].value+" - "+end[0].value;
-						for(var i in datArray[this.name].codes){
-						td1.innerHTML=i;
-						td2.innerHTML=datArray[this.name].codes[i];
+						penHead.innerHTML="State: "+name+", matches: "+(this.name).charAt(0)+", period: "+start[0].value+" - "+end[0].value;
+						for(var i in datArray[(this.name).charAt(0)].codes){
+						console.log(this.name);
+                            td1.innerHTML=i;
+						td2.innerHTML=datArray[(this.name).charAt(0)].codes[i];
 						table.appendChild(tr.cloneNode(true));
 						console.log(i);
 						}
