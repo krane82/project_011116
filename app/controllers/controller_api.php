@@ -45,10 +45,14 @@ class Controller_Api extends Controller {
 
       if( $exist_count == 1 )
       {
+        
         //Make an array of columns => data
+        $now = now();
         $update = array(
-          'open_email' => 1
+          'open_email' => '`open_email`+1',
+          'open_time'  => $now
         );
+
         $where = array(
           'id' => $id
         );
@@ -57,7 +61,7 @@ class Controller_Api extends Controller {
       }
 
       //Get the http URI to the image
-      $graphic_http = $host .'/blank.gif';
+      $graphic_http = __HOST__ .'/blank.gif';
 
       //Get the filesize of the image for headers
       $filesize = filesize( _MAIN_DOC_ROOT_ . '/blank.gif' );
