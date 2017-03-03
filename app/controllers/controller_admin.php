@@ -52,7 +52,7 @@ class Controller_Admin extends Controller
     }
     foreach ($result as $r) {
       $id = $r["id"];
-      $sql = "UPDATE `clients` SET `email` = 'tonkoshkurik@yandex.ua' WHERE `clients`.`id` =".$id;
+      $sql = "UPDATE `clients` SET `email` = 'sergiy.tonkoshkuryk@jointoit.com' WHERE `clients`.`id` =".$id;
       $res = $con->query($sql);
       if($res) echo "clients.true";
     }
