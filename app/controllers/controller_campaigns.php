@@ -24,6 +24,11 @@ class Controller_Campaigns extends Controller {
     }
   }
 
+  function action_planing() {
+    $data=$this->model->getPlans();
+    $this->view->generate('planing_view.php', 'template_view.php', $data);
+  }
+
   function action_logout()
   {
     session_start();
