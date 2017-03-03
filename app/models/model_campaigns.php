@@ -108,4 +108,25 @@ class Model_Campaigns extends Model {
     return $table;
     }
   }
+  public function getPlans() {
+    $con = $this->db();
+    $sql = "SELECT ca.name, le.id, rel.state from campaigns as ca LEFT JOIN leads le on ca.id=le.campaign_id LEFT JOIN leads_lead_fields_rel rel on le.id=rel.id";
+    $sql1="select * from campaigns";
+    $res1=$con->query($sql1);
+    $res=$con->query($sql);
+    $result=array();
+        while ($row = $res->fetch_assoc()) {
+      $result[$row['name']][$row['state']]['count']++;
+      }
+    while ($row1 = $res1->fetch_assoc()) {
+      $result[$row1['name']]['NSW']['plan']=$row1['NSW'];
+      $result[$row1['name']]['QLD']['plan']=$row1['QLD'];
+      $result[$row1['name']]['SA']['plan']=$row1['SA'];
+      $result[$row1['name']]['TAS']['plan']=$row1['TAS'];
+      $result[$row1['name']]['VIC']['plan']=$row1['VIC'];
+      $result[$row1['name']]['WA']['plan']=$row1['WA'];
+    }
+    $con->close();
+    return $result;
+  }
 }

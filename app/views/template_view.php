@@ -205,8 +205,12 @@
 <!--            <li><a href="ui-icons">Icons</a></li>-->
 <!--          </ul>-->
         </li>
-        <li><a href="/campaigns/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-briefcase"></span><p>Campaigns</p></a></li>
 
+        <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-briefcase"></span><p>Campaigns</p><span class="arrow"></span></a>
+          <ul class="sub-menu">
+          <li><a href="/campaigns/">Campaigns Settings</a></li>
+          <li><a href="/campaigns/planing">Affiliates Planning</a></li>
+          </ul>
         <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-th"></span><p>Leads</p><span class="arrow"></span></a>
           <ul class="sub-menu">
             <li><a href="<?php echo __HOST__; ?>/leads/">Leads Delivery</a></li>
