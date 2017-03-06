@@ -23,5 +23,6 @@ class Model
       $con-close();
       return $result;
     }
+    return FALSE;
   }
 }
