@@ -81,18 +81,18 @@
 					var VICData=Data.VIC;
 					var WAData=Data.WA;
 					if(NSWData)fill("NSW",NSWData);
-					else $('#NSW').html('<h3>No leads for this period</h3>');
+					else $('#NSW').html('<h3>No leads in NSW for this period</h3>');
 					if(QLDData)fill("QLD",QLDData);
-					else $('#QLD').html('<h3>No leads for this period</h3>');
+					else $('#QLD').html('<h3>No leads in QLD for this period</h3>');
 					if(SAData)fill("SA",SAData);
-					else $('#SA').html('<h3>No leads for this period</h3>');
+					else $('#SA').html('<h3>No leads in SA for this period</h3>');
 					if(TASData)fill("TAS",TASData);
-					else $('#TAS').html('<h3>No leads for this period</h3>');
+					else $('#TAS').html('<h3>No leads in TAS for this period</h3>');
 					if(VICData)fill("VIC",VICData)
-					else $('#VIC').html('<h3>No leads for this period</h3>');
+					else $('#VIC').html('<h3>No leads in VIC for this period</h3>');
 					if(WAData)fill("WA",WAData);
-					else $('#WA').html('<h3>No leads for this period</h3>');
-				console.log(JSON.stringify( NSWData));
+					else $('#WA').html('<h3>No leads in WA for this period</h3>');
+
 				}
 				});
 
@@ -105,17 +105,17 @@ var TASData=Data.TAS;
 var VICData=Data.VIC;
 var WAData=Data.WA;
 if(NSWData)fill("NSW",NSWData);
-					else $('#NSW').html('<h3>No leads for this period</h3>');
+					else $('#NSW').html('<h3>No leads in NSW for this period</h3>');
 					if(QLDData)fill("QLD",QLDData);
-					else $('#QLD').html('<h3>No leads for this period</h3>');
+					else $('#QLD').html('<h3>No leads in QLD for this period</h3>');
 					if(SAData)fill("SA",SAData);
-					else $('#SA').html('<h3>No leads for this period</h3>');
+					else $('#SA').html('<h3>No leads in SA for this period</h3>');
 					if(TASData)fill("TAS",TASData);
-					else $('#TAS').html('<h3>No leads for this period</h3>');
+					else $('#TAS').html('<h3>No leads in TAS for this period</h3>');
 					if(VICData)fill("VIC",VICData)
-					else $('#VIC').html('<h3>No leads for this period</h3>');
+					else $('#VIC').html('<h3>No leads in VIC for this period</h3>');
 					if(WAData)fill("WA",WAData);
-					else $('#WA').html('<h3>No leads for this period</h3>');
+					else $('#WA').html('<h3>No leads in WA for this period</h3>');
 tab=$('#codesTab').DataTable();
 function fill(name,datArray)
 {$(function () {
