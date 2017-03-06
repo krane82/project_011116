@@ -65,9 +65,9 @@
       <div class="logo-box">
         <a href="admin" class="logo-text"><span>Lead Point</span></a>
       </div><!-- Logo Box -->
-      <div class="search-button">
-        <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>
-      </div>
+<!--      <div class="search-button">-->
+<!--        <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>-->
+<!--      </div>-->
       <div class="topmenu-outer">
         <div class="top-menu">
           <ul class="nav navbar-nav navbar-left">
@@ -159,9 +159,9 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li>
-              <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>
-            </li>
+<!--            <li>-->
+<!--              <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>-->
+<!--            </li>-->
             <li>
               <a href="/admin/logout" class="log-out waves-effect waves-button waves-classic">
                 <span><i class="fa fa-sign-out m-r-xs"></i>Log out</span>
@@ -187,7 +187,6 @@
       </div>
       <?php }  else echo "<br>"; ?>
       <ul class="menu accordion-menu">
-
         <li><a href="/admin/dashboard" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>
         <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Clients</p><span class="arrow"></span></a>
           <ul class="sub-menu">

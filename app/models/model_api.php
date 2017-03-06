@@ -1,35 +1,29 @@
 <?php
 class Model_Api extends Model {
+  private $debug_api = FALSE;
 
   public function proccess_lead($post, $counter=0, $addToTable=true, $leadId=0) {
     $p = $this->checkdata($post);
-    if ($addToTable)
-    {
+    if ($addToTable) {
       $lead_id = $this->addleadtotable($p);
-    }
-    else
-    {
+    } else {
      $lead_id=$leadId;
-    }
-    if(!$lead_id) {
+    } if (!$lead_id) {
       return FALSE;
     }
     $clients = $this->getClients($p);
-    print 'getClients ok!';
     $resp =  $this->sendToClients($clients, $lead_id, $p, $counter);
-    print 'sendToClients ok!';
     return $resp;
   }
 
 
   private function sendToClients($clients, $lead_id ,$p, $counter){
-//    $counter = 0;
-    $sended ='';
+    $sended = '';
     foreach ($clients as $c ) {
       $client_id = $c["id"];
       //here will be checking if is already delivered to current client
-      $clients=explode(',',$p['clients']);
-      if (in_array($client_id,$clients)) continue;
+      $clients = explode(',', $p['clients']);
+      if (in_array($client_id, $clients)) continue;
       $passedcaps = $this->checkClientsLimits($client_id);
       if($passedcaps AND $counter < 4) {
         $readyLeadInfo = prepareLeadInfo($p);
@@ -42,7 +36,7 @@ class Model_Api extends Model {
         }
       }
     }
-    return "Sended to $counter clients \n" . $sended;
+    return "Sent to $counter clients \n" . $sended;
   }
 
   private function getLastDeliveryID(){
@@ -158,34 +152,32 @@ class Model_Api extends Model {
       return FALSE;
     }
 
+    if($this->debug_api) {
 
-    // LOGS
-    #start buffering (all activity to the buffer)
-    ob_start() ;
-    $fileName = date("Y-m-d-h-i-s");
-    $fileName .= "log.html";
+      // LOGS
+      // #start buffering (all activity to the buffer)
+      ob_start();
+      $fileName = __FILE__ . "/logs/";
+      $fileName .= date("Y-m-d-h-i-s");
+      $fileName .= "log.html";
 
-    $myfile = fopen($fileName, "w");
-    ?>
-
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>LOG</title>
-    </head>
-    <body>
-    
+      $myfile = fopen($fileName, "w");
 
 
-    <?php
-                                                
-    echo "CLIENTS : \n";
-    var_dump($clients);
-    echo "===========\n";
-    echo "===========POST===========\n";
-    var_dump($_POST);
-    echo "\n=================\n";
+      echo '<!DOCTYPE html>
+            <html>
+            <head>
+              <title>LOG</title>
+            </head>
+            <body>';
 
+      echo "CLIENTS : \n";
+      var_dump($clients);
+      echo "===========\n";
+      echo "===========POST===========\n";
+      var_dump($_POST);
+      echo "\n=================\n";
+    }
     // GET destribution ORDER
     $now = time();
     $st = new DateTime(date('Y-m-01', $now));
@@ -223,25 +215,26 @@ class Model_Api extends Model {
       return $pos_a - $pos_b;
     });
 
-    echo  "\n===============$order================\n";
-    var_dump($order);
-    echo  "\n================================\n";
+    if($this->debug_api) {
+      echo "\n===============$order================\n";
+      var_dump($order);
+      echo "\n================================\n";
 
-    echo  "\n======CLIENTS SORTED===========\n";
-    var_dump($clients);
-    echo  "\n================================\n";
-    echo "</body></html>";
+      echo "\n======CLIENTS SORTED===========\n";
+      var_dump($clients);
+      echo "\n================================\n";
+      echo "</body></html>";
 
 
-    # dump buffered $classvar to $outStringVar
-    $outStringVar = ob_get_contents();
+      # dump buffered $classvar to $outStringVar
+      $outStringVar = ob_get_contents();
 
-    fwrite($myfile, $outStringVar);
-    fclose($myfile);
-    # clean the buffer & stop buffering output
-    ob_end_clean() ;
-    // END LOGS
-
+      fwrite($myfile, $outStringVar);
+      fclose($myfile);
+      # clean the buffer & stop buffering output
+      ob_end_clean();
+      // END LOGS
+    }
     // function custom_compare($a, $b){
     //   global $order;
     //   $key_a = array_search($a["id"], $order);
@@ -268,6 +261,10 @@ class Model_Api extends Model {
 
   private function checkdata($post){
     $p = array();
+//    if ( empty($post["full_name"]) || empty($post["email"]) || empty($post["phone"]) || empty($post["address"]) || empty("state") || empty("postcode") || empty($post["suburb"]) )
+//    {
+//      return FALSE;
+//    }
     foreach ($post as $k => $v) {
       if ($k=="phone") {
         $p["phone"] = phone_valid($v);

@@ -579,3 +579,10 @@ function prepareLeadInfo($p){
   }
   return $readyLeadInfo;
 }
+
+function dd($arg)
+{
+  echo "<pre>";
+  var_dump($arg);
+  die;
+}

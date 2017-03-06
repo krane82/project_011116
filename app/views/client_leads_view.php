@@ -14,6 +14,28 @@
   </thead>
 </table>
 
+<hr>
+
+<div class="panel panel-white ">
+  <div class="col-md-3"></div>
+  <div class='col-md-5 col-xs-12  text-center'>
+    <h3>Download leads by period</h3>
+    <br>
+    <form action="table-leads" id="LeadsByClients">
+      <div class="form-group">
+        <div class="input-daterange input-group" id="datepicker">
+          <input type="text" class="input-sm form-control" name="start" value="<?php print date('m/01/Y')?>"/>
+          <span class="input-group-addon">to</span>
+          <input type="text" class="input-sm form-control" name="end" value="<?php print date('m/d/Y')?>" />
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Download leads">
+      </div>
+    </form>
+  </div>
+  <div class="col-md-2"></div>
+</div>
 <!--<div class="download-leads">-->
 <!--  <input type="text" class="lead-date-range">-->
 <!--  <button class="search"></button>-->
@@ -108,6 +130,9 @@
           });
         });
       }
+    });
+    $('.input-daterange').datepicker({
+      multidate: "true"
     });
   });
 </script>

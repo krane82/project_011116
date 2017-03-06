@@ -1,6 +1,8 @@
 
 /* ALTER TABLE `leads_delivery` ADD `postcode` VARCHAR(5) NULL DEFAULT NULL AFTER `timedate`; */
 
+CREATE TABLE IF NOT EXISTS lead_settings (days int(3));
+
 ALTER TABLE `clients_criteria` CHANGE `postcodes` `postcodes` VARCHAR(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 
 ALTER TABLE `leads_lead_fields_rel` CHANGE `note` `note` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
