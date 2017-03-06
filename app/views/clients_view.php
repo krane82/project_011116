@@ -45,8 +45,7 @@ echo $table;
             </div>
             <hr>
             <div class="form-group">
-              <textarea class="form-control" placeholder="Post codes" type="text" id="postcode" name="postcodes" >
-              </textarea> 
+              <textarea class="form-control" placeholder="Post codes" type="text" id="postcode" name="postcodes" ></textarea> 
             </div>
             <div class="form-group">
               <input class="form-control" placeholder="States Filter - Ex: NSW,VIC,WA,QLD,SA,ACT,TAS" type="text" id="states_filter" name="states_filter">

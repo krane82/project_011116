@@ -66,7 +66,7 @@ class Model_Api extends Model {
   {
     if($mail) {
       //Раскоментить нафиг на продакшене!!!
-      // send_m($mail, $p, $client_name, $track_id);
+      send_m($mail, $p, $client_name, $track_id);
       return TRUE;
     }
     return FALSE;
