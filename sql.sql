@@ -24,6 +24,8 @@ ALTER TABLE `queue`
 
 ALTER TABLE leads_delivery ADD amount INT(20) NOT NULL
 
+CREATE TABLE IF NOT EXISTS lead_settings (days int(3))
+
 /* Key for post:
 9b434eba-e278-4522-a6ac-5ef14e1fb18d
 */

@@ -6,36 +6,32 @@
   <meta charset="UTF-8">
   <meta name="description" content="Lead Point system" />
 
-  <!-- Styles -->
-  <?php
-    $host = 'http://' . $_SERVER['HTTP_HOST']; // для правильной подгрузки стилей и скриптов
-  ?> 
 <!--  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>-->
-  <link href="<?php echo $host; ?>/assets/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet" type="text/css"//>
-  <link href="<?php echo $host; ?>/assets/plugins/uniform/css/uniform.default.min.css" rel="stylesheet" type="text/css"//>
-  <link href="<?php echo $host; ?>/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/plugins/fontawesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/plugins/offcanvasmenueffects/css/menu_cornerbox.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/plugins/waves/waves.min.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
-  <link rel="stylesheet" href="<?php echo $host; ?>/assets/plugins/datatables/css/jquery.datatables.min.css">
+  <link href="<?php echo __HOST__; ?>/assets/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet" type="text/css"//>
+  <!-- <link href="<?php echo __HOST__; ?>/assets/plugins/uniform/css/uniform.default.min.css" rel="stylesheet" type="text/css"//> -->
+  <link href="<?php echo __HOST__; ?>/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/plugins/fontawesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/plugins/offcanvasmenueffects/css/menu_cornerbox.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/plugins/waves/waves.min.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="<?php echo __HOST__; ?>/assets/plugins/datatables/css/jquery.datatables.min.css">
   <!-- Theme Styles -->
-  <link href="<?php echo $host; ?>/assets/css/modern.min.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/css/themes/green.css" class="theme-color" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/css/custom.css" rel="stylesheet" type="text/css"/>
-  <link rel="stylesheet" href="<?php echo $host; ?>/assets/plugins/bootstrap-datepicker/css/datepicker.css">
-  <link rel="stylesheet" href="<?php echo $host; ?>/css/bootstrap-switch.min.css">
+  <link href="<?php echo __HOST__; ?>/assets/css/modern.min.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/css/themes/green.css" class="theme-color" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/css/custom.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="<?php echo __HOST__; ?>/assets/plugins/bootstrap-datepicker/css/datepicker.css">
+  <link rel="stylesheet" href="<?php echo __HOST__; ?>/css/bootstrap-switch.min.css">
   <style>
     div.checker {
       display: none;
     }
   </style>
-  <link rel="stylesheet" href="<?php echo $host; ?>/css/style.css" type="text/css" />
-  <script src="<?php echo $host; ?>/assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
-  <script src="<?php echo $host; ?>/assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
+  <link rel="stylesheet" href="<?php echo __HOST__; ?>/css/style.css" type="text/css" />
+  <script src="<?php echo __HOST__; ?>/assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
+  <script src="<?php echo __HOST__; ?>/assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -46,9 +42,9 @@
 </head>
 <body class="<?php echo $body_class; ?>">
 <!-- Javascripts -->
-<script src="<?php echo $host; ?>/assets/plugins/jquery/jquery-2.1.4.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/datatables/js/jquery.datatables.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/jquery/jquery-2.1.4.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/datatables/js/jquery.datatables.min.js"></script>
 <div class="overlay"></div>
 <form class="search-form" action="#" method="GET">
   <div class="input-group">
@@ -196,8 +192,8 @@
         <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Clients</p><span class="arrow"></span></a>
           <ul class="sub-menu">
           <li><a href="/clients/">Clients</a>
-          <li><a href="<?php echo __HOST__; ?>/Leads_Limits/">Clients Caps</a> </li>
-          <li><a href="<?php echo __HOST__; ?>/Leads_Limits/matches">PostCodes Matches</a></li>
+          <li><a href="<?php echo __HOST__; ?>/leads_limits/">Clients Caps</a> </li>
+          <li><a href="<?php echo __HOST__; ?>/leads_limits/matches">PostCodes Matches</a></li>
           </ul>
           <!--          <ul class="sub-menu">-->
 <!--            <li><a href="ui-alerts">Alerts</a></li>-->
@@ -310,23 +306,23 @@
 <div class="cd-overlay"></div>
 
 
-<script src="<?php echo $host; ?>/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/pace-master/pace.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/jquery-blockui/jquery.blockui.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/switchery/switchery.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/uniform/jquery.uniform.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/offcanvasmenueffects/js/classie.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/offcanvasmenueffects/js/main.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/waves/waves.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/3d-bold-navigation/js/main.js"></script>
-<script src="<?php echo $host; ?>/assets/js/modern.min.js"></script>
-<script src="<?php echo $host; ?>/js/bootstrap-switch.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/pace-master/pace.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/jquery-blockui/jquery.blockui.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/switchery/switchery.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/uniform/jquery.uniform.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/offcanvasmenueffects/js/classie.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/offcanvasmenueffects/js/main.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/waves/waves.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/3d-bold-navigation/js/main.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/js/modern.min.js"></script>
+<script src="<?php echo __HOST__; ?>/js/bootstrap-switch.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script>
-    $(document).ready(function(){
-      $("select, input:radio, input:file").uniform();
-    });
+    // $(document).ready(function(){
+    //   $("select, input:radio, input:file").uniform();
+    // });
   </script>
 </body>
 </html>

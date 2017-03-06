@@ -45,11 +45,15 @@ class Controller_Api extends Controller {
 
       if( $exist_count == 1 )
       {
+        $opens = $database->get_results( "SELECT open_email FROM `leads_delivery` WHERE `id`=$id" );
+
+        is_null($opens[0]["open_email"]) ? $nums = 1 : $nums =  $opens[0]["open_email"] + 1;
+
         
         //Make an array of columns => data
-        $now = now();
+        $now =  time();
         $update = array(
-          'open_email' => '`open_email`+1',
+          'open_email' => $nums,
           'open_time'  => $now
         );
 

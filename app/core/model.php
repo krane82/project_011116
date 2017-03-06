@@ -15,12 +15,9 @@ class Model
     }
     return $db;
   }
+
   public function sql($sql) {
-    $con = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-    if ($con->connect_errno) {
-      printf("Connect failed: %s\n", $con->connect_error);
-      exit();
-    }
+    $con = $this->db();
     if( $result = $con->query($sql) ) {
       $this->last_id = $con->insert_id;
       $con-close();
