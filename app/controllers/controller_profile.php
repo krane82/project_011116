@@ -11,7 +11,7 @@ class Controller_Profile extends Controller {
     session_start();
     if ( $_SESSION['user'] == md5('user'))
     {
-      $id = $_COOKIE["user_id"];
+      $id = $_SESSION["user_id"];
       $data["profile"] = $this->model->get_profile_data($id);
       $this->view->generate('profile_view.php', 'client_template_view.php', $data);
     }
@@ -24,7 +24,7 @@ class Controller_Profile extends Controller {
 
   function action_UpdateProfile(){
     $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-    if($id = $_COOKIE["user_id"]){
+    if($id = $_SESSION["user_id"]){
       $sql = ' SELECT clients.id, users.password, clients.email, clients.campaign_name, clients.full_name, clients.phone, clients.city, clients.state, clients.country, clients.lead_cost, clients_criteria.postcodes, clients_criteria.states_filter, clients_billing.xero_id, clients_billing.xero_name, clients_criteria.monthly ,clients_criteria.weekly';
       $sql.= ' FROM `clients`';
       $sql.= ' LEFT JOIN `clients_billing` ON clients.id = clients_billing.id';
@@ -133,13 +133,12 @@ class Controller_Profile extends Controller {
 
     if($res1 && $res2 && $res3 ) {
       echo $this->model->UserChangeNotif($chekedPOST);
-      // exit();
       header('Location: /profile');
     } else {
-      var_dump($id);
-      var_dump($res1);
-      var_dump($res2);
-      var_dump($res3);
+//      var_dump($id);
+//      var_dump($res1);
+//      var_dump($res2);
+//      var_dump($res3);
       echo "<script>alert('DB error')</script>";
       $con->close();
       header('Location: /profile');

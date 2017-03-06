@@ -84,7 +84,6 @@ class Model_Profile extends Model {
       $sql.= ' LEFT JOIN `clients_criteria` ON clients.id = clients_criteria.id';
       $sql.= ' LEFT JOIN `users` ON clients.id = users.id';
       $sql.= ' WHERE clients.id = '.$id;
-      
       $profile = '<div class="success">';
       $con = $this->db();
       $res = $con->query($sql);
