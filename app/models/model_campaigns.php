@@ -110,7 +110,10 @@ class Model_Campaigns extends Model {
   }
   public function getPlans() {
     $con = $this->db();
-    $sql = "SELECT ca.name, le.id, rel.state from campaigns as ca LEFT JOIN leads le on ca.id=le.campaign_id LEFT JOIN leads_lead_fields_rel rel on le.id=rel.id";
+    $start = ($_POST["start"])?strtotime($_POST["start"]):strtotime(date('Y-m-01'));
+    $end = ($_POST["end"])?strtotime($_POST["end"]) + 86400:time();
+    $sql = "SELECT ca.name, le.id, rel.state from campaigns as ca LEFT JOIN leads le on ca.id=le.campaign_id LEFT JOIN leads_lead_fields_rel rel on le.id=rel.id WHERE le.datetime between '".$start."' AND '".$end."'";
+    //var_dump($sql);
     $sql1="select * from campaigns";
     $res1=$con->query($sql1);
     $res=$con->query($sql);
@@ -119,6 +122,7 @@ class Model_Campaigns extends Model {
       $result[$row['name']][$row['state']]['count']++;
       }
     while ($row1 = $res1->fetch_assoc()) {
+      $result[$row1['name']]['id']=$row1['id'];
       $result[$row1['name']]['NSW']['plan']=$row1['NSW'];
       $result[$row1['name']]['QLD']['plan']=$row1['QLD'];
       $result[$row1['name']]['SA']['plan']=$row1['SA'];
@@ -128,5 +132,12 @@ class Model_Campaigns extends Model {
     }
     $con->close();
     return $result;
+  }
+
+  public function plans_update(){
+    $con = $this->db();
+    $sql="UPDATE campaigns SET ".$_POST['state']."='".$_POST['value']."' WHERE id='".$_POST['campaign']."'";
+    print $sql;
+    $con->query($sql);
   }
 }
