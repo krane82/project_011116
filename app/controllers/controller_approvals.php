@@ -154,12 +154,17 @@ class Controller_approvals extends Controller
   {
     session_start();
     if ($_SESSION['admin'] == md5('admin')) {
-      if (isset($_REQUEST["decline"]) AND isset($_REQUEST["lead_id"]) AND isset($_REQUEST["client_id"]) ) {
-
+      if (isset($_REQUEST["decline"]) AND isset($_REQUEST["lead_id"]) AND isset($_REQUEST["client_id"]) )
+      {
         $con = $this->db();
-        $con->query();
+        $decline = mysqli_real_escape_string($con, $_REQUEST["decline"]);
+        $id = $_REQUEST["lead_id"];
+        $client_id = $_REQUEST["client_id"];
+        $sql = "UPDATE `leads_rejection` SET approval=3, decline_reason='$decline'  WHERE lead_id=$id AND client_id=$client_id";
+        $res = $con->query($sql);
+        $con->close();
+        return $this->action_index();
       }
-      dd($_REQUEST);
     }
   }
 
