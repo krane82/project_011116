@@ -1,4 +1,6 @@
 <?php
+include "class.db.php";
+include "../libs/PHPMailer/class.phpmailer.php";
 include "../core/model.php";
 include "../models/model_api.php";
 include "../core/controller.php";
