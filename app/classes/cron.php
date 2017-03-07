@@ -1,6 +1,8 @@
 <?php
-include "app/models/model_api.php";
-class Controller_Cron extends Controller    {
+include "../core/model.php";
+include "../models/model_api.php";
+include "../core/controller.php";
+class cron extends Controller    {
 
     function __construct() {
         $this->model = new Model_Api();
