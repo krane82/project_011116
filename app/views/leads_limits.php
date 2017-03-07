@@ -11,15 +11,13 @@
 </tr>
 </thead>
     <?php
-//    print '<pre>';
-//    var_dump ($data);
     foreach ($data as $item){
         print '<tr>';
         print '<td>'.$item['campaign_name'].'</td>';
         print '<td>'.$item['thisWeek'].'</td>';
-            ($item["weekly"]!='0')?print '<td>'.$item["weekly"].'</td>':print '<td>Unlimited</td>';
+            ($item["weekly"]!='0')  ?  print '<td>' . $item["weekly"] . '</td>'  :print '<td>Unlimited</td>';
         print '<td>'.$item['thisMonth'].'</td>';
-            ($item["monthly"]!='0')?print '<td>'.$item["monthly"].'</td>':print '<td>Unlimited</td>';
+            ($item["monthly"]!='0') ?  print '<td>' . $item["monthly"] . '</td>' :print '<td>Unlimited</td>';
         print '</tr>';
     }
 ?>
