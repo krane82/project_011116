@@ -142,8 +142,7 @@ class Controller_CLients extends Controller {
               echo "</div>";
             } else if($k=="postcodes") {
               echo '<div class="form-group">
-                <textarea class="form-control" placeholder="Post codes" type="text" id="postcode" name="postcodes" >'. $v .'
-                </textarea> 
+                <textarea class="form-control" placeholder="Post codes" type="text" id="postcode" name="postcodes">'. $v .'</textarea> 
               </div>';
             } else {
                 echo "<div class='form-group'>";

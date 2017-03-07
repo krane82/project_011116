@@ -92,7 +92,7 @@
 					else $('#VIC').html('<h3>No leads in VIC for this period</h3>');
 					if(WAData)fill("WA",WAData);
 					else $('#WA').html('<h3>No leads in WA for this period</h3>');
-//				console.log(JSON.stringify( NSWData));
+
 				}
 				});
 
@@ -116,12 +116,6 @@ if(NSWData)fill("NSW",NSWData);
 					else $('#VIC').html('<h3>No leads in VIC for this period</h3>');
 					if(WAData)fill("WA",WAData);
 					else $('#WA').html('<h3>No leads in WA for this period</h3>');
-//fill("NSW",NSWData);
-//fill("QLD",QLDData);
-//fill("SA",SAData);
-//fill("TAS",TASData);
-//fill("VIC",VICData);
-//fill("WA",WAData);
 tab=$('#codesTab').DataTable();
 function fill(name,datArray)
 {$(function () {

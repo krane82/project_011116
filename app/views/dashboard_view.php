@@ -37,7 +37,8 @@
       "<td>" . $v["revenue"] ."$". "</td>";
       echo "</tr>";
       $c++;
-    } ?>
+    }
+    ?>
   </table>
 </div>
 

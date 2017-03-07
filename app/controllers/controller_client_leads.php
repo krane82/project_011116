@@ -22,7 +22,7 @@ class Controller_client_leads extends Controller
   }
   function action_reject_Lead(){
     $lead_id = $_POST["lead_id"];
-    $client_id = $_COOKIE["user_id"];
+    $client_id = $_SESSION["user_id"];
     $reason = $_POST["reject_reason"];
     $con = $this->db();
     $now = time();
@@ -34,9 +34,27 @@ class Controller_client_leads extends Controller
       return;
     }
   }
+  function action_downloadleads()
+  {
+    session_start();
+    if($client = $_SESSION["user_id"])
+    {
+      $now = time();
+      $filename =  'Leads_From_' . date("Y_m_d", $now);
+      $data = $this->model->getLeadsForClient($client);
+      header('Content-type: text/csv; charset=utf-8');
+      header('Content-Disposition: attachment; filename=' . $filename .'.csv');
+      $fp = fopen('php://output', 'w');
+      foreach( $data as $line ) {
+        fputcsv( $fp, $line );
+      }
+      fclose($fp);
+    }
+  }
 
   function action_getLeads(){
-    $user_id = $_COOKIE["user_id"];
+    session_start();
+    $user_id = $_SESSION["user_id"];
     $table = 'leads_rejection';
     $primaryKey = 'id';
     $columns = array(
@@ -87,7 +105,8 @@ class Controller_client_leads extends Controller
       'host' => DB_HOST
     );
 
-    $joinQuery = "FROM `{$table}` AS `a` LEFT JOIN `clients` AS `c` ON (`a`.`client_id` = `c`.`id`) LEFT JOIN `leads_lead_fields_rel` as `llf` ON ( `a`.`lead_id` = `llf`.`id` )";
+    $joinQuery = "FROM `{$table}` AS `a` LEFT JOIN `clients` AS `c` ON (`a`.`client_id` = `c`.`id`) LEFT JOIN `leads_lead_fields_rel` as `llf` ON ( `a`.`lead_id` = `llf`.`id` ) ";
+    $joinQuery .= " LEFT JOIN `leads` as `l` ON `l`.`id`=`a`.`lead_id` ";
     $where = "`a`.`client_id` = $user_id";
 
     echo json_encode(
@@ -103,7 +122,6 @@ class Controller_client_leads extends Controller
        $leadinfo = $res->fetch_assoc();
         $prepearedinfo = prepareLeadInfo($leadinfo);
         $content = '<table class="table">';
-//        echo "<pre>" . print_r($prepearedinfo) . "</pre>";
         foreach ($prepearedinfo as $v){
           $content .= '<tr><td>'.$v["field_name"].'</td><td>'.$v["val"].'</td></tr>';
         }

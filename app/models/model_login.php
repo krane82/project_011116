@@ -29,14 +29,16 @@ class Model_Login extends Model {
           $con->close();
           return FALSE;
         }
-        setcookie("user_name", $data['full_name']);
-        setcookie("user_id", $data["id"]);
+//        setcookie("user_name", $data['full_name']);
+//        setcookie("user_id", $data["id"]);
       }
       
     } else {
       $con->close();
       return FALSE;
     }
+    $_SESSION["user_name"] = $data['full_name'];
+    $_SESSION["user_id"] = (int)$data["id"];
     $con->close();
     return $data;
   }

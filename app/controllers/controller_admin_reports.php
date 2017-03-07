@@ -48,6 +48,20 @@ class Controller_Admin_Reports extends Controller
     $this->model->getAverageReportsNew();
   }
 
+  public function action_downloadAcceptedRejected()
+  {
+    $now = time();
+    $filename =  'Leads_Accepted_Rejected_' . date("Y_m_d", $now);
+    $data = $this->model->downloadAcceptedRejected();
+    header('Content-type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename=' . $filename .'.csv');
+    $fp = fopen('php://output', 'w');
+    foreach( $data as $line ) {
+      fputcsv( $fp, $line );
+    }
+    fclose($fp);
+  }
+
   // function action_getAverageNewSec(){
   //   $this->model->getAverageReportsNewSec();
   // }

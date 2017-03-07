@@ -24,6 +24,7 @@ class Controller_leads extends Controller
       //Route::ErrorPage404();
     }
   }
+
   function action_LeadInfo(){
     if($id = $_POST["id"]){
       $con = $this->db();
@@ -50,7 +51,9 @@ class Controller_leads extends Controller
       $end = strtotime($_POST["end"]);
       $state = $_POST["state"];
       $client = $_POST["client"];
-      echo "Sending to $_POST[client] with $start $end";
+      // need to get leads from #start to #end
+      // end automaticaly send each of this with $this->sendleads(0, $lead_id)
+      echo "Sending to $_POST[client] with " . date("Y-m-t", $start) . " - " .  date("Y-m-t", $end);
     } else {
       // Sending one lead to one client
       $client_id =(int)$_POST["id"];
@@ -58,6 +61,7 @@ class Controller_leads extends Controller
       echo $this->model->senLead($client_id, $lead_id);
     }
   }
+
   function action_distribution()
   {
     $data["body_class"] = "page-header-fixed";
@@ -69,6 +73,7 @@ class Controller_leads extends Controller
       $this->view->generate('danied_view.php', 'template_view.php', $data);
     }
   }
+
   function action_ajax_delivery()
   {
     $table = 'leads_delivery';
@@ -112,6 +117,7 @@ class Controller_leads extends Controller
 
   function action_getLeads()
   {
+    session_start();
     $source = $_POST["source"];
     $start = strtotime($_POST["st"]);
     $end = strtotime($_POST["en"]) + 86400;
@@ -163,5 +169,4 @@ class Controller_leads extends Controller
     session_destroy();
     header('Location:/login');
   }
-
 }

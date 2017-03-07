@@ -1,6 +1,14 @@
 <?php
 class Model_Admin_Reports extends Model
 {
+  private $sql_sources = "SELECT `lf`.`id` as `id`, `lf`.`full_name` as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`l`.`datetime`), \"%e %b %Y\" ) AS `Date`, 
+`lf`.`state` as `state`,
+`c`.`name` as `Source`,
+ `lf`.`address`, `lf`.`city`,  `lf`.`state`,  `lf`.`postcode`, `lf`.`suburb`, `lf`.`system_size`, `lf`.`roof_type`, `lf`.`electricity`, `lf`.`house_age`, `lf`.`house_type`, `lf`.`system_for`, `lf`.`note`
+FROM `leads` as `l` 
+LEFT JOIN `campaigns` as c ON `l`.`campaign_id` = `c`.`id` 
+LEFT JOIN `leads_lead_fields_rel` as `lf` ON `lf`.`id`=`l`.`id` 
+WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
 
   public function getLeadSources()
   {
@@ -295,7 +303,57 @@ class Model_Admin_Reports extends Model
     echo $this->formStatView($rejectedPercent, 'window-close', 'getRejected');
     echo $this->formStatView($rev, 'shopping-cart');
     // echo $this->formStatView($ds_beg, 'users', 'getDistributed');
+    $uq = http_build_query(array(
+      'start' => strtotime($_REQUEST["start"]),
+      'end' => strtotime($_REQUEST["end"]) + 86400
+    ));
+    echo "<div class='clearfix'></div><a href='downloadAcceptedRejected?$uq' class='btn btn-primary'>Download Accepted or Rejected leads</a>";
 
+  }
+
+  public function downloadAcceptedRejected()
+  {
+    $con = $this->db();
+    $client = $_REQUEST["client"];
+    $start = $_REQUEST["start"];
+    $end = $_REQUEST["end"] + 86400;
+    $timestamp = time();
+    if(empty($_REQUEST["start"])){
+      $start = strtotime("midnight", $timestamp);
+      $end = strtotime("tomorrow", $start) - 1;
+    }
+    // get approved leads and sum
+    $sql = 'SELECT lf.id as `id`, lf.full_name as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`ld`.`timedate`), "%e %b %Y" ) AS `Date`, c.campaign_name as `Client Name`, c.email as `Client Email`, ';
+    $sql .= ' `lf`.`address`, `lf`.`city`,  `lf`.`state`,  `lf`.`postcode`, `lf`.`suburb`, `lf`.`system_size`, `lf`.`roof_type`, `lf`.`electricity`, `lf`.`house_age`, `lf`.`house_type`, `lf`.`system_for`, `lf`.`note`';
+    $sql .= ' ,`lr`.`approval` as `Rejected/Accepted`';
+    $sql .= ' FROM `leads_delivery` as ld ';
+    $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
+    $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
+    $sql .= ' INNER JOIN `leads_lead_fields_rel` as lf ON lf.id = lr.lead_id';
+    $sql .= ' WHERE 1=1';
+//    $sql .= ' WHERE (lr.approval > 0 OR lr.approval IS NULL)';
+    $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+    if (!($client == 0)) {
+      $sql .= ' AND ld.client_id =' . $client;
+    }
+    $res = $con->query($sql);
+    $approved = array();
+    if ($res) {
+      $col = $res->fetch_assoc();
+      $prearr = array();
+      foreach($col as $k=>$v){
+        $prearr[] = $k;
+      }
+      $approved[] = $prearr;
+      $approved[] = $col;
+      while($line = $res->fetch_assoc()){
+        $line["Rejected/Accepted"] = formatReject($line["Rejected/Accepted"]);
+        $approved[] = $line;
+      }
+    } else {
+      echo "No data\n";
+    }
+    return $approved;
   }
 
   public function getAverageReportsNew()
@@ -430,11 +488,10 @@ class Model_Admin_Reports extends Model
     echo $this->formStatView($ras, 'window-close', 'getRejected');
     echo $this->formStatView($rejectedPercent, 'window-close', 'getRejected');
     echo $this->formStatView($rev, 'shopping-cart');
-    echo $this->formStatView($countld);
-    echo $this->formStatView($coastld);
-    echo $this->formStatView($totalcoast);
-    echo $this->formStatView($totalAverage);
-
+    echo $this->formStatView($countld, 'users');
+    echo $this->formStatView($coastld, '');
+    echo $this->formStatView($totalcoast, 'shopping-cart');
+    echo $this->formStatView($totalAverage, 'user');
   }
 
 
