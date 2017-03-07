@@ -28,7 +28,15 @@ CREATE TABLE IF NOT EXISTS lead_settings (days int(3));
 ALTER TABLE `leads_delivery` ADD `open_time` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `open_email`;
 ALTER TABLE `leads_rejection` ADD `decline_reason` VARCHAR(500) NULL DEFAULT NULL AFTER `note`;
 
-
+/*Mironenko 07032017*/
+ALTER TABLE campaigns ADD
+`NSW` int(11) DEFAULT NULL,
+ADD `QLD` int(11) DEFAULT NULL,
+ADD `SA` int(11) DEFAULT NULL,
+ADD `TAS` int(11) DEFAULT NULL,
+ADD `VIC` int(11) DEFAULT NULL,
+ADD `WA` int(11) DEFAULT NULL
+  
 /* Key for post:
 9b434eba-e278-4522-a6ac-5ef14e1fb18d
 */
