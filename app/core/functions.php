@@ -580,6 +580,29 @@ function prepareLeadInfo($p){
   return $readyLeadInfo;
 }
 
+function formatReject($d){
+  switch ($d) {
+    case 0:
+      return "Reject accepted";
+      break;
+    case 1:
+      return "Approved";
+      break;
+    case 2:
+      return "Requested to Reject";
+      break;
+    case 3:
+      return "Reject not Approved";
+      break;
+    case 4:
+      return "Requested More info";
+    case 5:
+      return "";
+    default:
+      return "";
+  }
+}
+
 function dd($arg)
 {
   echo "<pre>";

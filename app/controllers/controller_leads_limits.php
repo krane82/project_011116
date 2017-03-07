@@ -31,17 +31,17 @@ class Controller_Leads_Limits
         $primaryKey = 'id';
 
         $columns = array(
-            array('db' => 'le.postcode', 'dt' => 0, 'field' => 'postcode'),
-            array('db' => 'count(le.id)', 'dt' => 1, 'field' => 'count(le.id)'),
-            array('db' => 'group_concat(cli.campaign_name)', 'dt' => 2, 'field' => 'group_concat(cli.campaign_name)'),
-			array('db' => 'led.lead_id', 'dt' => 3, 'field' => 'lead_id')
+          array('db' => 'le.postcode', 'dt' => 0, 'field' => 'postcode'),
+          array('db' => 'count(le.id)', 'dt' => 1, 'field' => 'count(le.id)'),
+          array('db' => 'group_concat(cli.campaign_name)', 'dt' => 2, 'field' => 'group_concat(cli.campaign_name)'),
+          array('db' => 'led.lead_id', 'dt' => 3, 'field' => 'lead_id')
         );
 
         $sql_details = array(
-            'user' => DB_USER,
-            'pass' => DB_PASS,
-            'db' => DB_NAME,
-            'host' => DB_HOST
+          'user' => DB_USER,
+          'pass' => DB_PASS,
+          'db' => DB_NAME,
+          'host' => DB_HOST
         );
 
         //$joinQuery = "FROM `{$table}` AS `l` LEFT JOIN `campaigns` AS `c` ON (`l`.`campaign_id` = `c`.`id`) LEFT JOIN `leads_lead_fields_rel` AS `lf` ON `lf`.`id`=`l`.`id`";
@@ -51,7 +51,7 @@ class Controller_Leads_Limits
         $groupBy='led.lead_id';
 
         echo json_encode(
-            SSP::simple($_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where, $groupBy)
+          SSP::simple($_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where, $groupBy)
         );
 
     }

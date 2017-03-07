@@ -1,6 +1,6 @@
 <?php
 // main db instance
-require_once(_MAIN_DOC_ROOT_.'/app/classes/class.db.php');
+require_once( _MAIN_DOC_ROOT_ .'/app/classes/class.db.php');
 //$database = DB::getInstance();
 //require_once( _MAIN_DOC_ROOT_.'/app/classes/class_user.php' );
 //$user = UserClass::getInstance();
