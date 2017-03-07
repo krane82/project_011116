@@ -14,5 +14,5 @@ if (date('wGi')=='21201')
 if (date('i')=='01')
 {
     $cron1=new cron1();
-$cron1->getleads();
+    $cron1->getleads();
 }
