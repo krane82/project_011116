@@ -28,6 +28,7 @@ ALTER TABLE `queue`
 CREATE TABLE IF NOT EXISTS lead_settings (days int(3));
 
 ALTER TABLE `leads_delivery` ADD `open_time` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `open_email`;
+ALTER TABLE `leads_rejection` ADD `decline_reason` VARCHAR(500) NULL DEFAULT NULL AFTER `note`;
 
 
 /* Key for post:

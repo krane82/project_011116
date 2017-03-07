@@ -48,7 +48,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       $start = strtotime("midnight", $timestamp);
       $end = strtotime("tomorrow", $start) - 1;
     }
-    // get approved leads and sum
+    // get approved rejected leads and sum
     $sql = 'SELECT lf.id as `id`, lf.full_name as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`ld`.`timedate`), "%e %b %Y" ) AS `Date`, lr.reason as `Rejection reason`,';
     $sql .= ' `lf`.`address`, `lf`.`city`,  `lf`.`state`, `lf`.`postcode`, `lf`.`suburb`, `lf`.`system_size`, `lf`.`roof_type`, `lf`.`electricity`, `lf`.`house_age`, `lf`.`house_type`, `lf`.`system_for`, `lf`.`note`';
     $sql .= ' FROM `leads_delivery` as ld ';
@@ -56,11 +56,11 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
     $sql .= ' INNER JOIN `leads_lead_fields_rel` as lf ON lf.id = lr.lead_id';
     $sql .= ' WHERE lr.approval = 0';
-    $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+    $sql .= ' AND (lr.date BETWEEN '.$start.' AND '.$end.')';
     if (!($client == 0)) {
       $sql .= ' AND ld.client_id =' . $client;
     }
-    if ($state){
+    if ($state) {
       $sql .= " AND lf.state = '$state'";
     }
     $res = $con->query($sql);
@@ -282,7 +282,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $sql2 .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
     $sql2 .= ' LEFT JOIN `leads_lead_fields_rel` as lf ON lf.id=ld.lead_id';
     $sql2 .= ' WHERE lr.approval=0';
-    $sql2 .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+    $sql2 .= ' AND (lr.date BETWEEN '.$start.' AND '.$end.')';
     if ($client != 0) {
       $sql2 .= ' AND ld.client_id =' . $client;
     }
@@ -334,12 +334,13 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     echo $this->formStatView($rejectedPercent, 'window-close', 'getRejected');
     echo $this->formStatView($rev, 'shopping-cart');
     // echo $this->formStatView($ds_beg, 'users', 'getDistributed');
-    $uq = http_build_query(array(
-      'start' => strtotime($_REQUEST["start"]),
-      'end' => strtotime($_REQUEST["end"]) + 86400
-    ));
-    echo "<div class='clearfix'></div><a href='downloadAcceptedRejected?$uq' class='btn btn-primary'>Download Accepted or Rejected leads</a>";
-
+    if(!empty($_POST["start"])) {
+      $uq = http_build_query(array(
+        'start' => strtotime($_REQUEST["start"]),
+        'end' => strtotime($_REQUEST["end"]) + 86400
+      ));
+      echo "<div class='clearfix'></div><a href='downloadAcceptedRejected?$uq' class='btn btn-primary'>Download Accepted or Rejected leads</a>";
+    }
   }
 
   public function downloadAcceptedRejected()

@@ -21,6 +21,7 @@ class Controller_client_leads extends Controller
     }
   }
   function action_reject_Lead(){
+    session_start();
     $lead_id = $_POST["lead_id"];
     $client_id = $_SESSION["user_id"];
     $reason = $_POST["reject_reason"];
@@ -30,7 +31,7 @@ class Controller_client_leads extends Controller
     if($con->query($sql)){
       echo "Success";
     } else {
-      echo $sql;
+      echo "sql error";//$sql;
       return;
     }
   }

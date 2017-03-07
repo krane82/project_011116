@@ -27,10 +27,8 @@ class Controller_approvals extends Controller
     $client_id = $_POST["client_id"];
     if($id){
       $con = $this->db();
-
       $sql = "UPDATE `leads_rejection` SET approval=0 WHERE lead_id=$id AND client_id=$client_id";
       $con->query($sql);
-
       $con->close();
     }
   }
@@ -39,10 +37,8 @@ class Controller_approvals extends Controller
     $client_id = $_POST["client_id"];
     if($id){
       $con = $this->db();
-
       $sql = "UPDATE `leads_rejection` SET approval=3 WHERE lead_id=$id AND client_id=$client_id";
       $con->query($sql);
-
       $con->close();
     }
   }
@@ -51,10 +47,8 @@ class Controller_approvals extends Controller
     $client_id = $_POST["client_id"];
     if($id){
       $con = $this->db();
-
       $sql = "UPDATE `leads_rejection` SET approval=4 WHERE lead_id=$id AND client_id=$client_id";
       $con->query($sql);
-
       $con->close();
     }
   }
@@ -92,19 +86,21 @@ class Controller_approvals extends Controller
 //      }, 'field'=>'date'),
 //      array( 'db' => '`c`.`email`',        'dt' => 2, 'field'=> 'email' ),
       array('db'=>'`ld`.`timedate`',       'dt' => 2, 'formatter' => function( $d, $row ) {
-        return date('m/d/Y', $d);
+        return date('m/d/Y H:i:s', $d);
       }, 'field'=>'timedate'),
-
-
       array('db'=>'`a`.`date`', 'dt' => 3, 'formatter' => function( $d ) {
-        return date('m/d/Y', $d);
+        return date('m/d/Y H:i:s', $d);
       }, 'field'=>'date'),
       array( 'db' => '`a`.`reason`',        'dt' => 4, 'field' => 'reason'),
+      array( 'db' => '`a`.`note`',        'dt' => 5, 'field' => 'note'),
+      array('db'=>'`a`.`decline_reason`', 'dt'=>6, 'formatter'=>function($d, $row){
+        return $d;
+      }, 'field'=>'decline_reason'),
 
 //      array('db'=>'`a`.`id`', 'dt'=>4, 'formatter'=>function($d, $row){
 //        return "";
 //      }),
-      array( 'db' => '`a`.`approval`',        'dt' => 5, 'formatter'=>function($d){
+      array( 'db' => '`a`.`approval`',        'dt' => 7, 'formatter'=>function($d){
         switch ($d) {
           case 0:
             return "<span class=\"bg-primary pdfive\">Reject accepted</span>";
@@ -127,18 +123,17 @@ class Controller_approvals extends Controller
         }
       },
         'field' => 'approval'),
-      array('db'=> '`a`.`id`', 'dt'=> 6, 'formatter'=>function($d, $row){
+      array('db'=> '`a`.`id`', 'dt'=> 8, 'formatter'=>function($d, $row){
         return "<a href='#' class='viewLeadInfo btn btn-info' attr-id='$row[0]' data-toggle=\"modal\" data-target=\"#LeadInfo\">View</a>";
       }, 'field'=>'id'),
-      array('db'=>'`a`.`client_id`', 'dt'=>7, 'formatter'=>function($d, $row){
+      array('db'=>'`a`.`client_id`', 'dt'=>9, 'formatter'=>function($d, $row){
         return '<a href="#" role="button" onclick="rejectLead('.$row[0]. ', '. $d .');" class="btn btn-small btn-danger hidden-tablet hidden-phone" data-toggle="modal" data-original-title="">
 						    Disapprove Request </a><br>
 						    <a href="#" role="button" onclick="acceptLead('.$row[0]. ', '. $d .');" class="btn btn-small btn-success hidden-tablet hidden-phone" data-toggle="modal" data-original-title="">
 						    Approve Request</a><br>  
 						    <a href="#" role="button" onclick="moreInfo('.$row[0]. ', '. $d .');" class="btn btn-small btn-info hidden-tablet hidden-phone" data-toggle="modal" data-original-title="">
 						    Request More Info</a>';
-      }, 'field'=>'client_id'),
-
+      }, 'field'=>'client_id')
     );
 
     $sql_details = array(
@@ -153,6 +148,19 @@ class Controller_approvals extends Controller
     echo json_encode(
       SSP::simple( $_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where )
     );
+  }
+
+  public function action_decline()
+  {
+    session_start();
+    if ($_SESSION['admin'] == md5('admin')) {
+      if (isset($_REQUEST["decline"]) AND isset($_REQUEST["lead_id"]) AND isset($_REQUEST["client_id"]) ) {
+
+        $con = $this->db();
+        $con->query();
+      }
+      dd($_REQUEST);
+    }
   }
 
   function action_LeadInfo(){
