@@ -34,6 +34,23 @@ class Controller_client_leads extends Controller
       return;
     }
   }
+  function action_downloadleads()
+  {
+    session_start();
+    if($client = $_SESSION["user_id"])
+    {
+      $now = time();
+      $filename =  'Leads_From_' . date("Y_m_d", $now);
+      $data = $this->model->getLeadsForClient($client);
+      header('Content-type: text/csv; charset=utf-8');
+      header('Content-Disposition: attachment; filename=' . $filename .'.csv');
+      $fp = fopen('php://output', 'w');
+      foreach( $data as $line ) {
+        fputcsv( $fp, $line );
+      }
+      fclose($fp);
+    }
+  }
 
   function action_getLeads(){
     session_start();

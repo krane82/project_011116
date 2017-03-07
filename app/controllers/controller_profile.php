@@ -23,14 +23,16 @@ class Controller_Profile extends Controller {
   }
 
   function action_UpdateProfile(){
+    session_start();
     $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
     if($id = $_SESSION["user_id"]){
-      $sql = ' SELECT clients.id, users.password, clients.email, clients.campaign_name, clients.full_name, clients.phone, clients.city, clients.state, clients.country, clients.lead_cost, clients_criteria.postcodes, clients_criteria.states_filter, clients_billing.xero_id, clients_billing.xero_name, clients_criteria.monthly ,clients_criteria.weekly';
+      $sql = 'SELECT clients.id, users.password, clients.email, clients.campaign_name, clients.full_name, clients.phone, clients.city, clients.state, clients.country, clients.lead_cost, clients_criteria.postcodes, clients_criteria.states_filter, clients_billing.xero_id, clients_billing.xero_name, clients_criteria.monthly ,clients_criteria.weekly';
       $sql.= ' FROM `clients`';
       $sql.= ' LEFT JOIN `clients_billing` ON clients.id = clients_billing.id';
       $sql.= ' LEFT JOIN `clients_criteria` ON clients.id = clients_criteria.id';
       $sql.= ' LEFT JOIN `users` ON clients.id = users.id';
       $sql.= ' WHERE clients.id = '.$id;
+//      dd($sql);
       $form_keys = array(
         'id' => '',
         'campaign_name' => 'Campaign name',
@@ -83,6 +85,7 @@ class Controller_Profile extends Controller {
 
   public function action_UpdateProfileSuccess(){
     $chekedPOST = $this->model->checkdata($_POST);
+    dd($chekedPOST);
     $id = $chekedPOST["id"];
     $client_name = $chekedPOST["campaign_name"];
     $status = 1;
@@ -135,10 +138,6 @@ class Controller_Profile extends Controller {
       echo $this->model->UserChangeNotif($chekedPOST);
       header('Location: /profile');
     } else {
-//      var_dump($id);
-//      var_dump($res1);
-//      var_dump($res2);
-//      var_dump($res3);
       echo "<script>alert('DB error')</script>";
       $con->close();
       header('Location: /profile');

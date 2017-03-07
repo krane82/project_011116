@@ -11,6 +11,8 @@
 </tr>
 </thead>
     <?php
+//    print '<pre>';
+//    var_dump ($data);
     foreach ($data as $item){
         print '<tr>';
         print '<td>'.$item['campaign_name'].'</td>';

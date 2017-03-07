@@ -13,7 +13,7 @@ class Controller_Login extends Controller {
 		{
 			$login = $_POST['login'];
 			$password =$_POST['password'];
-			$login = $this->model->check_data($login,$password);
+			$login = $this->model->check_data($login, $password);
 			if($login){
 				if($login["level"] === "1") {
 					$_SESSION['admin'] = md5('admin');
