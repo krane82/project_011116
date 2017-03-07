@@ -78,7 +78,6 @@ class Controller_leads extends Controller
   {
     $table = 'leads_delivery';
     $primaryKey = 'id';
-
     $columns = array(
       array( 'db' => '`ld`.`id`',          'dt' => 0, 'field' => 'id'  ),
       array( 'db' => '`ld`.`lead_id`',        'dt' => 1, 'field' => 'lead_id'),
@@ -89,7 +88,14 @@ class Controller_leads extends Controller
       array('db'=> '`c`.`campaign_name`', 'dt'=>4, 'field'=>'campaign_name'),
       array('db'=> '`ld`.`open_email`', 'dt'=>5, 'formatter'=>function($d, $row){
         if($d) {
-          return "Opened";
+          return $d;
+        } else {
+          return "not opened";
+        }
+      }, 'field'=>'open_email'),
+      array('db'=> '`ld`.`open_time`', 'dt'=>6, 'formatter'=>function($d, $row){
+        if($d) {
+          return date('Y-m-d H:i:s', $d);
         } else {
           return "not opened";
         }

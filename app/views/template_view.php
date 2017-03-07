@@ -210,7 +210,7 @@
           <ul class="sub-menu">
             <li><a href="<?php echo __HOST__; ?>/leads/">Leads Delivery</a></li>
             <li><a href="<?php echo __HOST__; ?>/approvals/">Leads Approvals</a></li>
-            <li><a href="<?php echo __HOST__; ?>/leads/distribution/">Leads distribution</a></li>
+            <li><a href="<?php echo __HOST__; ?>/leads/distribution/">Leads Distribution</a></li>
           <li><a href="<?php echo __HOST__; ?>/penetration/">Penetration</a></li>
           </ul>
         </li>
