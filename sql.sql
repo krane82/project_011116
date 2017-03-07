@@ -24,9 +24,11 @@ ALTER TABLE `queue`
 ALTER TABLE `queue`
  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=134;
 
-ALTER TABLE leads_delivery ADD amount INT(20) NOT NULL
+# ALTER TABLE leads_delivery ADD amount INT(20) NOT NULL
+CREATE TABLE IF NOT EXISTS lead_settings (days int(3));
 
-CREATE TABLE IF NOT EXISTS lead_settings (days int(3))
+ALTER TABLE `leads_delivery` ADD `open_time` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `open_email`;
+
 
 /* Key for post:
 9b434eba-e278-4522-a6ac-5ef14e1fb18d

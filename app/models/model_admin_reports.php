@@ -43,6 +43,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $start = strtotime($_REQUEST["start"]);
     $end = strtotime($_REQUEST["end"]) + 86400;
     $timestamp = time();
+    $state = $_REQUEST["State"];
     if(empty($_REQUEST["start"])){
       $start = strtotime("midnight", $timestamp);
       $end = strtotime("tomorrow", $start) - 1;
@@ -58,6 +59,9 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
     if (!($client == 0)) {
       $sql .= ' AND ld.client_id =' . $client;
+    }
+    if ($state){
+      $sql .= " AND lf.state = '$state'";
     }
     $res = $con->query($sql);
     $approved = array();
@@ -80,7 +84,6 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
 
   public function getReceived()
   {
-
     $source = $_REQUEST["source"];
     $state = $_REQUEST["State"];
     $start = strtotime($_REQUEST["start"]);
@@ -135,6 +138,8 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $start = strtotime($_REQUEST["start"]);
     $end = strtotime($_REQUEST["end"]) + 86400;
     $timestamp = time();
+    $state = $_REQUEST["State"];
+
     if(empty($_REQUEST["start"])){
       $start = strtotime("midnight", $timestamp);
       $end = strtotime("tomorrow", $start) - 1;
@@ -150,6 +155,9 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
     if (!($client == 0)) {
       $sql .= ' AND ld.client_id =' . $client;
+    }
+    if($state){
+      $sql .= " AND lf.state = '$state'";
     }
     $res = $con->query($sql);
     $approved = array();
@@ -177,6 +185,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $start = strtotime($_REQUEST["start"]);
     $end = strtotime($_REQUEST["end"]) + 86400;
     $timestamp = time();
+    $state = $_REQUEST["State"];
     if(empty($_REQUEST["start"])){
       $start = strtotime("midnight", $timestamp);
       $end = strtotime("tomorrow", $start) - 1;
@@ -193,6 +202,10 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     if (!($client == 0)) {
       $sql .= ' AND ld.client_id =' . $client;
     }
+    if($state){
+      $sql .= " AND lf.state = '$state'";
+    }
+
     $res = $con->query($sql);
     $distributed = array();
     if ($res) {
@@ -231,10 +244,10 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
   {
     $con = $this->db();
     $client = $_POST["client"];
+    $state = $_REQUEST["State"];
     if(!empty($_POST["start"])){
       $start = strtotime($_POST["start"]);
       $end = strtotime($_POST["end"]) + 86400;
-
     }
     else {
       $timestamp = time();
@@ -246,10 +259,14 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $sql = 'SELECT COUNT(*) as amount, SUM(c.lead_cost) as total_cost  FROM `leads_delivery` as ld ';
     $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
     $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
+    $sql .= ' LEFT JOIN `leads_lead_fields_rel` as lf ON lf.id=ld.lead_id';
     $sql .= ' WHERE (lr.approval > 0 OR lr.approval IS NULL)';
     $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
     if (!($client == 0)) {
       $sql .= ' AND ld.client_id =' . $client;
+    }
+    if($state){
+      $sql .= " AND lf.state = '$state'";
     }
 
     $res = $con->query($sql);
@@ -263,10 +280,14 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
 
     $sql2 = 'SELECT COUNT(*) as amount FROM `leads_delivery` as ld ';
     $sql2 .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
+    $sql2 .= ' LEFT JOIN `leads_lead_fields_rel` as lf ON lf.id=ld.lead_id';
     $sql2 .= ' WHERE lr.approval=0';
     $sql2 .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
     if ($client != 0) {
       $sql2 .= ' AND ld.client_id =' . $client;
+    }
+    if($state){
+      $sql2 .= " AND lf.state = '$state'";
     }
     $res = $con->query($sql2);
     if ($res) {
@@ -274,22 +295,32 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     } else {
       echo "0";
     }
-//  DISTINCT
-    $sqlDestributed  = 'SELECT COUNT(ld.lead_id) as amount, SUM(c.cost) as camp_cost FROM `leads_delivery` as ld';
-    $sqlDestributed .= ' INNER JOIN `leads` as l ON l.id=ld.lead_id';
-    $sqlDestributed .= ' INNER JOIN `campaigns` as c ON c.id = l.campaign_id';
-    $sqlDestributed .= ' WHERE 1=1 AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+
+//  Distributed
+    $sqlDistributed  = 'SELECT COUNT(ld.lead_id) as amount, SUM(c.cost) as camp_cost FROM `leads_delivery` as ld';
+    $sqlDistributed .= ' INNER JOIN `leads` as l ON l.id=ld.lead_id';
+    $sqlDistributed .= ' INNER JOIN `campaigns` as c ON c.id = l.campaign_id';
+    $sqlDistributed .= ' LEFT JOIN `leads_lead_fields_rel` as lf ON lf.id=ld.lead_id';
+    $sqlDistributed .= ' WHERE 1=1 AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
     if (!($client == 0)) {
-      $sqlDestributed .= ' AND ld.client_id =' . $client;
+      $sqlDistributed .= ' AND ld.client_id =' . $client;
+    }
+    if($state){
+      $sqlDistributed .= " AND lf.state = '$state'";
     }
 
-    $res = $con->query($sqlDestributed);
+    $res = $con->query($sqlDistributed);
     if($res){
       $distributed = $res->fetch_assoc();
     }
 
+    if($rejected["amount"]){
+      $rejectedP = $rejected["amount"] / $distributed["amount"];
+    } else {
+      $rejectedP = 0;
+    }
+//    dd($sql);
 
-    $rejectedP = $rejected["amount"] / $distributed["amount"];
     $ds =  $distributed["amount"] . " leads <br>Distributed";
     // $ds_beg = "leads <br>Distributed 1 to 15 ";
     $acs = $approved['amount']. " leads Accepted by clients";
@@ -318,6 +349,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $start = $_REQUEST["start"];
     $end = $_REQUEST["end"] + 86400;
     $timestamp = time();
+    $state = $_REQUEST["State"];
     if(empty($_REQUEST["start"])){
       $start = strtotime("midnight", $timestamp);
       $end = strtotime("tomorrow", $start) - 1;
@@ -364,6 +396,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $start = $st->getTimestamp();
     $st->modify("+14 days");
     $end = $st->getTimestamp();
+//    $state = $_REQUEST["state"];
     if( $now < $end ) {
       // do nothing
     } else {
@@ -379,9 +412,9 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
     $sql .= ' WHERE (lr.approval > 0 OR lr.approval IS NULL)';
     $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
-    if (!($client == 0)) {
-      $sql .= ' AND ld.client_id =' . $client;
-    }
+//    if (!($client == 0)) {
+//      $sql .= ' AND ld.client_id =' . $client;
+//    }
 
     $res = $con->query($sql);
     $approved = array();
@@ -396,25 +429,25 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $sql2 .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
     $sql2 .= ' WHERE lr.approval=0';
     $sql2 .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
-    if ($client != 0) {
-      $sql2 .= ' AND ld.client_id =' . $client;
-    }
+//    if ($client != 0) {
+//      $sql2 .= ' AND ld.client_id =' . $client;
+//    }
     $res = $con->query($sql2);
     if ($res) {
       $rejected = $res->fetch_assoc();
     } else {
       echo "0";
     }
-//  DISTINCT
-    $sqlDestributed  = 'SELECT COUNT(ld.lead_id) as amount, SUM(c.cost) as camp_cost FROM `leads_delivery` as ld';
-    $sqlDestributed .= ' INNER JOIN `leads` as l ON l.id=ld.lead_id';
-    $sqlDestributed .= ' INNER JOIN `campaigns` as c ON c.id = l.campaign_id';
-    $sqlDestributed .= ' WHERE 1=1 AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
-    if (!($client == 0)) {
-      $sqlDestributed .= ' AND ld.client_id =' . $client;
-    }
+//  Distributed
+    $sqlDistributed  = 'SELECT COUNT(ld.lead_id) as amount, SUM(c.cost) as camp_cost FROM `leads_delivery` as ld';
+    $sqlDistributed .= ' INNER JOIN `leads` as l ON l.id=ld.lead_id';
+    $sqlDistributed .= ' INNER JOIN `campaigns` as c ON c.id = l.campaign_id';
+    $sqlDistributed .= ' WHERE 1=1 AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+//    if (!($client == 0)) {
+//      $sqlDistributed .= ' AND ld.client_id =' . $client;
+//    }
 
-    $res = $con->query($sqlDestributed);
+    $res = $con->query($sqlDistributed);
     if($res){
       $distributed = $res->fetch_assoc();
     }
@@ -456,11 +489,6 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
 
     $resCoast = $income['cost'] - $CoastLids['cost'];
 
-
-    // $sqlincomeLids = "SELECT SUM(c.cost) as cost FROM `campaigns` as c";
-    // $sqlincomeLids .= " LEFT JOIN `leads` as ld ON ld.campaign_id = c.id";
-    // $sqlincomeLids .= " WHERE 1=1 AND (ld.datetime BETWEEN ".$start." AND ".$end.")";
-
     $sqlAver  = 'SELECT COUNT(ld.id) as amount, SUM(c.lead_cost) as client_cost FROM `leads_delivery` as ld';
     $sqlAver .= ' INNER JOIN `clients` as c ON c.id=ld.client_id';
     $sqlAver .= ' WHERE 1=1 AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
@@ -480,7 +508,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $rev = $approved["total_cost"] ? $approved["total_cost"] . " $<br>Lead Revenue" : 0 . " $<br>Lead Revenue";
     $countld = $CountLids['amount']. " leads<br> Total generated";
     $coastld = $CoastLids['cost']. " $<br>Total cost of<br> leads generated ";
-    $totalcoast = $resCoast. " $<br> Total income of<br>leads distributed ";
+    $totalcost = $resCoast. " $<br> Total income of<br>leads distributed ";
     $totalAverage = $average. " $<br>Average sales<br>per lead";
     echo $mes;
     echo $this->formStatView($ds, 'users', 'getDistributed');
@@ -490,7 +518,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     echo $this->formStatView($rev, 'shopping-cart');
     echo $this->formStatView($countld, 'users');
     echo $this->formStatView($coastld, '');
-    echo $this->formStatView($totalcoast, 'shopping-cart');
+    echo $this->formStatView($totalcost, 'shopping-cart');
     echo $this->formStatView($totalAverage, 'user');
   }
 
