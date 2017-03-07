@@ -347,7 +347,7 @@ class Model_Api extends Model {
   public function getSentLeads()
   {
     //this variable is for show how many days from query do we need, will be saved in DB and added from interface
-    include "app/models/model_settings.php";
+    include "model_settings.php";
     $settings=new Model_Settings();
     $data=$settings->getSettings();
     $con = $this->db();
