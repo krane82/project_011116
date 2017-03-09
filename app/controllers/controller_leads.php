@@ -99,7 +99,7 @@ class Controller_leads extends Controller
         } else {
           return "not opened";
         }
-      }, 'field'=>'open_email')
+      }, 'field'=>'open_time')
     );
 
     $sql_details = array(

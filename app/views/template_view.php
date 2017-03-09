@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lead Point</title>
+  <title>Energy Smart</title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <meta charset="UTF-8">
-  <meta name="description" content="Lead Point system" />
+  <meta name="description" content="Energy Smart system" />
 
 <!--  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>-->
   <link href="<?php echo __HOST__; ?>/assets/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet" type="text/css"//>
@@ -63,7 +63,7 @@
         </a>
       </div>
       <div class="logo-box">
-        <a href="admin" class="logo-text"><span>Lead Point</span></a>
+        <a href="admin" class="logo-text"><span>Energy Smart</span></a>
       </div><!-- Logo Box -->
 <!--      <div class="search-button">-->
 <!--        <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>-->
@@ -246,7 +246,7 @@
       </div><!-- Row -->
     </div><!-- Main Wrapper -->
     <div class="page-footer">
-      <p class="no-s">2016 &copy; Lead Point System.</p>
+      <p class="no-s">&copy; 2012-2017 Energy Smart</p>
     </div>
   </div><!-- Page Inner -->
 </main><!-- Page Content -->

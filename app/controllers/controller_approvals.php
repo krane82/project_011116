@@ -115,7 +115,7 @@ class Controller_approvals extends Controller
             return "<span class=\"bg-danger pdfive\">Reject not Approved</span>";
             break;
           case 4:
-            return "<span class=\"bg-info pdfive\">Requested More info</span>";
+            return "<span class=\"bg-info pdfive\">More info required</span>";
           case 5:
             return "<span class='hidden'>5</span>";
           default:

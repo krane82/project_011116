@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-	<title>Login | Lead Point</title>
+	<title>Login | Energy Smart</title>
 	<meta content="width=device-width, initial-scale=1" name="viewport"/>
 	<meta charset="UTF-8">
-	<meta name="description" content="Lead Point system" />
+	<meta name="description" content="Energy Smart system" />
 
 	<!-- Styles -->
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
@@ -42,7 +42,6 @@
 		</div><!-- Main Wrapper -->
 	</div><!-- Page Inner -->
 </main><!-- Page Content -->
-
 <!-- Javascripts -->
 <script src="assets/plugins/jquery/jquery-2.1.4.min.js"></script>
 <script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
