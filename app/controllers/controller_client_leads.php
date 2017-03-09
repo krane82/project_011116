@@ -79,7 +79,7 @@ class Controller_client_leads extends Controller
             return "<span class=\"bg-danger pdfive\">Reject not Approved</span>";
             break;
           case 4:
-            return "<span class=\"bg-info pdfive\">Requested More info</span>";
+            return "<span class=\"bg-info pdfive\">More info required</span>";
             break;
           default:
             return "";
@@ -91,7 +91,7 @@ class Controller_client_leads extends Controller
         if($row[3]>0) {
           return "<a href='#' class='btn leadreject btn-warning' attr-lead-id='$row[0]' attr-client='$row[1]' data-gb='$row[3]'> Reject</a>";
         } else {
-         return "<button type=\"button\" class=\"btn btn-warning\" disabled=\"disabled\">Reject </button>";
+         return ""; // silence is golden: <button type=\"button\" class=\"btn btn-warning\" disabled=\"disabled\">Reject </button>";
         }
       }, 'field'=>'id'),
       array('db'=>'`a`.`id`', 'dt'=>6, 'formatter'=>function($d, $row){
