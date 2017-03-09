@@ -270,12 +270,32 @@ class Model_Api extends Model {
         $p["phone"] = phone_valid($v);
       } else if($k=="postcode"){
         $p["postcode"] = postcodes_valid($v);
-      }
-      else {
+        if(!$p["postcode"]) return;
+      } else {
         $p["$k"] = trim($v);
       }
     }
+    $p["state"] = $this->giveMeState($p["postcode"]);
     return $p;
+  }
+  private function giveMeState($code)
+  {
+    $con=$this->db();
+    $sql="SELECT * FROM states_postcodes";
+    $res=$con->query($sql);
+    while ($row=$res->fetch_assoc())
+    {
+      $result[$row['state']][]=explode(':',$row['postcodes']);
+    }
+    foreach ($result as $item=>$key)
+    {
+      foreach ($key as $key1)
+      {
+        if ($code>=$key1[0] && $code<=$key1[1])
+        {return $item;}
+      }
+
+    }
   }
 
   private function addleadtotable($post)
@@ -347,7 +367,7 @@ class Model_Api extends Model {
   public function getSentLeads()
   {
     //this variable is for show how many days from query do we need, will be saved in DB and added from interface
-    include "app/models/model_settings.php";
+    include "model_settings.php";
     $settings=new Model_Settings();
     $data=$settings->getSettings();
     $con = $this->db();
