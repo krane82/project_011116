@@ -6,4 +6,5 @@ tags
 *.DS_Store
 ftpsync.settings
 credentials.php
+landing.html
 logs/*
