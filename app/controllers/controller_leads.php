@@ -56,11 +56,12 @@ class Controller_leads extends Controller
       echo "Sending to $_POST[client] with " . date("Y-m-t", $start) . " - " .  date("Y-m-t", $end);
     } else {
       // Sending one lead to one client
-      $client_id =(int)$_POST["id"];
-      $lead_id = (int)$_POST["lead_id"];
+      $client_id =$_POST["id"];
+      $lead_id = $_POST["lead_id"];
       echo $this->model->senLead($client_id, $lead_id);
     }
   }
+  
 
   function action_distribution()
   {
