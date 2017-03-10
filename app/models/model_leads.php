@@ -32,12 +32,12 @@ class Model_Leads extends Model {
   private function getLeadInfo($id)
   {
     $con = $this->db();
-    $sql = "SELECT * FROM `leads_lead_fields_rel` WHERE `id`=$id";
+    $sql = "SELECT * FROM leads_lead_fields_rel WHERE id='".$id."'";
     $res = $con->query($sql);
     if($res){
       $r = $res->fetch_assoc();
       return $r;
-    } else
+     } else
     return "Lead not found";
   }
 
@@ -59,24 +59,30 @@ class Model_Leads extends Model {
   
   public function senLead($client_id, $lead_id)
   {
-    if($client_id !== 0){
+    $receivers=$this->getLeadFromDelivered($lead_id);
+    if($client_id != 0){
+      if(in_array($client_id, $receivers ))
+      {
+        return "This client already has this lead";
+      }
       $leadInfo = $this->getLeadInfo($lead_id);
-      $prepearedinfo = prepareLeadInfo($leadInfo);
-      $passedcaps = $this->api->checkClientsLimits($client_id);
+      $readyLeadInfo = prepareLeadInfo($leadInfo);
+      $passedCaps = $this->api->checkClientsLimits($client_id);
       $c = $this->getClientById($client_id);
-      if($passedcaps) {
-        $sended = $this->sendToClient($c["email"], $prepearedinfo, $c["full_name"]);
-        if($sended) {
-          $this->api->addToDeliveredTable($id, $lead_id, $readyLeadInfo);
-          return "Lead sended.";
+      if($passedCaps) {
+        $delivery_id = $this->getLastDeliveryID() + 1;
+        $sent = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"],$delivery_id);
+        if($sent) {
+          $this->api->addToDeliveredTable($client_id, $lead_id, $readyLeadInfo);
+          return "Lead sent.";
         } else {
-          return "mail error: $sended";
+          return "mail error: $sent";
         }
       } else {
         return "Cannot send over client caps...";
       }
     }
-    if($client_id === 0)
+    if($client_id == 0)
     {
       $leadInfo = $this->getLeadInfo($lead_id);
       $clients = $this->api->getClients($leadInfo);
@@ -87,29 +93,63 @@ class Model_Leads extends Model {
     }
   }
 
+  private function getLeadFromDelivered($id)
+  {
+    $con = $this->db();
+    $sql="SELECT client_id FROM leads_delivery WHERE lead_id=".$id;
+    $res=$con->query($sql);
+    $result=array();
+    if($res)
+    {
+      while ($row = $res->fetch_array())
+      {
+        $result[] = $row['client_id'];
+      }
+    return $result;
+    }
+    return false;
+  }
+
   private function sendToClients($clients, $lead_id ,$p){
-    $counter = 0;
-    $sendedTo = '';
+    $receivers=$this->getLeadFromDelivered($lead_id);
+    $counter = count($receivers);
+    if($counter>=4)
+    {
+      return 'This lead already sent 4 times';
+    }
+    $sentTo = '';
     foreach ($clients as $c) {
       $id = $c["id"];
-      $passedcaps = $this->checkClientsLimits($id);
-      if($passedcaps AND $counter < 4) {
+      if(in_array($id,$receivers))
+      {
+        continue;
+      }
+      $passedCaps = $this->checkClientsLimits($id);
+      if($passedCaps AND $counter < 4) {
         $readyLeadInfo = prepareLeadInfo($p);
-        $sended = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"]);
-        if($sended) {
+        $delivery_id = $this->getLastDeliveryID() + 1;
+        $sent = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"],$delivery_id);
+        if($sent) {
           $counter++;
-          $sendedTo .= "Lead #$lead_id sended to $c[full_name] : $c[email]<br>\n";
+          $sentTo .= "Lead #$lead_id sent to $c[full_name] : $c[email]<br>\n";
           $this->api->addToDeliveredTable($id, $lead_id, $readyLeadInfo);
         }
       }
     }
-    return $sendedTo;
+    return $sentTo;
   }
 
-  private function sendToClient($mail, $p, $client_name)
+  private function getLastDeliveryID(){
+    $sql = "SELECT `id` FROM leads_delivery ORDER BY `id` DESC LIMIT 1";
+    $db  = DB::getInstance();
+    $res = $db->get_row($sql);
+    return $res[0];
+  }
+
+  private function sendToClient($mail, $p, $client_name, $track_id)
   {
     if($mail) {
-      send_m($mail, $p, $client_name);
+      send_m($mail, $p, $client_name, $track_id);
       return TRUE;
     }
     return FALSE;
