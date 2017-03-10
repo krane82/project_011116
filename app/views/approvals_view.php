@@ -153,7 +153,6 @@ $(document).ready(function () {
             var dorn = Date.parse( this.value + ' 00:00:00 GMT +1100' );
             console.log(dorn);
             var stamp = Math.floor( Number(dorn) / 10000000 );
-            console.log(isNaN(stamp) ? '' : stamp);
             table
               .column( colIdx )
               .search( isNaN(stamp) ? '' : stamp )

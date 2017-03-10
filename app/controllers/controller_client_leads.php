@@ -58,6 +58,7 @@ class Controller_client_leads extends Controller
     $user_id = $_SESSION["user_id"];
     $table = 'leads_rejection';
     $primaryKey = 'id';
+    $now = time();
     $columns = array(
       array( 'db' => '`a`.`lead_id`', 'dt' => 0, 'field' => 'lead_id'  ),
       array( 'db' => '`llf`.`full_name`', 'dt' => 1, 'field' => 'full_name'  ),
@@ -88,7 +89,10 @@ class Controller_client_leads extends Controller
       array( 'db' => '`a`.`reason`',  'dt' => 4, 
         'field' => 'reason'),
       array('db'=> '`a`.`id`', 'dt'=>5, 'formatter'=>function($d, $row){
-        if($row[3]>0) {
+        if( strtotime('+7 days', $row[2]) < time()){
+          return 'Out of 7 days';
+        } else
+        if( $row[3] > 0 ) {
           return "<a href='#' class='btn leadreject btn-warning' attr-lead-id='$row[0]' attr-client='$row[1]' data-gb='$row[3]'> Reject</a>";
         } else {
          return ""; // silence is golden: <button type=\"button\" class=\"btn btn-warning\" disabled=\"disabled\">Reject </button>";

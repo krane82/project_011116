@@ -1,21 +1,5 @@
 
 
-<table class="table" id="client_leads">
-  <thead>
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Date</th>
-    <th>Status</th>
-    <th>Decline Reason</th>
-    <th>Action</th>
-    <th>Download</th>
-  </tr>
-  </thead>
-</table>
-
-<hr>
-
 <div class="panel panel-white ">
   <div class="col-md-3"></div>
   <div class='col-md-5 col-xs-12  text-center'>
@@ -36,11 +20,22 @@
   </div>
   <div class="col-md-2"></div>
 </div>
-<!--<div class="download-leads">-->
-<!--  <input type="text" class="lead-date-range">-->
-<!--  <button class="search"></button>-->
-<!--</div>-->
 
+<hr>
+
+<table class="table" id="client_leads">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Date</th>
+    <th>Status</th>
+    <th>Decline Reason</th>
+    <th>Action</th>
+    <th>Download</th>
+  </tr>
+  </thead>
+</table>
 
 <div id="LeadInfo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="LeadInfo">
   <div class="modal-dialog" role="document">
