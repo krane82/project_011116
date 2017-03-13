@@ -1,21 +1,5 @@
 
 
-<table class="table" id="client_leads">
-  <thead>
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Date</th>
-    <th>Status</th>
-    <th>Decline Reason</th>
-    <th>Action</th>
-    <th>Download</th>
-  </tr>
-  </thead>
-</table>
-
-<hr>
-
 <div class="panel panel-white ">
   <div class="col-md-3"></div>
   <div class='col-md-5 col-xs-12  text-center'>
@@ -36,11 +20,22 @@
   </div>
   <div class="col-md-2"></div>
 </div>
-<!--<div class="download-leads">-->
-<!--  <input type="text" class="lead-date-range">-->
-<!--  <button class="search"></button>-->
-<!--</div>-->
 
+<hr>
+
+<table class="table" id="client_leads">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Date</th>
+    <th>Status</th>
+    <th>Action</th>
+    <th>Lead details</th>
+    <th>Rejection details</th>
+  </tr>
+  </thead>
+</table>
 
 <div id="LeadInfo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="LeadInfo">
   <div class="modal-dialog" role="document">
@@ -72,7 +67,10 @@
       "aoColumnDefs": [
         { 'bSortable': false, 'aTargets': [ 4,5,6 ] }
       ],
-      "order": [[ 0, "asc" ]]
+      "order": [[ 0, "desc" ]],
+      "oLanguage": {
+        "sInfoFiltered": ""
+      }
     });
     var modalBody = '<form id="rejectForm">' +
     '<!-- <select class="form-control">' + 
@@ -115,9 +113,13 @@
       if (e.target && e.target.matches('a.leadreject')) {
         e.preventDefault();
         var btn = e.target;
+        var sure = true;
         var id = btn.getAttribute('attr-lead-id');
         var leadName = btn.getAttribute('attr-client');
-        var sure = confirm('Are you sure you want to reject lead "' + leadName + '"?');
+        console.log(e.target.dataset.info);
+        if(!e.target.dataset.info){
+          var sure = confirm('Are you sure you want to reject lead "' + leadName + '"?');
+        }
         if (!sure) {
           return;
         }

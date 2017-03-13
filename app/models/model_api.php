@@ -36,7 +36,7 @@ class Model_Api extends Model {
         }
       }
     }
-    return "Sent to $counter clients \n" . $sended;
+    return "Sent to $counter clients \n";// . $sended;
   }
 
   private function getLastDeliveryID(){

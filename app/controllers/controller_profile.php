@@ -56,7 +56,7 @@ class Controller_Profile extends Controller {
       echo "<form action='" .__HOST__. "/profile/UpdateProfileSuccess' method='post'>";
       while($row = $res->fetch_assoc()) {
         foreach ($row as $k=>$v) {
-          if($k == "id"){
+          if ($k == "id"){
             echo "<input type='hidden' name='$k' value='$v' />";
           } elseif($k == "lead_cost" || $k == "xero_id" || $k == "xero_name" ) {
             // blank - only admin can change
@@ -65,10 +65,15 @@ class Controller_Profile extends Controller {
             echo "<label for='$k'>Password</label>";
             echo "<input type='password' class=\"form-control\" id='$k' name='$k' value='' placeholder='Leave blank if you dont wanna change it'/>";
             echo "</div>";
+          } elseif ($k == "states_filter" ){
+            echo "<div class='form-group'>";
+            echo "<label for='$k'>". $form_keys["$k"] ."</label>";
+            echo '<input class="form-control" type="text" name="'.$k.'" value="'.$v.'" readonly="readonly" > ' ;
+            echo "</div>";
           } elseif ($k == "postcodes") {
             echo "<div class='form-group'>";
             echo "<label for='$k'>".$form_keys["$k"]."</label>";
-            echo "<textarea class='form-control' name='postcodes' type='text'>$v</textarea>";
+            echo "<textarea class='form-control' name='postcodes' type='text' readonly=\"readonly\">$v</textarea>";
             echo "</div>";
           } else {
             echo "<div class='form-group'>";
@@ -85,7 +90,6 @@ class Controller_Profile extends Controller {
 
   public function action_UpdateProfileSuccess(){
     $chekedPOST = $this->model->checkdata($_POST);
-    dd($chekedPOST);
     $id = $chekedPOST["id"];
     $client_name = $chekedPOST["campaign_name"];
     $status = 1;
