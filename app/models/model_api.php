@@ -7,7 +7,7 @@ class Model_Api extends Model {
     if ($addToTable) {
       $lead_id = $this->addleadtotable($p);
     } else {
-     $lead_id=$leadId;
+      $lead_id=$leadId;
     } if (!$lead_id) {
       return FALSE;
     }
@@ -127,8 +127,8 @@ class Model_Api extends Model {
       $sql.= ' LEFT JOIN `clients` as c ON cc.id = c.id';
       if(!empty($post["state"]) AND !empty($post["postcode"])) {
         $sql .= ' WHERE ( cc.states_filter LIKE "%' . $post["state"] . '%" OR cc.postcodes LIKE "%'.$post["postcode"].'%" )';
-      // } else if(!empty($post["state"])) {
-      //   $sql .= ' WHERE cc.states_filter LIKE "%' . $post["state"] . '%"';
+        // } else if(!empty($post["state"])) {
+        //   $sql .= ' WHERE cc.states_filter LIKE "%' . $post["state"] . '%"';
       } else if(!empty($post["postcode"])){
         $sql.= ' WHERE cc.postcodes LIKE "%'.$post["postcode"].'%"';
       }
@@ -208,51 +208,51 @@ class Model_Api extends Model {
 
     if(count($order)){
 
-    usort($clients, function ($a, $b) use ($order) {
-      $pos_a = array_search($a['id'], $order);
-      $pos_b = array_search($b['id'], $order);
-      return $pos_a - $pos_b;
-    });
+      usort($clients, function ($a, $b) use ($order) {
+        $pos_a = array_search($a['id'], $order);
+        $pos_b = array_search($b['id'], $order);
+        return $pos_a - $pos_b;
+      });
 
-    if($this->debug_api) {
-      echo "\n===============$order================\n";
-      var_dump($order);
-      echo "\n================================\n";
+      if($this->debug_api) {
+        echo "\n===============$order================\n";
+        var_dump($order);
+        echo "\n================================\n";
 
-      echo "\n======CLIENTS SORTED===========\n";
-      var_dump($clients);
-      echo "\n================================\n";
-      echo "</body></html>";
+        echo "\n======CLIENTS SORTED===========\n";
+        var_dump($clients);
+        echo "\n================================\n";
+        echo "</body></html>";
 
 
-      # dump buffered $classvar to $outStringVar
-      $outStringVar = ob_get_contents();
+        # dump buffered $classvar to $outStringVar
+        $outStringVar = ob_get_contents();
 
-      fwrite($myfile, $outStringVar);
-      fclose($myfile);
-      # clean the buffer & stop buffering output
-      ob_end_clean();
-      // END LOGS
-    }
-    // function custom_compare($a, $b){
-    //   global $order;
-    //   $key_a = array_search($a["id"], $order);
-    //   $key_b = array_search($b["id"], $order);
-    //   if($key_a === false && $key_b === false) { // both items are dont cares
-    //       return 0;                      // a == b
-    //   }
-    //   else if ($key_a === false) {           // $a is a dont care item
-    //       return 1;                      // $a > $b
-    //   }
-    //   else if ($key_b === false) {           // $b is a dont care item
-    //       return -1;                     // $a < $b
-    //   }
-    //   else {
-    //       return $key_a - $key_b;
-    //   }
-    // }
+        fwrite($myfile, $outStringVar);
+        fclose($myfile);
+        # clean the buffer & stop buffering output
+        ob_end_clean();
+        // END LOGS
+      }
+      // function custom_compare($a, $b){
+      //   global $order;
+      //   $key_a = array_search($a["id"], $order);
+      //   $key_b = array_search($b["id"], $order);
+      //   if($key_a === false && $key_b === false) { // both items are dont cares
+      //       return 0;                      // a == b
+      //   }
+      //   else if ($key_a === false) {           // $a is a dont care item
+      //       return 1;                      // $a > $b
+      //   }
+      //   else if ($key_b === false) {           // $b is a dont care item
+      //       return -1;                     // $a < $b
+      //   }
+      //   else {
+      //       return $key_a - $key_b;
+      //   }
+      // }
 
-    // usort($clients, "custom_compare");
+      // usort($clients, "custom_compare");
     }
     // Returnig ordered clients
     return $clients;

@@ -5,7 +5,6 @@ class Model_Leads extends Model {
   {
     $this->api = $api;
   }
-
   public function getLeadSources() {
     $con = $this->db();
     $LeadSources = array();
@@ -28,7 +27,6 @@ class Model_Leads extends Model {
     $con->close();
     return $clients;
   }
-
   private function getLeadInfo($id)
   {
     $con = $this->db();
@@ -37,10 +35,9 @@ class Model_Leads extends Model {
     if($res){
       $r = $res->fetch_assoc();
       return $r;
-     } else
-    return "Lead not found";
+    } else
+      return "Lead not found";
   }
-
   private function getClientById($id)
   {
     $con = $this->db();
@@ -56,7 +53,7 @@ class Model_Leads extends Model {
     }
     return $client;
   }
-  
+
   public function senLead($client_id, $lead_id)
   {
     $receivers=$this->getLeadFromDelivered($lead_id);
@@ -92,7 +89,6 @@ class Model_Leads extends Model {
       return $result;
     }
   }
-
   private function getLeadFromDelivered($id)
   {
     $con = $this->db();
@@ -105,11 +101,10 @@ class Model_Leads extends Model {
       {
         $result[] = $row['client_id'];
       }
-    return $result;
+      return $result;
     }
     return false;
   }
-
   private function sendToClients($clients, $lead_id ,$p){
     $receivers=$this->getLeadFromDelivered($lead_id);
     $counter = count($receivers);
@@ -138,14 +133,12 @@ class Model_Leads extends Model {
     }
     return $sentTo;
   }
-
   private function getLastDeliveryID(){
     $sql = "SELECT `id` FROM leads_delivery ORDER BY `id` DESC LIMIT 1";
     $db  = DB::getInstance();
     $res = $db->get_row($sql);
     return $res[0];
   }
-
   private function sendToClient($mail, $p, $client_name, $track_id)
   {
     if($mail) {
@@ -154,7 +147,6 @@ class Model_Leads extends Model {
     }
     return FALSE;
   }
-
   private function checkClientsLimits($id)
   {
     $Monday = strtotime( "Monday this week" );
@@ -163,24 +155,17 @@ class Model_Leads extends Model {
     $sqlM = "select count(*) from `leads_delivery` where client_id = $id AND (timedate BETWEEN $FirstOfMonth AND $now)";
     $sqlW = "select count(*) from `leads_delivery` where client_id = $id AND (timedate BETWEEN $Monday AND $now)";
     $sqlCaps = "SELECT weekly, monthly  FROM `clients_criteria` WHERE id=$id";
-
     $con = $this->db();
-
     $capsr = $con->query($sqlCaps);
     $caps = $capsr->fetch_assoc();
-
     $sqlMr = $con->query($sqlM);
     $sqlMM = $sqlMr->fetch_assoc();
-
     if(!$caps["monthly"]){
       $caps["monthly"] = 999999999;
     }
-
     if(!$caps["weekly"]){
       $caps["weekly"] = 999999999;
     }
-
-
     if( $sqlMM["count(*)"] <= $caps["monthly"]){
       $id_passed = $id;
     } else {
@@ -188,10 +173,8 @@ class Model_Leads extends Model {
       $con->close();
       return FALSE;
     }
-
     $sqlWr = $con->query($sqlM);
     $sqlWW = $sqlWr->fetch_assoc();
-
     if($sqlWW["count(*)"] <= $caps["weekly"]){
       $id_passed = $id;
       $con->close();
@@ -201,7 +184,6 @@ class Model_Leads extends Model {
       return FALSE;
     }
   }
-
   private function getClients($post){
     $clients = array();
     $con = $this->db();
@@ -221,8 +203,6 @@ class Model_Leads extends Model {
     } else {
       return FALSE;
     }
-
-
     $res = $con->query($sql);
     if ($res) {
       while( $res->fetch_assoc())
@@ -237,7 +217,6 @@ class Model_Leads extends Model {
     }
     return $clients;
   }
-
   private function checkdata($post){
     $p = array();
     foreach ($post as $k => $v) {
@@ -252,7 +231,5 @@ class Model_Leads extends Model {
     }
     return $p;
   }
-
 }
-
 ?>
