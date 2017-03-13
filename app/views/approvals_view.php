@@ -1,8 +1,7 @@
-<div class="container">
-  <div class="row">
+
     <!-- .panel panel-white -->
     <div class="panel panel-white ">
-    <div class="col-md-10">
+    <div class="col-md-12">
       <div class="row">
           <table class="table" id="approvals">
             <thead>
@@ -38,7 +37,6 @@
     </div>
     <!-- /.panel panel-white -->
   </div>
-</div>
 
 <div id="LeadInfo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="LeadInfo">
   <div class="modal-dialog" role="document">
@@ -62,11 +60,6 @@
 
 $(document).ready(function () {
     var approvals = $("#approvals");
-//     $('#approvals tfoot th').each( function () {
-//         var title = $(this).text();
-//         $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-//     } );
-
     table = approvals.DataTable( {
       "processing": true,
       "serverSide": true,

@@ -67,7 +67,7 @@
       "aoColumnDefs": [
         { 'bSortable': false, 'aTargets': [ 4,5,6 ] }
       ],
-      "order": [[ 0, "asc" ]]
+      "order": [[ 0, "desc" ]]
     });
     var modalBody = '<form id="rejectForm">' +
     '<!-- <select class="form-control">' + 
@@ -101,9 +101,13 @@
       if (e.target && e.target.matches('a.leadreject')) {
         e.preventDefault();
         var btn = e.target;
+        var sure = true;
         var id = btn.getAttribute('attr-lead-id');
         var leadName = btn.getAttribute('attr-client');
-        var sure = confirm('Are you sure you want to reject lead "' + leadName + '"?');
+        console.log(e.target.dataset.info);
+        if(!e.target.dataset.info){
+          var sure = confirm('Are you sure you want to reject lead "' + leadName + '"?');
+        }
         if (!sure) {
           return;
         }

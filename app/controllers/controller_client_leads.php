@@ -62,8 +62,8 @@ class Controller_client_leads extends Controller
     $columns = array(
       array( 'db' => '`a`.`lead_id`', 'dt' => 0, 'field' => 'lead_id'  ),
       array( 'db' => '`llf`.`full_name`', 'dt' => 1, 'field' => 'full_name'  ),
-      array('db'=>'`a`.`date`',       'dt' => 2, 'formatter' => function( $d, $row ) {
-        return date('m/d/Y', $d);
+      array('db'=>'`a`.`date`',       'dt' => 2, 'formatter' => function( $d ) {
+        return date('d/m/Y', $d);
       }, 'field'=>'date'),
       array( 'db' => '`a`.`approval`',  'dt' => 3, 'formatter'=>function($d){
         switch ($d) {
@@ -86,20 +86,24 @@ class Controller_client_leads extends Controller
             return "";
         }
       },'field'=> 'approval' ),
-      array( 'db' => '`a`.`reason`',  'dt' => 4, 
-        'field' => 'reason'),
+      array( 'db' => '`a`.`decline_reason`',  'dt' => 4,
+        'field' => 'decline_reason'),
       array('db'=> '`a`.`id`', 'dt'=>5, 'formatter'=>function($d, $row){
         if( strtotime('+7 days', $row[2]) < time()){
           return 'Out of 7 days';
         } else
-        if( $row[3] > 0 ) {
+        if( $row[3] == 1 ) {
           return "<a href='#' class='btn leadreject btn-warning' attr-lead-id='$row[0]' attr-client='$row[1]' data-gb='$row[3]'> Reject</a>";
+        } if($row[3] == 4) {
+          return "<a href='#' class='btn leadreject btn-danger' data-info='true' attr-lead-id='$row[0]' attr-client='$row[1]' data-gb='$row[3]'> Provide more info</a>";
         } else {
          return ""; // silence is golden: <button type=\"button\" class=\"btn btn-warning\" disabled=\"disabled\">Reject </button>";
         }
       }, 'field'=>'id'),
       array('db'=>'`a`.`id`', 'dt'=>6, 'formatter'=>function($d, $row){
-        return "<a href='#' class='viewLeadInfo btn btn-primary' attr-lead-id='$row[0]' data-toggle=\"modal\" data-target=\"#LeadInfo\"  >View</a>";
+        if(!($row[3] == 0 OR $row[3] == 3)){
+          return "<a href='#' class='viewLeadInfo btn btn-primary' attr-lead-id='$row[0]' data-toggle=\"modal\" data-target=\"#LeadInfo\"  >View</a>";
+        }
       })
     );
 
