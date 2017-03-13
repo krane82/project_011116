@@ -51,9 +51,9 @@ class Model_Api extends Model {
     $con = $this->db();
     $now = time();
     $sql = "INSERT INTO `leads_delivery` (lead_id, client_id, timedate) VALUES ('".$lead_id."', '".$client_id."', '".$now."')";
-    var_dump($sql);
+//    var_dump($sql);
     $sql_r = "INSERT INTO `leads_rejection` (lead_id, client_id, date, approval) VALUES ('".$lead_id."', '".$client_id."', '".$now."', '1')";
-    var_dump($sql_r);
+//    var_dump($sql_r);
     if($con->query($sql) && $con->query($sql_r)) { $delivered=1; }
     if($delivered){
       return TRUE;

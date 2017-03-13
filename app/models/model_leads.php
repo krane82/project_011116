@@ -110,6 +110,23 @@ class Model_Leads extends Model {
     return false;
   }
 
+  public function getList($start, $end, $state=false, $source=false)
+  {
+    $con = $this->db();
+    $sql = "SELECT l.id FROM leads AS `l` LEFT JOIN `leads_lead_fields_rel` AS `lf` ON `lf`.`id`=`l`.`id` WHERE l.datetime BETWEEN '".$start."' AND '".$end."'";
+    if ($state) $sql.=" AND lf.state='".$state."'";
+    if ($source) $sql.=" AND lf.source='".$source."'";
+    $res=$con->query($sql);
+    //return $sql;
+    if($res) {
+      while ($row = $res->fetch_assoc()) {
+        $result[] = $row['id'];
+      }
+      return $result;
+    }
+    return false;
+  }
+
   private function sendToClients($clients, $lead_id ,$p){
     $receivers=$this->getLeadFromDelivered($lead_id);
     $counter = count($receivers);
