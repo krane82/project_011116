@@ -32,7 +32,7 @@
     <th>Status</th>
     <th>Decline Reason</th>
     <th>Action</th>
-    <th>Download</th>
+    <th>Lead details</th>
   </tr>
   </thead>
 </table>
@@ -67,7 +67,10 @@
       "aoColumnDefs": [
         { 'bSortable': false, 'aTargets': [ 4,5,6 ] }
       ],
-      "order": [[ 0, "desc" ]]
+      "order": [[ 0, "desc" ]],
+      "oLanguage": {
+        "sInfoFiltered": ""
+      }
     });
     var modalBody = '<form id="rejectForm">' +
     '<!-- <select class="form-control">' + 

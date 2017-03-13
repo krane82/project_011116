@@ -70,6 +70,11 @@ class Controller_Profile extends Controller {
             echo "<label for='$k'>".$form_keys["$k"]."</label>";
             echo "<textarea class='form-control' name='postcodes' type='text'>$v</textarea>";
             echo "</div>";
+          }elseif($k == "states_filter" OR $k == "postcodes"){
+            echo "<div class='form-group'>";
+            echo "<label for='$k'>". $form_keys["$k"] ."</label>";
+            echo '<input class="form-control" type="text" name="'.$k.'" value="'.$v.'" readonly="readonly" > ' ;
+            echo "</div>";
           } else {
             echo "<div class='form-group'>";
             echo "<label for='$k'>".$form_keys["$k"]."</label>";
@@ -85,7 +90,6 @@ class Controller_Profile extends Controller {
 
   public function action_UpdateProfileSuccess(){
     $chekedPOST = $this->model->checkdata($_POST);
-    dd($chekedPOST);
     $id = $chekedPOST["id"];
     $client_name = $chekedPOST["campaign_name"];
     $status = 1;

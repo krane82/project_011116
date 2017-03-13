@@ -1,42 +1,40 @@
-
-    <!-- .panel panel-white -->
-    <div class="panel panel-white ">
-    <div class="col-md-12">
-      <div class="row">
-          <table class="table" id="approvals">
-            <thead>
-            <tr>
-              <th>ID</th>
-              <th>Client</th>
-              <th>Receiving date</th>
-              <th>Rejection date</th>
-              <th>Reason  </th>
-              <th>Note</th>
-              <th>Decline Reason</th>
-              <th>Status</th>
-              <th>View</th>
-              <th>Action</th>
-            </tr>
-            </thead>
-            <tfoot>
-            <tr>
-              <th>ID</th>
-              <th>Client</th>
-              <th>Received date</th>
-              <th>Rejected date</th>
-              <th>Reason  </th>
-              <th>Note</th>
-              <th>Decline Reason</th>
-              <th>Status</th>
-              <th>View</th>
-              <th>Action</th>
-            </tr>
-            </tfoot>
-          </table>
-      </div>
-    </div>
-    <!-- /.panel panel-white -->
+<!-- .panel panel-white -->
+<div class="panel panel-white ">
+<div class="col-md-12">
+  <div class="row">
+      <table class="table" id="approvals">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Client</th>
+          <th>Receiving date</th>
+          <th>Rejection date</th>
+          <th>Reason  </th>
+          <th>Note</th>
+          <th>Decline Reason</th>
+          <th>Status</th>
+          <th>View</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+          <th>ID</th>
+          <th>Client</th>
+          <th>Received date</th>
+          <th>Rejected date</th>
+          <th>Reason  </th>
+          <th>Note</th>
+          <th>Decline Reason</th>
+          <th>Status</th>
+          <th>View</th>
+          <th>Action</th>
+        </tr>
+        </tfoot>
+      </table>
   </div>
+</div>
+<!-- /.panel panel-white -->
 
 <div id="LeadInfo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="LeadInfo">
   <div class="modal-dialog" role="document">
@@ -54,7 +52,6 @@
     </div>
   </div>
 </div>
-
 
 <script type="text/javascript">
 
@@ -81,21 +78,23 @@ $(document).ready(function () {
           $.ajax({
             type: "POST",
             url: '<?php echo __HOST__ . '/leads/LeadInfo/' ?>',
-            data: { id: id },
+            data: {id: id},
             success: function (data) {
               $('#LeadInfo').find('.modal-body').html(data);
             }
           });
         });
-      }
-      ,"initComplete": function ()
-      {
+      },
+      "initComplete": function () {
         var r = $('#approvals tfoot tr');
         r.find('th').each(function(){
           $(this).css('padding', 8);
         });
         $('#approvals thead').append(r);
         $('input').css('text-align', 'center');
+      },
+      "oLanguage": {
+        "sInfoFiltered": ""
       }
     });
 
