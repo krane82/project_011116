@@ -57,9 +57,9 @@ class Model_Profile extends Model {
 
     $mail->isHTML(true);
 
-    $mail->AddReplyTo("info@energysmart.com.au", "LeadPoint Notification");
+    $mail->AddReplyTo("info@energysmart.com.au", "Energy Smart Notification");
 
-    $mail->SetFrom('info@energysmart.com.au', 'LeadPoint Notification');
+    $mail->SetFrom('info@energysmart.com.au', 'Energy Smart Notification');
 
     $mail->AddAddress(ADMINEMAIL, 'Joash Boyton');
 

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lead Point</title>
+  <title>Energy Smart</title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <meta charset="UTF-8">
-  <meta name="description" content="Lead Point system" />
+  <meta name="description" content="Energy Smart system" />
 
   <!-- Styles -->
   <?php
@@ -69,7 +69,7 @@
         </a>
       </div>
       <div class="logo-box">
-        <a href="admin" class="logo-text"><span>Lead Point</span></a>
+        <a href="admin" class="logo-text"><span>Energy Smart</span></a>
       </div><!-- Logo Box -->
       <div class="search-button">
         <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>
@@ -224,7 +224,7 @@
       </div><!-- Row -->
     </div><!-- Main Wrapper -->
     <div class="page-footer">
-      <p class="no-s">2016 &copy; Lead Point System.</p>
+      <p class="no-s">&copy; 2012-2017 Energy Smart</p>
     </div>
   </div><!-- Page Inner -->
 </main><!-- Page Content -->

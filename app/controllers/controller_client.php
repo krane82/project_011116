@@ -22,6 +22,7 @@ class Controller_Client extends Controller
 
   public function action_getAverageReports()
   {
+    session_start();
     $con = $this->db();
     $client = $_SESSION["user_id"];
     $timestamp = time();
