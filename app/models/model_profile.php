@@ -61,6 +61,7 @@ class Model_Profile extends Model {
 
     $mail->SetFrom('info@energysmart.com.au', 'Energy Smart Notification');
 
+    
     $mail->AddAddress(ADMINEMAIL, 'Joash Boyton');
 
     $mail->Subject = 'Client "'.$p["campaign_name"].'" have change their profile information';

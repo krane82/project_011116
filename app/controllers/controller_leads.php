@@ -48,12 +48,22 @@ class Controller_leads extends Controller
   {
     if(isset($_POST["client"])) {
       $start = strtotime($_POST["start"]);
-      $end = strtotime($_POST["end"]);
+      $end = strtotime($_POST["end"])+ 86400;
       $state = $_POST["state"];
+      $source=$_POST["source"];
       $client = $_POST["client"];
+      $data=$this->model->getList($start, $end, $state, $source);
+      $i=1;
+      foreach($data as $item)
+      {
+        if($x=$this->model->senLead($client,$item)) print $x;
+        $i++;
+        usleep(250000);
+      }
+      print $i.' Leads done';
       // need to get leads from #start to #end
       // end automaticaly send each of this with $this->sendleads(0, $lead_id)
-      echo "Sending to $_POST[client] with " . date("Y-m-t", $start) . " - " .  date("Y-m-t", $end);
+      //echo "Sending to $_POST[client] with " . date("Y-m-t", $start) . " - " .  date("Y-m-t", $end);
     } else {
       // Sending one lead to one client
       $client_id =$_POST["id"];

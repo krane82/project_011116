@@ -154,20 +154,24 @@
     var start = document.querySelector('input[name=start]').value;
     var end = document.querySelector('input[name=end]').value;
     var client = document.querySelector('select[name=client]').value;
-
+    var state = document.querySelector('select[name=state]').value;
+    var source = document.querySelector('select[name=source]').value;
+    var loader = '<div class="loader">Loading...</div>';
+    var infoblock=document.querySelector('#sendLeadsToClients');
+    infoblock.innerHTML=loader;
     if(!(start && end)) {
       alert('Please select Date range');
       return;
     }
     console.log(start, end, client);
     $.ajax({
-      type: "POST",
-      url: '<?php echo __HOST__ . '/leads/sendLead/' ?>',
-      data: { start: start, end: end, client: client},
-      success: function (data) {
-        console.log(data);
-        document.querySelector('#sendLeadsToClients').innerHTML = data;
-      }
+        type: "POST",
+        url: '<?php echo __HOST__ . '/leads/sendLead/' ?>',
+        data: { start: start, end: end, client: client, state: state, source: source},
+        success: function (data) {
+          console.log(data);
+          infoblock.innerHTML = data;
+        }
     });
   }
   var loader = $('<div class="loader">Loading...</div>');

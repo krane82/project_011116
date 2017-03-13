@@ -174,13 +174,13 @@
   </div><!-- Navbar -->
   <div class="page-sidebar sidebar">
     <div class="page-sidebar-inner slimscroll">
-      <?php if(isset($_COOKIE["user_name"])) { ?>
+      <?php if(isset($_SESSION["user_name"])) { ?>
       <div class="sidebar-header">
         <div class="sidebar-profile">
           <a href="javascript:void(0);" id="profile-menu-link">
             <div class="sidebar-profile-details">
               <span>Hello,</span>
-              <span><?php echo $_COOKIE["user_name"]; ?><br><small></small></span>
+              <span><?php echo $_SESSION["user_name"]; ?><br><small></small></span>
             </div>
           </a>
         </div>
