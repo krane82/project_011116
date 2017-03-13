@@ -1,4 +1,4 @@
-\<div id="UpdateClientForm" action="UpdateProfile" >
+<div id="UpdateClientForm" action="UpdateProfile" >
 <?php
 
     echo $profile;

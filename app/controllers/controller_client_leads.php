@@ -20,6 +20,7 @@ class Controller_client_leads extends Controller
       //Route::ErrorPage404();
     }
   }
+
   function action_reject_Lead(){
     session_start();
     $lead_id = $_POST["lead_id"];
@@ -86,9 +87,7 @@ class Controller_client_leads extends Controller
             return "";
         }
       },'field'=> 'approval' ),
-      array( 'db' => '`a`.`decline_reason`',  'dt' => 4,
-        'field' => 'decline_reason'),
-      array('db'=> '`a`.`id`', 'dt'=>5, 'formatter'=>function($d, $row){
+      array('db'=> '`a`.`id`', 'dt'=>4, 'formatter'=>function($d, $row){
         if( strtotime('+7 days', $row[2]) < time()){
           return 'Out of 7 days';
         } else
@@ -99,12 +98,18 @@ class Controller_client_leads extends Controller
         } else {
          return ""; // silence is golden: <button type=\"button\" class=\"btn btn-warning\" disabled=\"disabled\">Reject </button>";
         }
-      }, 'field'=>'id'),
-      array('db'=>'`a`.`id`', 'dt'=>6, 'formatter'=>function($d, $row){
+      }, 'field'=>'id' ),
+      array('db'=>'`a`.`id`', 'dt'=>5, 'formatter'=>function($d, $row){
         if(!($row[3] == 0 OR $row[3] == 3)){
           return "<a href='#' class='viewLeadInfo btn btn-primary' attr-lead-id='$row[0]' data-toggle=\"modal\" data-target=\"#LeadInfo\"  >View</a>";
         }
-      })
+      }),
+      array( 'db' => '`a`.`decline_reason`',  'dt' => 6, 'formatter'=>function($d, $row) {
+        if (!$d) {
+          return "<a href='#' class='RejectionDetails btn btn-primary' attr-lead-id='$row[0]' data-toggle=\"modal\" data-target=\"#RejectionInfo\"  >View</a>";
+        }
+      },
+        'field' => 'decline_reason')
     );
 
     $sql_details = array(

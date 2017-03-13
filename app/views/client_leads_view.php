@@ -30,9 +30,9 @@
     <th>Name</th>
     <th>Date</th>
     <th>Status</th>
-    <th>Decline Reason</th>
     <th>Action</th>
     <th>Lead details</th>
+    <th>Rejection details</th>
   </tr>
   </thead>
 </table>
