@@ -25,9 +25,11 @@ class Controller_client_leads extends Controller
     $lead_id = $_POST["lead_id"];
     $client_id = $_SESSION["user_id"];
     $reason = $_POST["reject_reason"];
+    $notes = $_POST["notes"];
     $con = $this->db();
     $now = time();
-    $sql = "UPDATE `leads_rejection` SET approval='2', reason='$reason', date='$now' WHERE client_id=$client_id AND lead_id=$lead_id";
+    $sql = "UPDATE `leads_rejection` SET approval='2', reason='$reason', note='$notes', date='$now' WHERE client_id=$client_id AND lead_id=$lead_id";
+    //print $sql;
     if($con->query($sql)){
       echo "Success";
     } else {

@@ -81,9 +81,18 @@
      ' <option value="mercedes">Mercedes</option>' +
      ' <option value="audi">Audi</option>' +
      '</select> -->' +
-     '<p>Describe your rejection reason: </p>' +
-     '<div class="form-group"><input class="form-control" type="text" placeholder="Reject reason" required name="reason"> </div>' +
-     '</form>';
+     '<p>Choose your rejection reason: </p>' +
+     '<label><input type="radio" name="reason" value="1"> Outside of nominated area service (2 days to reject)</label><br>'+
+     '<label><input type="radio" name="reason" value="2"> Duplicate (2 days to reject)</label><br>'+
+     '<label><input type="radio" name="reason" value="3"> Incorrect Phone Number (2 days to reject)</label><br>'+
+     '<label><input type="radio" name="reason" value="4"> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>'+
+     '<label><input type="radio" name="reason" value="5"> Customer is wanting Off Grid System (7 days to reject)</label><br>'+
+     '<label><input type="radio" name="reason" value="6"> Unable to contact withing 7 days (7 days to reject)</label><br>'+
+        '<textarea style="width:100%" rows="3" name="notes"></textarea>' +
+        '</form>';
+
+//    '<div class="form-group"><input class="form-control" type="text" placeholder="Notes" required name="notes"> </div>' +
+//     '</form>';
     var modalFooter = '<input form="rejectForm" type="submit" class="btn btn-primary reject" value="Reject this lead"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
     var tt = document.querySelector('#client_leads');
     var modalka = $('#LeadInfo');
@@ -118,13 +127,15 @@
         modalka.modal("show");
         $('#rejectForm').submit(function(e){
           e.preventDefault();
-          var reason = $(this).find('input[name=reason]').val();
+          var reason = $(this).find('input[name=reason]:checked').val();
+          var notes = $(this).find('textarea[name=notes]').val();
           $.ajax({
             type: "POST",
             url: '<?php echo __HOST__ . '/client_leads/reject_Lead/' ?>',
             data: { lead_id: id,
-                    reject_reason: reason },
+                    reject_reason: reason, notes: notes },
             success: function (data) {
+              console.log(data);
               if(data === "Success") { modalka.modal("hide"); table.ajax.reload(); }
             }
           });
