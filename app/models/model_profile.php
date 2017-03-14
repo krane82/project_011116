@@ -74,7 +74,7 @@ class Model_Profile extends Model {
       echo $emailSending = "Mailer Error: " . $mail->ErrorInfo;
       return FALSE;
     } else {
-      return "Message sent";
+      return "Success";
     }
   }
 
@@ -99,9 +99,9 @@ class Model_Profile extends Model {
                   $profile.= "<label for='$k'>".$this->form_keys["$k"]."</label>";
                   $profile.=  "<textarea class='form-control' id='$k' readonly='readonly' name='postcodes' type='text'>$v</textarea>";
                   $profile.= "</div>";
-              }elseif($k == "lead_cost" || $k == "xero_id" || $k == "xero_name" ) {
+              } elseif($k == "lead_cost" || $k == "xero_id" || $k == "xero_name" ) {
 
-              }else{
+              } else {
                   $profile.= "<div class='form-group'>";
                   $profile.= "<label for='$k'>".$this->form_keys["$k"]."</label>";
                   $profile.= '<input class="form-control" type="text" name="'.$k.'" value="'.$v.'" readonly="readonly" > ' ;
@@ -117,7 +117,7 @@ class Model_Profile extends Model {
     foreach ($post as $k => $v) {
       if ($k=="phone") {
         $p["phone"] = phone_valid($v);
-      } else if($k=="postcode"){
+      } else if($k=="postcode") {
         $p["postcode"] = (int)postcodes_valid($v);
       }
       else {

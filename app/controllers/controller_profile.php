@@ -32,7 +32,6 @@ class Controller_Profile extends Controller {
       $sql.= ' LEFT JOIN `clients_criteria` ON clients.id = clients_criteria.id';
       $sql.= ' LEFT JOIN `users` ON clients.id = users.id';
       $sql.= ' WHERE clients.id = '.$id;
-//      dd($sql);
       $form_keys = array(
         'id' => '',
         'campaign_name' => 'Campaign name',
@@ -140,7 +139,7 @@ class Controller_Profile extends Controller {
 
     if($res1 && $res2 && $res3 ) {
       echo $this->model->UserChangeNotif($chekedPOST);
-      header('Location: /profile');
+      redirect('/profile');
     } else {
       echo "<script>alert('DB error')</script>";
       $con->close();
