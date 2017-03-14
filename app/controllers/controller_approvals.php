@@ -171,7 +171,7 @@ class Controller_approvals extends Controller
   function action_LeadInfo(){
     if($id = $_POST["id"]){
       $con = $this->db();
-      $sql = "SELECT * from `leads_lead_fields_rel` WHERE id=$id";
+      $sql = "SELECT * FROM `leads_lead_fields_rel` WHERE id=$id";
       if($res = $con->query($sql)){
        $leadinfo = $res->fetch_assoc();
         $prepearedinfo = prepareLeadInfo($leadinfo);
