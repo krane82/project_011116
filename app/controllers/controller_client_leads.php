@@ -94,7 +94,13 @@ class Controller_client_leads extends Controller
           return 'Out of 7 days';
         } else
         if( $row[3] == 1 ) {
-          return "<a href='#' class='btn leadreject btn-warning' attr-lead-id='$row[0]' attr-client='$row[1]' data-gb='$row[3]'> Reject</a>";
+          $button="<a href='#' class='btn leadreject btn-warning' attr-lead-id='$row[0]' attr-client='$row[1]' data-gb='$row[3]'";
+        if( strtotime('+2 days', $row[2]) < time())
+        {
+          $button.=" data-permission='1'";
+        }
+        $button.="> Reject</a>";
+          return $button;
         } if($row[3] == 4) {
           return "<a href='#' class='btn leadreject btn-danger' data-info='true' attr-lead-id='$row[0]' attr-client='$row[1]' data-gb='$row[3]'> Provide more info</a>";
         } else {
@@ -107,8 +113,8 @@ class Controller_client_leads extends Controller
         }
       }),
       array( 'db' => '`a`.`decline_reason`',  'dt' => 6, 'formatter'=>function($d, $row) {
-        if (!$d) {
-          return "<a href='#' class='RejectionDetails btn btn-primary' attr-lead-id='$row[0]' data-toggle=\"modal\" data-target=\"#RejectionInfo\"  >View</a>";
+        if (!$d and $row[3] > 1) {
+          return "<a href='#' class='RejectionDetails btn btn-primary' attr-lead-id='$row[0]' data-toggle=\"modal\" data-target=\"#LeadInfo\"  >View</a>";
         }
       },
         'field' => 'decline_reason')
@@ -141,6 +147,28 @@ class Controller_client_leads extends Controller
         foreach ($prepearedinfo as $v){
           $content .= '<tr><td>'.$v["field_name"].'</td><td>'.$v["val"].'</td></tr>';
         }
+        $content .= '</table>';
+        echo $content;
+      }
+    } else {
+      echo "lead not found";
+    }
+  }
+
+  function action_rejectInfo(){
+    session_start();
+    if($id = $_POST["id"]){
+      $con = $this->db();
+      $client_id = $_SESSION["user_id"];
+      $sql = "SELECT reason, note, decline_reason from `leads_rejection` WHERE lead_id=$id AND client_id=$client_id";
+      //print_r($sql);
+
+      if($res = $con->query($sql)){
+        $leadInfo = $res->fetch_assoc();
+        $content = '<table class="table">';
+        $content.="<tr><td>Rejection reason: </td><td>".$leadInfo['reason']."</td></tr>";
+        $content.="<tr><td>Notes: </td><td>".$leadInfo['note']."</td></tr>";
+        $content.="<tr><td>Decline Reason: </td><td>".$leadInfo['decline_reason']."</td></tr>";
         $content .= '</table>';
         echo $content;
       }
