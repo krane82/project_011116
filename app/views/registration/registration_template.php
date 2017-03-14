@@ -56,6 +56,7 @@
 <script src="assets/js/modern.min.js"></script>
 <script src="assets/plugins/jquery.steps-1.1.0/jquery.steps.js"></script>
 
+<script src="js/form-validation.js"></script>
 <script src="js/registration.js"></script>
 </body>
 </html>
