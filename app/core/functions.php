@@ -603,6 +603,13 @@ function formatReject($d){
   }
 }
 
+function redirect($location='/')
+{
+  echo "<script>setTimeout(function() {
+  window.location.href = '$location';
+},5)</script>";
+}
+
 function dd($arg)
 {
   echo "<pre>";
