@@ -17,7 +17,7 @@
 
                                 <!------Company Details------->
                                 <h3>Company Details</h3>
-                                <section>
+                                <section data-step="0">
                                     <div class="section-title">
                                         <h4>Company Details</h4>
                                     </div>
@@ -47,7 +47,7 @@
 
                                 <!------Contact Details------->
                                 <h3>Contact Details</h3>
-                                <section>
+                                <section data-step="1">
                                     <div class="section-title">
                                         <h4>Contact Details</h4>
                                     </div>
@@ -64,12 +64,20 @@
                                             <label for="email">Email:</label>
                                             <input type="email" name="email" id="email" value="" class="form-control"/>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="password">Password:</label>
+                                            <input type="password" name="password" id="password" value="" class="form-control"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="confirm_password">Confirm Password:</label>
+                                            <input type="password" name="confirm_password" id="confirm_password" value="" class="form-control"/>
+                                        </div>
                                     </div>
                                 </section>
 
                                 <!------Services------->
                                 <h3>Services</h3>
-                                <section>
+                                <section data-step="2">
                                     <div class="section-title">
                                         <h4>Our Services</h4>
                                     </div>
@@ -135,7 +143,7 @@
 
                                 <!------Terms & Conditions------->
                                 <h3>Terms & Conditions</h3>
-                                <section>
+                                <section data-step="3">
                                     <div class="section-title">
                                         <h4>Terms & Conditions</h4>
                                     </div>
@@ -224,7 +232,7 @@
                                 </section>
 
                                 <h3>Payment Options</h3>
-                                <section>
+                                <section data-step="4">
                                     <div class="section-title">
                                         <h4>Backup Payment Method</h4>
                                     </div>
