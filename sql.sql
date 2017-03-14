@@ -104,6 +104,7 @@ ALTER TABLE `states_postcodes`
 --
 ALTER TABLE `states_postcodes`
   MODIFY `id` int(2) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;  
+
 /* Key for post:
 9b434eba-e278-4522-a6ac-5ef14e1fb18d
 */
@@ -143,3 +144,34 @@ ALTER TABLE `leads_delivery` ADD `open_time` INT(10) UNSIGNED NULL DEFAULT NULL 
 ALTER TABLE `leads_rejection` ADD `decline_reason` VARCHAR(500) NULL DEFAULT NULL AFTER `note`;# Затронуто 3722 строки.
 
  */
+ 
+ 
+ /*Clients INFO*/
+ 
+ ALTER TABLE `clients` ADD `address` VARCHAR(255) NULL DEFAULT NULL AFTER `phone`;
+ 
+ LTER TABLE `clients` ADD `abn` VARCHAR(255) NOT NULL AFTER `status`, ADD `authorised_person` VARCHAR(100) NOT NULL AFTER `abn`, ADD `position` VARCHAR(100) NOT NULL AFTER `authorised_person`, ADD `name_on_card` VARCHAR(100) NOT NULL AFTER `position`, ADD `credit_card_number` VARCHAR(50) NOT NULL AFTER `name_on_card`, ADD `expires_mm` INT NOT NULL AFTER `credit_card_number`, ADD `expires_yy` INT NOT NULL AFTER `expires_mm`;
+ 
+ ALTER TABLE `clients` ADD `cvc` INT NOT NULL AFTER `expires_yy`;
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

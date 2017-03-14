@@ -68,7 +68,11 @@
         { 'bSortable': false, 'aTargets': [ 4,5,6 ] }
       ],
       "order": [[ 0, "desc" ]],
-      "oLanguage": {
+      "aLengthMenu": [
+        [100, 200, -1],
+        [100, 200, "All"]
+    ],
+        "oLanguage": {
         "sInfoFiltered": ""
       }
     });
