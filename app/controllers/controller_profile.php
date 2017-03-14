@@ -86,7 +86,7 @@ class Controller_Profile extends Controller {
       echo '</form>';
     }
   }
-
+  
   public function action_UpdateProfileSuccess(){
     $chekedPOST = $this->model->checkdata($_POST);
     $id = $chekedPOST["id"];

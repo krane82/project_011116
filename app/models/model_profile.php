@@ -19,13 +19,14 @@ class Model_Profile extends Model {
             'weekly' => 'Weekly caps'
       );
 
-  public function UserChangeNotif($p){
+  public function UserChangeNotif($p, $before=''){
     $profile = '<h2>Client "'.$p["campaign_name"].'" have change their profile information</h2>';
     $profile .= "<table>";
-    // prepeare info 
+    // prepeare info
+    $profile .= '<tr>';
     foreach ($p as $k => $v) {
       if( $k == "id" || $k == "lead_cost" || $k == "xero_id" || $k == "xero_name" ){
-        // blanc]
+        // blank
       }elseif ($k=="password") {
           $profile.= "<tr>";
           $profile.= "<td>".$this->form_keys["$k"]."</td>";
