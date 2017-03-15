@@ -37,23 +37,12 @@ ADD `TAS` int(11) DEFAULT NULL,
 ADD `VIC` int(11) DEFAULT NULL,
 ADD `WA` int(11) DEFAULT NULL
 
--- phpMyAdmin SQL Dump
--- version 4.4.15.5
--- http://www.phpmyadmin.net
---
--- Хост: 127.0.0.1:3306
--- Время создания: Мар 09 2017 г., 19:17
--- Версия сервера: 5.5.48
--- Версия PHP: 5.5.33
+
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
---
--- База данных: `project007`
---
 
--- --------------------------------------------------------
 
 --
 -- Структура таблицы `states_postcodes`
@@ -150,13 +139,15 @@ ALTER TABLE `leads_rejection` ADD `decline_reason` VARCHAR(500) NULL DEFAULT NUL
  
  ALTER TABLE `clients` ADD `address` VARCHAR(255) NULL DEFAULT NULL AFTER `phone`;
  
- LTER TABLE `clients` ADD `abn` VARCHAR(255) NOT NULL AFTER `status`, ADD `authorised_person` VARCHAR(100) NOT NULL AFTER `abn`, ADD `position` VARCHAR(100) NOT NULL AFTER `authorised_person`, ADD `name_on_card` VARCHAR(100) NOT NULL AFTER `position`, ADD `credit_card_number` VARCHAR(50) NOT NULL AFTER `name_on_card`, ADD `expires_mm` INT NOT NULL AFTER `credit_card_number`, ADD `expires_yy` INT NOT NULL AFTER `expires_mm`;
+ ALTER TABLE `clients` ADD `abn` VARCHAR(255) NOT NULL AFTER `status`, ADD `authorised_person` VARCHAR(100) NOT NULL AFTER `abn`, ADD `position` VARCHAR(100) NOT NULL AFTER `authorised_person`, ADD `name_on_card` VARCHAR(100) NOT NULL AFTER `position`, ADD `credit_card_number` VARCHAR(50) NOT NULL AFTER `name_on_card`, ADD `expires_mm` INT NOT NULL AFTER `credit_card_number`, ADD `expires_yy` INT NOT NULL AFTER `expires_mm`;
  
  ALTER TABLE `clients` ADD `cvc` INT NOT NULL AFTER `expires_yy`;
  
+ ALTER TABLE `clients` CHANGE `abn` `abn` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, CHANGE `authorised_person` `authorised_person` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, CHANGE `position` `position` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, CHANGE `name_on_card` `name_on_card` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, CHANGE `credit_card_number` `credit_card_number` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, CHANGE `expires_mm` `expires_mm` INT(11) NULL DEFAULT NULL, CHANGE `expires_yy` `expires_yy` INT(11) NULL DEFAULT NULL, CHANGE `cvc` `cvc` INT(11) NULL DEFAULT NULL;
  
- 
- 
+
+ALTER TABLE `leads_lead_fields_rel` CHANGE `address` `address` VARCHAR(120)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT NULL;
+
  
  
  
