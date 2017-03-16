@@ -104,7 +104,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $sql .= ' LEFT JOIN  `campaigns` as c ON c.id = l.campaign_id';
     $sql .= ' WHERE 1=1';
     $sql .= ' AND '. $data;
-    if ($campaign_id) {
+    if($campaign_id){
       $sql.= ' AND l.campaign_id = '.$campaign_id;
     }
     if ($state){
@@ -336,8 +336,9 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     // echo $this->formStatView($ds_beg, 'users', 'getDistributed');
     if(!empty($_POST["start"])) {
       $uq = http_build_query(array(
-        'start' => strtotime($_REQUEST["start"]),
-        'end' => strtotime($_REQUEST["end"]) + 86400
+        'start'   => strtotime($_REQUEST["start"]),
+        'end'     => strtotime($_REQUEST["end"]) + 86400,
+        'client'  => $_REQUEST["client"]
       ));
       echo "<div class='clearfix'></div><a href='downloadAcceptedRejected?$uq' class='btn btn-primary'>Download Accepted or Rejected leads</a>";
     }
