@@ -80,7 +80,7 @@
      '<p>Choose your rejection reason: </p>' +
      '<label><input type="radio" name="reason" value="1" required> Outside of nominated area service (2 days to reject)</label><br>'+
      '<label><input type="radio" name="reason" value="2"> Duplicate (2 days to reject)</label><br>'+
-     '<label><input type="radio" name="reason" value="3"> Incorrect Phone Number (2 days to reject)</label><br>'+
+     '<label><input type="radio" name="reason" value="3"> Incorrect Phone Number (7 days to reject)</label><br>'+
      '<label><input type="radio" name="reason" value="4"> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>'+
      '<label><input type="radio" name="reason" value="5"> Customer is wanting Off Grid System (7 days to reject)</label><br>'+
      '<label><input type="radio" name="reason" value="6"> Unable to contact withing 7 days (7 days to reject)</label><br>'+
@@ -90,8 +90,8 @@
         '<p>Choose your rejection reason: </p>' +
         '<label><input type="radio" name="reason" value="1" disabled> Outside of nominated area service (2 days to reject)</label><br>'+
         '<label><input type="radio" name="reason" value="2" disabled> Duplicate (2 days to reject)</label><br>'+
-        '<label><input type="radio" name="reason" value="3" disabled> Incorrect Phone Number (2 days to reject)</label><br>'+
-        '<label><input type="radio" name="reason" value="4"required> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>'+
+        '<label><input type="radio" name="reason" value="3" required> Incorrect Phone Number (7 days to reject)</label><br>'+
+        '<label><input type="radio" name="reason" value="4"> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>'+
         '<label><input type="radio" name="reason" value="5"> Customer is wanting Off Grid System (7 days to reject)</label><br>'+
         '<label><input type="radio" name="reason" value="6"> Unable to contact withing 7 days (7 days to reject)</label><br>'+
         '<textarea style="width:100%" rows="3" name="notes" required></textarea>' +
