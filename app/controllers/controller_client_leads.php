@@ -14,7 +14,10 @@ class Controller_client_leads extends Controller
     session_start();
     if ( $_SESSION['user'] ==  md5('user')) {
       $this->view->generate('client_leads_view.php', 'client_template_view.php', $data);
-    } else {
+    } else if ( $_SESSION['user'] ==  md5('manager')) {
+    header('location:/manager');
+    }
+    else {
       // session_destroy();
       $this->view->generate('danied_view.php', 'client_template_view.php', $data);
       //Route::ErrorPage404();

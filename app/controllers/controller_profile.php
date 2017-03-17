@@ -15,6 +15,12 @@ class Controller_Profile extends Controller {
       $data["profile"] = $this->model->get_profile_data($id);
       $this->view->generate('profile_view.php', 'client_template_view.php', $data);
     }
+    else if ( $_SESSION['user'] == md5('manager'))
+    {
+      $id = $_SESSION["user_id"];
+      $data["profile"] = $this->model->get_profile_data($id);
+      $this->view->generate('profile_view.php', 'client_template_view.php', $data);
+    }
     else
     {
       session_destroy();
