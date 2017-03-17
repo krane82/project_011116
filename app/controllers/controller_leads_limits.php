@@ -9,14 +9,30 @@ class Controller_Leads_Limits
 
     function action_index()
     {
+    $data["body_class"] = "page-header-fixed";
+    session_start();
+    if ($_SESSION['admin'] == md5('admin')) {
         $data = $this->model->getLimits();
         $this->view->generate('leads_limits.php', 'template_view.php', $data);
+    } else {
+        session_destroy();
+        $this->view->generate('danied_view.php', 'client_template_view.php', $data);
+        //Route::ErrorPage404();
+    }
     }
 
     function action_matches()
     {
-        $data = $this->model->getMaches();
-        $this->view->generate('matches.php', 'template_view.php', $data);
+        $data["body_class"] = "page-header-fixed";
+        session_start();
+        if ($_SESSION['admin'] == md5('admin')) {
+            $data = $this->model->getMaches();
+            $this->view->generate('matches.php', 'template_view.php', $data);
+        }   else {
+            session_destroy();
+            $this->view->generate('danied_view.php', 'client_template_view.php', $data);
+            //Route::ErrorPage404();
+        }
     }
 
     function action_matchesAjax()

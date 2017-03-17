@@ -108,13 +108,15 @@ class Model_Campaigns extends Model {
     return $table;
     }
   }
-  public function getPlans() {
+  public function getPlans($id=false) {
     $con = $this->db();
-    $start = ($_POST["start"])?strtotime($_POST["start"]):strtotime(date('Y-m-01'));
-    $end = ($_POST["end"])?strtotime($_POST["end"]) + 86400:time();
+    $start = ($_POST["st"])?strtotime($_POST["st"]):strtotime(date('Y-m-01'));
+    $end = ($_POST["en"])?strtotime($_POST["en"]) + 86400:time();
     $sql = "SELECT ca.name, le.id, rel.state from campaigns as ca LEFT JOIN leads le on ca.id=le.campaign_id LEFT JOIN leads_lead_fields_rel rel on le.id=rel.id WHERE le.datetime between '".$start."' AND '".$end."'";
     //var_dump($sql);
+    if($id) $sql.=" AND ca.id='".$id."'";
     $sql1="select * from campaigns";
+    if($id) $sql1.=" WHERE id='".$id."'";
     $res1=$con->query($sql1);
     $res=$con->query($sql);
     $result=array();
@@ -132,6 +134,7 @@ class Model_Campaigns extends Model {
     }
     $con->close();
     return $result;
+    //return $sql;
   }
 
   public function plans_update(){

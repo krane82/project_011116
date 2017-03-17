@@ -25,23 +25,27 @@ GROUP BY le.id";
 	}
 return $result;
 }
-public function getCodeAjax()
+public function getCodeAjax($user=false)
 {
-    $start = strtotime($_POST["st"]);
-    $end = strtotime($_POST["en"]) + 86400;
+    $start = ($_POST["st"])?strtotime($_POST["st"]):strtotime(date('Y-m-01'));
+    $end = ($_POST["en"])?strtotime($_POST["en"]) + 86400:time();
+//    $start = strtotime($_POST["st"]);
+//    $end = strtotime($_POST["en"]) + 86400;
 	$con = $this->db();
 	$sql="select le.id, le.state, le.postcode, 
 	count(led.id) from leads_lead_fields_rel le LEFT JOIN leads lea 
 	on le.id=lea.id LEFT JOIN leads_delivery led on le.id=led.lead_id 
-	where lea.datetime between '".$start."' and '".$end."' 
-GROUP BY le.id";
+	where lea.datetime between '".$start."' and '".$end."'";
+    if($user) $sql.=" and lea.campaign_id='".$user."'";
+    $sql.=" GROUP BY le.id";
     $result=array();
     $res=$con->query($sql);
-    while($row=$res->fetch_assoc())
-    {
-	$result[$row['state']][$row['count(led.id)']]['count']++;
-    $result[$row['state']][$row['count(led.id)']]['codes'][$row['postcode']]++;
-	}
+   // if ($res) {
+        while ($row = $res->fetch_assoc()) {
+            $result[$row['state']][$row['count(led.id)']]['count']++;
+            $result[$row['state']][$row['count(led.id)']]['codes'][$row['postcode']]++;
+        }
+  //  }
 return $result;
 }
 }
