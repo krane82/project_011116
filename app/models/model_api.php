@@ -292,6 +292,7 @@ class Model_Api extends Model {
       {
         if ($code>=$key1[0] && $code<=$key1[1])
         {return $item;}
+        return 'unmatched';
       }
 
     }
