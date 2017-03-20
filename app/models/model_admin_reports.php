@@ -104,7 +104,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $sql .= ' LEFT JOIN  `campaigns` as c ON c.id = l.campaign_id';
     $sql .= ' WHERE 1=1';
     $sql .= ' AND '. $data;
-    if ($campaign_id) {
+    if($campaign_id){
       $sql.= ' AND l.campaign_id = '.$campaign_id;
     }
     if ($state){
@@ -193,6 +193,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
 
     $sql = 'SELECT lf.id as `id`, lf.full_name as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`ld`.`timedate`), "%e %b %Y" ) AS `Date`, c.campaign_name as `Client Name`,';
     $sql .= ' `lf`.`address`, `lf`.`city`,  `lf`.`state`,  `lf`.`postcode`, `lf`.`suburb`, `lf`.`system_size`, `lf`.`roof_type`, `lf`.`electricity`, `lf`.`house_age`, `lf`.`house_type`, `lf`.`system_for`, `lf`.`note`';
+    $sql .= ', DATE_FORMAT(FROM_UNIXTIME(`ld`.`open_time`), "%e %b %Y" ) as `Open time` ';
     $sql .= 'FROM `leads_delivery` as ld ';
     $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
     $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
@@ -219,6 +220,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       $distributed[] = $col;
 
       while($line = $res->fetch_assoc()){
+        if($line['Open time']=='1 Jan 1970') $line['Open time']='Still not open :(';
         $distributed[] = $line;
       }
     } else {
@@ -336,8 +338,9 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     // echo $this->formStatView($ds_beg, 'users', 'getDistributed');
     if(!empty($_POST["start"])) {
       $uq = http_build_query(array(
-        'start' => strtotime($_REQUEST["start"]),
-        'end' => strtotime($_REQUEST["end"]) + 86400
+        'start'   => strtotime($_REQUEST["start"]),
+        'end'     => strtotime($_REQUEST["end"]) + 86400,
+        'client'  => $_REQUEST["client"]
       ));
       echo "<div class='clearfix'></div><a href='downloadAcceptedRejected?$uq' class='btn btn-primary'>Download Accepted or Rejected leads</a>";
     }

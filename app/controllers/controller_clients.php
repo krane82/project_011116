@@ -166,7 +166,7 @@ class Controller_CLients extends Controller {
       $status = 1;
       $email = $_POST["email"];
       $full_name = $_POST["full_name"];
-      $lead_cost = (int)$_POST["lead_cost"];
+      $lead_cost = $_POST["lead_cost"];
       $password = md5($_POST["password"]);
       $xero_id = $_POST["xero_id"];
       $xero_name = $_POST["xero_name"];
@@ -249,7 +249,7 @@ class Controller_CLients extends Controller {
       $status = 1;
       $email = $_POST["email"];
       $full_name = $_POST["full_name"];
-      $lead_cost = (int)$_POST["lead_cost"];
+      $lead_cost = $_POST["lead_cost"];
       $password = md5($_POST["password"]);
       $xero_id = $_POST["xero_id"];
       $xero_name = $_POST["xero_name"];
