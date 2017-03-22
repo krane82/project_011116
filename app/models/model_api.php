@@ -126,7 +126,7 @@ class Model_Api extends Model {
       $sql.= ' FROM `clients_criteria` as cc';
       $sql.= ' LEFT JOIN `clients` as c ON cc.id = c.id';
       if(!empty($post["state"]) AND !empty($post["postcode"])) {
-        $sql .= ' WHERE ( cc.states_filter LIKE "%' . $post["state"] . '%" OR cc.postcodes LIKE "%'.$post["postcode"].'%" )';
+        $sql .= ' WHERE ( cc.states_filter LIKE "%' . $post["state"] . '%" AND cc.postcodes LIKE "%'.$post["postcode"].'%" )';
         // } else if(!empty($post["state"])) {
         //   $sql .= ' WHERE cc.states_filter LIKE "%' . $post["state"] . '%"';
       } else if(!empty($post["postcode"])){
@@ -292,6 +292,7 @@ class Model_Api extends Model {
       {
         if ($code>=$key1[0] && $code<=$key1[1])
         {return $item;}
+        return 'Unmatched';
       }
 
     }
