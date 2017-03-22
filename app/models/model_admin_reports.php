@@ -400,6 +400,8 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $start = $st->getTimestamp();
     $st->modify("+14 days");
     $end = $st->getTimestamp();
+    // var_dump($end);
+    // exit();
 //    $state = $_REQUEST["state"];
     if( $now < $end ) {
       // do nothing
@@ -410,6 +412,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
  
     $begs = date('Y-m-d', $start);
     $ends = date('Y-m-d', $end);
+
    
     $sql = 'SELECT COUNT(*) as amount, SUM(c.lead_cost) as total_cost  FROM `leads_delivery` as ld ';
     $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
@@ -450,6 +453,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
 //    if (!($client == 0)) {
 //      $sqlDistributed .= ' AND ld.client_id =' . $client;
 //    }
+// var_dump($sqlDistributed);
 
     $res = $con->query($sqlDistributed);
     if($res){
@@ -500,8 +504,12 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     if($res){
       $result = $res->fetch_assoc();
     }
+
+
     $average = round($result['client_cost'] / $result['amount'], 2);
 
+    $average_sales = round($distributed["amount"] / $CountLids['amount'], 2);
+    
 
     $rejectedP = $rejected["amount"] / $distributed["amount"];
     $ds =  $distributed["amount"] . " leads <br>Distributed";
@@ -514,16 +522,27 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $coastld = $CoastLids['cost']. " $<br>Total cost of<br> leads generated ";
     $totalcost = $resCoast. " $<br> Total income of<br>leads distributed ";
     $totalAverage = $average. " $<br>Average sales<br>per lead";
+    $av_sel = $average_sales . " Leads<br>Received";
     echo $mes;
     echo $this->formStatView($ds, 'users', 'getDistributed');
     echo $this->formStatView($acs, 'check', 'getAccepted');
     echo $this->formStatView($ras, 'window-close', 'getRejected');
     echo $this->formStatView($rejectedPercent, 'window-close', 'getRejected');
     echo $this->formStatView($rev, 'shopping-cart');
+
+    // echo $this->formStatView($countld, 'window-close', 'getRejected');
+    // echo $this->formStatView($coastld, 'window-close', 'getRejected');
+    // echo $this->formStatView($totalcoast, 'window-close', 'getRejected');
+    // echo $this->formStatView($totalAverage, 'window-close', 'getRejected');
+
+
     echo $this->formStatView($countld, 'users');
     echo $this->formStatView($coastld, '');
     echo $this->formStatView($totalcost, 'shopping-cart');
     echo $this->formStatView($totalAverage, 'user');
+    echo $this->formStatView($av_sel, 'user');
+    
+
   }
 
 

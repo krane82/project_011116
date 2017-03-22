@@ -96,8 +96,8 @@ class Model_Admin extends Model {
     $sql .= ' ORDER BY revenue DESC, percentage ASC, lead_cost DESC';
 
     // print($sql); die;
-
-
+// var_dump($sql);
+// exit();
     $con  = $this->db();
     $data = array();
 
@@ -107,6 +107,7 @@ class Model_Admin extends Model {
       while($result = $res->fetch_assoc()){
         $data[] = $result;
       }
+    
       return $data;
     }
     return FALSE;
