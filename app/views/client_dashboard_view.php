@@ -1,4 +1,4 @@
-<?php echo "<h3>How ya goin, ".$_COOKIE['user_name'] . "?</h3>"; ?>
+<?php //echo "<h3>How ya goin, ".$_SESSION['user_name'] . "?</h3>"; ?>
 
 
 <div class="dayle"></div><!-- .dayle -->

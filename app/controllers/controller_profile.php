@@ -11,7 +11,13 @@ class Controller_Profile extends Controller {
     session_start();
     if ( $_SESSION['user'] == md5('user'))
     {
-      $id = $_COOKIE["user_id"];
+      $id = $_SESSION["user_id"];
+      $data["profile"] = $this->model->get_profile_data($id);
+      $this->view->generate('profile_view.php', 'client_template_view.php', $data);
+    }
+    else if ( $_SESSION['user'] == md5('manager'))
+    {
+      $id = $_SESSION["user_id"];
       $data["profile"] = $this->model->get_profile_data($id);
       $this->view->generate('profile_view.php', 'client_template_view.php', $data);
     }
@@ -23,9 +29,10 @@ class Controller_Profile extends Controller {
   }
 
   function action_UpdateProfile(){
+    session_start();
     $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-    if($id = $_COOKIE["user_id"]){
-      $sql = ' SELECT clients.id, users.password, clients.email, clients.campaign_name, clients.full_name, clients.phone, clients.city, clients.state, clients.country, clients.lead_cost, clients_criteria.postcodes, clients_criteria.states_filter, clients_billing.xero_id, clients_billing.xero_name, clients_criteria.monthly ,clients_criteria.weekly';
+    if($id = $_SESSION["user_id"]){
+      $sql = 'SELECT clients.id, users.password, clients.email, clients.campaign_name, clients.full_name, clients.phone, clients.city, clients.state, clients.country, clients.lead_cost, clients_criteria.postcodes, clients_criteria.states_filter, clients_billing.xero_id, clients_billing.xero_name, clients_criteria.monthly ,clients_criteria.weekly';
       $sql.= ' FROM `clients`';
       $sql.= ' LEFT JOIN `clients_billing` ON clients.id = clients_billing.id';
       $sql.= ' LEFT JOIN `clients_criteria` ON clients.id = clients_criteria.id';
@@ -54,7 +61,7 @@ class Controller_Profile extends Controller {
       echo "<form action='" .__HOST__. "/profile/UpdateProfileSuccess' method='post'>";
       while($row = $res->fetch_assoc()) {
         foreach ($row as $k=>$v) {
-          if($k == "id"){
+          if ($k == "id"){
             echo "<input type='hidden' name='$k' value='$v' />";
           } elseif($k == "lead_cost" || $k == "xero_id" || $k == "xero_name" ) {
             // blank - only admin can change
@@ -63,10 +70,15 @@ class Controller_Profile extends Controller {
             echo "<label for='$k'>Password</label>";
             echo "<input type='password' class=\"form-control\" id='$k' name='$k' value='' placeholder='Leave blank if you dont wanna change it'/>";
             echo "</div>";
+          } elseif ($k == "states_filter" ){
+            echo "<div class='form-group'>";
+            echo "<label for='$k'>". $form_keys["$k"] ."</label>";
+            echo '<input class="form-control" type="text" name="'.$k.'" value="'.$v.'" readonly="readonly" > ' ;
+            echo "</div>";
           } elseif ($k == "postcodes") {
             echo "<div class='form-group'>";
             echo "<label for='$k'>".$form_keys["$k"]."</label>";
-            echo "<textarea class='form-control' name='postcodes' type='text'>$v</textarea>";
+            echo "<textarea class='form-control' name='postcodes' type='text' readonly=\"readonly\">$v</textarea>";
             echo "</div>";
           } else {
             echo "<div class='form-group'>";
@@ -80,7 +92,7 @@ class Controller_Profile extends Controller {
       echo '</form>';
     }
   }
-
+  
   public function action_UpdateProfileSuccess(){
     $chekedPOST = $this->model->checkdata($_POST);
     $id = $chekedPOST["id"];
@@ -133,13 +145,8 @@ class Controller_Profile extends Controller {
 
     if($res1 && $res2 && $res3 ) {
       echo $this->model->UserChangeNotif($chekedPOST);
-      // exit();
-      header('Location: /profile');
+      redirect('/profile');
     } else {
-      var_dump($id);
-      var_dump($res1);
-      var_dump($res2);
-      var_dump($res3);
       echo "<script>alert('DB error')</script>";
       $con->close();
       header('Location: /profile');

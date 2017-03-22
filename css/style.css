@@ -1,3 +1,14 @@
+/* fix width */
+@media (min-width: 1200px){
+  .page-content.container .navbar {
+    width: 95%;
+  }
+  .container {
+    width: 95%;
+  }
+}
+
+
 .addsuccess.bg-success, .success {
   margin: 10px 0;
 }
@@ -6,6 +17,11 @@
 }
 #getallleads{
   width: 40%;
+}
+
+.navbar .logo-box .logo-text {
+  line-height: 35px !important;
+  padding: 4px 15px !important;
 }
 
 .addsuccess.bg-success p, .success p{

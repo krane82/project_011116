@@ -24,6 +24,33 @@ class Controller_Campaigns extends Controller {
     }
   }
 
+  function action_planing() {
+    $data=$this->model->getPlans();
+    $this->view->generate('planing_view.php', 'template_view.php', $data);
+  }
+
+  function action_planing_ajax()
+  {
+    $data = $this->model->getPlans();
+    $arr=array();
+    foreach ($data as $item => $key) {
+      $val='<td>' . $item . '</td>';
+      $val.='<td style="width:6%">' . $key['NSW']['count'] . '</td><td style="width:6%"><input type="text" maxlength="3" class="NSW" style="width:2em" value="' . $key['NSW']['plan'] . '"></td>';
+      $val.='<td style="width:6%">' . $key['QLD']['count'] . '</td><td style="width:6%"><input type="text" maxlength="3" class="QLD" style="width:2em" value="' . $key['QLD']['plan'] . '"></td>';
+      $val.='<td style="width:6%">' . $key['SA']['count'] . '</td><td style="width:6%"><input type="text" maxlength="3" class="SA" style="width:2em" value="' . $key['SA']['plan'] . '"></td>';
+      $val.='<td style="width:6%">' . $key['TAS']['count'] . '</td><td style="width:6%"><input type="text" maxlength="3" class="TAS" style="width:2em" value="' . $key['TAS']['plan'] . '"></td>';
+      $val.='<td style="width:6%">' . $key['VIC']['count'] . '</td><td style="width:6%"><input type="text" maxlength="3" class="VIC" style="width:2em" value="' . $key['VIC']['plan'] . '"></td>';
+      $val.='<td style="width:6%">' . $key['WA']['count'] . '</td><td style="width:6%"><input type="text" maxlength="3" class="WA" style="width:2em" value="' . $key['WA']['plan'] . '"></td>';
+      $val.='</td>';
+      $arr[]=$val;
+    }
+    print json_encode($arr);
+  }
+
+  function action_plans_update() {
+  $this->model->plans_update();
+  }
+  
   function action_logout()
   {
     session_start();

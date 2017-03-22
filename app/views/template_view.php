@@ -1,41 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lead Point</title>
+  <title>Energy Smart</title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <meta charset="UTF-8">
-  <meta name="description" content="Lead Point system" />
+  <meta name="description" content="Energy Smart system" />
 
-  <!-- Styles -->
-  <?php
-    $host = 'http://' . $_SERVER['HTTP_HOST']; // для правильной подгрузки стилей и скриптов
-  ?> 
 <!--  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>-->
-  <link href="<?php echo $host; ?>/assets/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet" type="text/css"//>
-  <link href="<?php echo $host; ?>/assets/plugins/uniform/css/uniform.default.min.css" rel="stylesheet" type="text/css"//>
-  <link href="<?php echo $host; ?>/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/plugins/fontawesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/plugins/offcanvasmenueffects/css/menu_cornerbox.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/plugins/waves/waves.min.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
-  <link rel="stylesheet" href="<?php echo $host; ?>/assets/plugins/datatables/css/jquery.datatables.min.css">
+  <link href="<?php echo __HOST__; ?>/assets/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet" type="text/css"//>
+  <!-- <link href="<?php echo __HOST__; ?>/assets/plugins/uniform/css/uniform.default.min.css" rel="stylesheet" type="text/css"//> -->
+  <link href="<?php echo __HOST__; ?>/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/plugins/fontawesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/plugins/offcanvasmenueffects/css/menu_cornerbox.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/plugins/waves/waves.min.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="<?php echo __HOST__; ?>/assets/plugins/datatables/css/jquery.datatables.min.css">
   <!-- Theme Styles -->
-  <link href="<?php echo $host; ?>/assets/css/modern.min.css" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/css/themes/green.css" class="theme-color" rel="stylesheet" type="text/css"/>
-  <link href="<?php echo $host; ?>/assets/css/custom.css" rel="stylesheet" type="text/css"/>
-  <link rel="stylesheet" href="<?php echo $host; ?>/assets/plugins/bootstrap-datepicker/css/datepicker.css">
-  <link rel="stylesheet" href="<?php echo $host; ?>/css/bootstrap-switch.min.css">
+  <link href="<?php echo __HOST__; ?>/assets/css/modern.min.css" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/css/themes/green.css" class="theme-color" rel="stylesheet" type="text/css"/>
+  <link href="<?php echo __HOST__; ?>/assets/css/custom.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="<?php echo __HOST__; ?>/assets/plugins/bootstrap-datepicker/css/datepicker.css">
+  <link rel="stylesheet" href="<?php echo __HOST__; ?>/css/bootstrap-switch.min.css">
   <style>
     div.checker {
       display: none;
     }
   </style>
-  <link rel="stylesheet" href="<?php echo $host; ?>/css/style.css" type="text/css" />
-  <script src="<?php echo $host; ?>/assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
-  <script src="<?php echo $host; ?>/assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
+  <link rel="stylesheet" href="<?php echo __HOST__; ?>/css/style.css" type="text/css" />
+  <script src="<?php echo __HOST__; ?>/assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
+  <script src="<?php echo __HOST__; ?>/assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -46,9 +42,9 @@
 </head>
 <body class="<?php echo $body_class; ?>">
 <!-- Javascripts -->
-<script src="<?php echo $host; ?>/assets/plugins/jquery/jquery-2.1.4.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/datatables/js/jquery.datatables.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/jquery/jquery-2.1.4.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/datatables/js/jquery.datatables.min.js"></script>
 <div class="overlay"></div>
 <form class="search-form" action="#" method="GET">
   <div class="input-group">
@@ -67,11 +63,11 @@
         </a>
       </div>
       <div class="logo-box">
-        <a href="admin" class="logo-text"><span>Lead Point</span></a>
+        <a href="admin" class="logo-text"><span>Energy Smart</span></a>
       </div><!-- Logo Box -->
-      <div class="search-button">
-        <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>
-      </div>
+<!--      <div class="search-button">-->
+<!--        <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>-->
+<!--      </div>-->
       <div class="topmenu-outer">
         <div class="top-menu">
           <ul class="nav navbar-nav navbar-left">
@@ -163,9 +159,9 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li>
-              <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>
-            </li>
+<!--            <li>-->
+<!--              <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>-->
+<!--            </li>-->
             <li>
               <a href="/admin/logout" class="log-out waves-effect waves-button waves-classic">
                 <span><i class="fa fa-sign-out m-r-xs"></i>Log out</span>
@@ -178,26 +174,25 @@
   </div><!-- Navbar -->
   <div class="page-sidebar sidebar">
     <div class="page-sidebar-inner slimscroll">
-      <?php if(isset($_COOKIE["user_name"])) { ?>
+      <?php if(isset($_SESSION["user_name"])) { ?>
       <div class="sidebar-header">
         <div class="sidebar-profile">
           <a href="javascript:void(0);" id="profile-menu-link">
             <div class="sidebar-profile-details">
               <span>Hello,</span>
-              <span><?php echo $_COOKIE["user_name"]; ?><br><small></small></span>
+              <span><?php echo $_SESSION["user_name"]; ?><br><small></small></span>
             </div>
           </a>
         </div>
       </div>
       <?php }  else echo "<br>"; ?>
       <ul class="menu accordion-menu">
-
         <li><a href="/admin/dashboard" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>
         <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Clients</p><span class="arrow"></span></a>
           <ul class="sub-menu">
           <li><a href="/clients/">Clients</a>
-          <li><a href="<?php echo __HOST__; ?>/Leads_Limits/">Clients Caps</a> </li>
-          <li><a href="<?php echo __HOST__; ?>/Leads_Limits/matches">PostCodes Matches</a></li>
+          <li><a href="<?php echo __HOST__; ?>/leads_limits/">Clients Caps</a> </li>
+          <li><a href="<?php echo __HOST__; ?>/leads_limits/matches">PostCodes Matches</a></li>
           </ul>
           <!--          <ul class="sub-menu">-->
 <!--            <li><a href="ui-alerts">Alerts</a></li>-->
@@ -205,21 +200,30 @@
 <!--            <li><a href="ui-icons">Icons</a></li>-->
 <!--          </ul>-->
         </li>
-        <li><a href="/campaigns/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-briefcase"></span><p>Campaigns</p></a></li>
 
+        <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-briefcase"></span><p>Campaigns</p><span class="arrow"></span></a>
+          <ul class="sub-menu">
+          <li><a href="/campaigns/">Campaigns Settings</a></li>
+          <li><a href="/campaigns/planing">Affiliates Planning</a></li>
+          </ul>
         <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-th"></span><p>Leads</p><span class="arrow"></span></a>
           <ul class="sub-menu">
             <li><a href="<?php echo __HOST__; ?>/leads/">Leads Delivery</a></li>
             <li><a href="<?php echo __HOST__; ?>/approvals/">Leads Approvals</a></li>
+<<<<<<< HEAD
 
             <li><a href="<?php echo __HOST__; ?>/rerouting/">Lead Rerouting</a></li>
 
             <li><a href="<?php echo __HOST__; ?>/leads/distribution/">Leads distribution</a></li>
+=======
+            <li><a href="<?php echo __HOST__; ?>/leads/distribution/">Leads Distribution</a></li>
+>>>>>>> 67fa8c067e6abc6e4c4afc62457dace8bf164616
           <li><a href="<?php echo __HOST__; ?>/penetration/">Penetration</a></li>
 
           </ul>
         </li>
         <li><a href="<?php echo __HOST__; ?>/admin_reports/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-stats"></span><p>Reports</p></a>
+        <li><a href="<?php echo __HOST__; ?>/settings/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-wrench"></span><p>Settings</p></a>
 <!--          <ul class="sub-menu">-->
 <!--            <li><a href="charts-sparkline">Sparkline</a></li>-->
 <!--            <li><a href="charts-rickshaw">Rickshaw</a></li>-->
@@ -250,7 +254,7 @@
       </div><!-- Row -->
     </div><!-- Main Wrapper -->
     <div class="page-footer">
-      <p class="no-s">2016 &copy; Lead Point System.</p>
+      <p class="no-s">&copy; 2012-2017 Energy Smart</p>
     </div>
   </div><!-- Page Inner -->
 </main><!-- Page Content -->
@@ -313,23 +317,23 @@
 <div class="cd-overlay"></div>
 
 
-<script src="<?php echo $host; ?>/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/pace-master/pace.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/jquery-blockui/jquery.blockui.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/switchery/switchery.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/uniform/jquery.uniform.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/offcanvasmenueffects/js/classie.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/offcanvasmenueffects/js/main.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/waves/waves.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/3d-bold-navigation/js/main.js"></script>
-<script src="<?php echo $host; ?>/assets/js/modern.min.js"></script>
-<script src="<?php echo $host; ?>/js/bootstrap-switch.min.js"></script>
-<script src="<?php echo $host; ?>/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/pace-master/pace.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/jquery-blockui/jquery.blockui.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/switchery/switchery.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/uniform/jquery.uniform.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/offcanvasmenueffects/js/classie.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/offcanvasmenueffects/js/main.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/waves/waves.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/3d-bold-navigation/js/main.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/js/modern.min.js"></script>
+<script src="<?php echo __HOST__; ?>/js/bootstrap-switch.min.js"></script>
+<script src="<?php echo __HOST__; ?>/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script>
-    $(document).ready(function(){
-      $("select, input:radio, input:file").uniform();
-    });
+    // $(document).ready(function(){
+    //   $("select, input:radio, input:file").uniform();
+    // });
   </script>
 </body>
 </html>

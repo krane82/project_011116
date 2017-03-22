@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lead Point</title>
+  <title>Energy Smart</title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <meta charset="UTF-8">
-  <meta name="description" content="Lead Point system" />
+  <meta name="description" content="Energy Smart system" />
 
   <!-- Styles -->
   <?php
@@ -69,7 +69,7 @@
         </a>
       </div>
       <div class="logo-box">
-        <a href="admin" class="logo-text"><span>Lead Point</span></a>
+        <a href="admin" class="logo-text"><span>Energy Smart</span></a>
       </div><!-- Logo Box -->
       <div class="search-button">
         <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>
@@ -180,20 +180,20 @@
   </div><!-- Navbar -->
   <div class="page-sidebar sidebar">
     <div class="page-sidebar-inner slimscroll">
-      <?php if(isset($_COOKIE["user_name"])) { ?>
+      <?php if(isset($_SESSION["user_name"])) { ?>
       <div class="sidebar-header">
         <div class="sidebar-profile">
           <a href="javascript:void(0);" id="profile-menu-link">
             <div class="sidebar-profile-details">
               <span>Hello,</span>
-              <span><?php echo $_COOKIE["user_name"]; ?><br><small></small></span>
+              <span><?php echo $_SESSION["user_name"]; ?><br><small></small></span>
             </div>
           </a>
         </div>
       </div>
       <?php }  else echo "<br>"; ?>
       <ul class="menu accordion-menu">
-        <li><a href="<?php echo __HOST__; ?>/client/dashboard" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>
+<!--        <li><a href="--><?php //echo __HOST__; ?><!--/client/dashboard" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>-->
         <li><a href="<?php echo __HOST__; ?>/profile/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
 
         <!-- <li><a href="<?php // echo __HOST__; ?>/campaigns/" class="waves&#45;effect waves&#45;button"><span class="menu&#45;icon glyphicon glyphicon&#45;briefcase"></span><p>Campaigns</p></a> -->
@@ -224,7 +224,7 @@
       </div><!-- Row -->
     </div><!-- Main Wrapper -->
     <div class="page-footer">
-      <p class="no-s">2016 &copy; Lead Point System.</p>
+      <p class="no-s">&copy; 2012-2017 Energy Smart</p>
     </div>
   </div><!-- Page Inner -->
 </main><!-- Page Content -->

@@ -22,8 +22,9 @@ class Controller_Client extends Controller
 
   public function action_getAverageReports()
   {
+    session_start();
     $con = $this->db();
-    $client = $_COOKIE["user_id"];
+    $client = $_SESSION["user_id"];
     $timestamp = time();
     if(!empty($_POST["start"])){
       $start = strtotime($_POST["start"]);
@@ -77,8 +78,11 @@ class Controller_Client extends Controller
     if($res){
       $distributed = $res->fetch_assoc();
     }
-
-    $rejectedP = $rejected["amount"] / $distributed["amount"];
+    if(!$rejected["amount"]){
+      $rejectedP = 0;
+    } else {
+      $rejectedP = $rejected["amount"] / $distributed["amount"];
+    }
     $ds =  $distributed["amount"] . " leads <br>Distributed";
     $acs = $approved['amount']. " leads Accepted";
     $ras = $rejected["amount"] . " leads Rejected";

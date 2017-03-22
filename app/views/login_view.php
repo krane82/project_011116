@@ -4,7 +4,7 @@
 			<div class="row">
 				<div class="col-md-3 center">
 					<div class="login-box">
-						<p class="logo-name text-lg text-center">Lead Point</p>
+						<p class="logo-name text-lg text-center">Energy Smart</p>
 						<p class="text-center m-t-md">Please login into your account.</p>
 						<form class="m-t-md" action="" method="post">
 							<div class="form-group">
@@ -21,7 +21,7 @@
             <?php } elseif($login_status=="access_denied") { ?>
               <p style="color:red" class="text-center">Wrong login or password</p>
             <?php } ?>
-						<p class="text-center m-t-xs text-sm">2016 &copy; Lead Point.</p>
+						<p class="text-center m-t-xs text-sm">&copy; 2012-2017 Energy Smart</p>
 					</div>
 				</div>
 			</div><!-- Row -->

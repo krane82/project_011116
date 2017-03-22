@@ -9,14 +9,30 @@ class Controller_Leads_Limits
 
     function action_index()
     {
+    $data["body_class"] = "page-header-fixed";
+    session_start();
+    if ($_SESSION['admin'] == md5('admin')) {
         $data = $this->model->getLimits();
         $this->view->generate('leads_limits.php', 'template_view.php', $data);
+    } else {
+        session_destroy();
+        $this->view->generate('danied_view.php', 'client_template_view.php', $data);
+        //Route::ErrorPage404();
+    }
     }
 
     function action_matches()
     {
-        $data = $this->model->getMaches();
-        $this->view->generate('matches.php', 'template_view.php', $data);
+        $data["body_class"] = "page-header-fixed";
+        session_start();
+        if ($_SESSION['admin'] == md5('admin')) {
+            $data = $this->model->getMaches();
+            $this->view->generate('matches.php', 'template_view.php', $data);
+        }   else {
+            session_destroy();
+            $this->view->generate('danied_view.php', 'client_template_view.php', $data);
+            //Route::ErrorPage404();
+        }
     }
 
     function action_matchesAjax()
@@ -31,22 +47,17 @@ class Controller_Leads_Limits
         $primaryKey = 'id';
 
         $columns = array(
-            array('db' => 'le.postcode', 'dt' => 0, 'field' => 'postcode'),
-            array('db' => 'count(le.id)', 'dt' => 1, 'field' => 'count(le.id)'),
-<<<<<<< HEAD:app/controllers/controller_leads_limits.php
-            array('db' => 'led.lead_id', 'dt' => 2, 'field' => 'lead_id'),
-            array('db' => 'group_concat(cli.campaign_name)', 'dt' => 3, 'field' => 'group_concat(cli.campaign_name)')
-=======
-            array('db' => 'group_concat(cli.campaign_name)', 'dt' => 2, 'field' => 'group_concat(cli.campaign_name)'),
-			array('db' => 'led.lead_id', 'dt' => 3, 'field' => 'lead_id')
->>>>>>> 29d32cfdc8603ffe90272d1ab805182dd795e1a8:app/controllers/controller_Leads_Limits.php
+          array('db' => 'le.postcode', 'dt' => 0, 'field' => 'postcode'),
+          array('db' => 'count(le.id)', 'dt' => 1, 'field' => 'count(le.id)'),
+          array('db' => 'group_concat(cli.campaign_name)', 'dt' => 2, 'field' => 'group_concat(cli.campaign_name)'),
+          array('db' => 'led.lead_id', 'dt' => 3, 'field' => 'lead_id')
         );
 
         $sql_details = array(
-            'user' => DB_USER,
-            'pass' => DB_PASS,
-            'db' => DB_NAME,
-            'host' => DB_HOST
+          'user' => DB_USER,
+          'pass' => DB_PASS,
+          'db' => DB_NAME,
+          'host' => DB_HOST
         );
 
         //$joinQuery = "FROM `{$table}` AS `l` LEFT JOIN `campaigns` AS `c` ON (`l`.`campaign_id` = `c`.`id`) LEFT JOIN `leads_lead_fields_rel` AS `lf` ON `lf`.`id`=`l`.`id`";
@@ -56,7 +67,7 @@ class Controller_Leads_Limits
         $groupBy='led.lead_id';
 
         echo json_encode(
-            SSP::simple($_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where, $groupBy)
+          SSP::simple($_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where, $groupBy)
         );
 
     }

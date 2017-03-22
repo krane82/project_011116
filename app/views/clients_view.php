@@ -13,7 +13,7 @@ echo $table;
           <h3>Add New Client</h3>
         </div>
       </div>
-        <form action="<?php echo $host . "/clients/"; ?>addNewClient" id="addNewClient" class="signin-wrapper" method="post">
+        <form action="<?php echo __HOST__  . "/clients/"; ?>addNewClient" id="addNewClient" class="signin-wrapper" method="post">
             <div class="widget-body">
           <div class="form-group">
               <input class="form-control" placeholder="email" type="email" name="email" required>
@@ -45,8 +45,7 @@ echo $table;
             </div>
             <hr>
             <div class="form-group">
-              <textarea class="form-control" placeholder="Post codes" type="text" id="postcode" name="postcodes" >
-              </textarea> 
+              <textarea class="form-control" placeholder="Post codes" type="text" id="postcode" name="postcodes" ></textarea> 
             </div>
             <div class="form-group">
               <input class="form-control" placeholder="States Filter - Ex: NSW,VIC,WA,QLD,SA,ACT,TAS" type="text" id="states_filter" name="states_filter">
@@ -80,7 +79,7 @@ echo $table;
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="exampleModalLabel">Edit Client: </h4>
       </div>
-      <form id="editClientForm" action="<?php echo $host . "/clients/"; ?>UpdateClients" method="post">
+      <form id="editClientForm" action="<?php echo __HOST__  . "/clients/"; ?>UpdateClients" method="post">
         <div class="modal-body">
 
           <div class="clientsfields"></div>
@@ -105,7 +104,7 @@ echo $table;
     var table =  $('.clients').DataTable( {
       "processing": true,
       "serverSide": true,
-      "ajax": "<?php echo $host . "/clients/"; ?>ajax_get",
+      "ajax": "<?php echo __HOST__ . "/clients/"; ?>ajax_get",
       aaSorting:[],
       "aoColumnDefs": [
         { 'bSortable': false, 'aTargets': [ 4, 5, 6 ] }
@@ -122,7 +121,7 @@ echo $table;
           console.log(id);
           $.ajax({
             type: "POST",
-            url: '<?php echo $host . "/clients/"; ?>editClient',
+            url: '<?php echo __HOST__ . "/clients/"; ?>editClient',
             data:  { id: id },
             success: function (data) {
               document.querySelector('.clientsfields').innerHTML = data;
@@ -142,7 +141,7 @@ echo $table;
             console.log(id, button.value);
             $.ajax({
               type: "POST",
-              url: "<?php echo $host . "/clients/"; ?>update_clients_fields_rel",
+              url: "<?php echo __HOST__ . "/clients/"; ?>update_clients_fields_rel",
               data: {
                 "id": id,
                 "status": button.value
@@ -155,7 +154,7 @@ echo $table;
             console.log(id, button.value);
             $.ajax({
               type: "POST",
-              url: "<?php echo $host . "/clients/"; ?>update_user_active",
+              url: "<?php echo __HOST__ . "/clients/"; ?>update_user_active",
               data: {
                 "id": id,
                 "status": button.value
@@ -175,7 +174,7 @@ echo $table;
           }
           $.ajax({
             type: "POST",
-            url: "<?php echo $host . "/clients/"; ?>delete_clients",
+            url: "<?php echo __HOST__  . "/clients/"; ?>delete_clients",
             data: {"id": id},
             success: function(data) {
               console.log(data);
@@ -194,7 +193,7 @@ echo $table;
           console.log(id);
           $.ajax({
             type: "POST",
-            url: '<?php echo $host . "/clients/"; ?>editClient',
+            url: '<?php echo __HOST__  . "/clients/"; ?>editClient',
             data:  { id: id },
             success: function (data) {
               document.querySelector('.clientsfields').innerHTML = data;
@@ -206,7 +205,7 @@ echo $table;
       frm.submit(function (ev) {
         $.ajax({
             type: frm.attr('method'),
-            url: '<?php echo $host . "/clients/"; ?>UpdateClients',
+            url: '<?php echo __HOST__  . "/clients/"; ?>UpdateClients',
             data:  frm.serialize(),
             success: function (data) {
               document.querySelector('.success').innerHTML = '<p>' + data + '</p>';
@@ -222,7 +221,7 @@ echo $table;
     addfrm.submit(function (ev) {
         $.ajax({
             type: addfrm.attr('method'),
-            url: '<?php echo $host . "/clients/"; ?>addNewClient',
+            url: '<?php echo __HOST__  . "/clients/"; ?>addNewClient',
             data:  addfrm.serialize(),
             success: function (data) {
               document.querySelector('.addsuccess').innerHTML = '<p>' + data + '</p>';

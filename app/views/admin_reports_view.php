@@ -12,10 +12,25 @@
           <div class="form-group">
             <label for="datepicker">Select Date Range</label>
             <div class="input-daterange input-group" id="datepicker">
-              <input type="text" class="input-sm form-control" name="start"/>
+              <input type="text" class="input-sm form-control" name="start"  value="<?php print date('m/01/Y')?>" />
               <span class="input-group-addon">to</span>
-              <input type="text" class="input-sm form-control" name="end"/>
+              <input type="text" class="input-sm form-control" name="end"  value="<?php print date('m/d/Y')?>" />
             </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="State" class="form-control">
+              Select State
+            </label>
+            <select name="State" id="state" class="form-control">
+              <option value="">All</option>
+              <option value="NSW">NSW</option>
+              <option value="VIC">VIC</option>
+              <option value="WA">WA</option>
+              <option value="QLD">QLD</option>
+              <option value="SA">SA</option>
+              <option value="ACT">ACT</option>
+              <option value="TAS">TAS</option>
+            </select>
           </div>
           <div class="form-group">
             <label class="control-label" for="Sources">
@@ -56,9 +71,9 @@
           <div class="form-group">
             <label for="datepicker">Select Date Range</label>
             <div class="input-daterange input-group" id="datepicker">
-              <input type="text" class="input-sm form-control" name="start"/>
+              <input type="text" class="input-sm form-control" name="start" value="<?php print date('m/01/Y')?>" />
               <span class="input-group-addon">to</span>
-              <input type="text" class="input-sm form-control" name="end"/>
+              <input type="text" class="input-sm form-control" name="end"  value="<?php print date('m/d/Y')?>" />
             </div>
           </div>
           <div class="form-group">

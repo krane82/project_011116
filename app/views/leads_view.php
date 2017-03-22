@@ -1,93 +1,93 @@
 <div class="container">
   <div class="row panel panel-white ">
     <!-- .panel panel-white -->
-      <div class='col-md-4 col-xs-12 '>
-        <form action="table-leads" id="getLeads">
-          <div class="form-group">
-            <label for="datepicker">Select Date Range</label>
-            <div class="input-daterange input-group" id="datepicker">
-              <input type="text" class="input-sm st form-control" name="start"/>
-              <span class="input-group-addon">to</span>
-              <input type="text" class="input-sm en form-control" name="end"/>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label" for="Sources">
-              Select Source Provider
-            </label>
-            <select name="source" id="sources" class="form-control">
-              <option value="0">All</option>
-              <?php
-              foreach ($LeadSources as $key => $value) {
-                echo "<option value='" . $value['source'] . "'>" . $value['name'] . "</option>";
-                }
-              ?>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="control-label" for="state">
-              Select State</label>
-            <select name="state" id="state" class="form-control">
-              <option value="">All</option>
-              <option value="NSW">NSW</option>
-              <option value="VIC">VIC</option>
-              <option value="WA">WA</option>
-              <option value="QLD">QLD</option>
-              <option value="SA">SA</option>
-              <option value="ACT">ACT</option>
-              <option value="TAS">TAS</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="View leads">
-          </div>
-        </form>
-      </div>
-      <div class="col-md-4">
-        <h4 class="text-center">Send Leads to</h4>
-        <label class="control-label" for="date_range1">
-          Select Client
-        </label>
+    <div class='col-md-4 col-xs-12 '>
+      <form action="table-leads" id="getLeads">
         <div class="form-group">
-          <select name="client" class="form-control" id="client">
+          <label for="datepicker">Select Date Range</label>
+          <div class="input-daterange input-group" id="datepicker">
+            <input type="text" class="input-sm st form-control" name="start"/>
+            <span class="input-group-addon">to</span>
+            <input type="text" class="input-sm en form-control" name="end"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="Sources">
+            Select Source Provider
+          </label>
+          <select name="source" id="sources" class="form-control">
             <option value="0">All</option>
             <?php
-            foreach ($clients as $key => $value) {
-              echo "<option value='" . $value['id'] . "'>" . $value['campaign_name'] . "</option>";
+            foreach ($LeadSources as $key => $value) {
+              echo "<option value='" . $value['source'] . "'>" . $value['name'] . "</option>";
             }
             ?>
           </select>
         </div>
-        <div class="controls">
-          <a href="javascript:sendtheLeads();" class="btn btn-success">
-            Send
-          </a>
+        <div class="form-group">
+          <label class="control-label" for="state">
+            Select State</label>
+          <select name="state" id="state" class="form-control">
+            <option value="">All</option>
+            <option value="NSW">NSW</option>
+            <option value="VIC">VIC</option>
+            <option value="WA">WA</option>
+            <option value="QLD">QLD</option>
+            <option value="SA">SA</option>
+            <option value="ACT">ACT</option>
+            <option value="TAS">TAS</option>
+          </select>
         </div>
-        <hr>
+        <div class="form-group">
+          <input type="submit" class="btn btn-primary" value="View leads">
+        </div>
+      </form>
+    </div>
+    <div class="col-md-4">
+      <h4 class="text-center">Send Leads to</h4>
+      <label class="control-label" for="date_range1">
+        Select Client
+      </label>
+      <div class="form-group">
+        <select name="client" class="form-control" id="client">
+          <option value="0">All</option>
+          <?php
+          foreach ($clients as $key => $value) {
+            echo "<option value='" . $value['id'] . "'>" . $value['campaign_name'] . "</option>";
+          }
+          ?>
+        </select>
+      </div>
+      <div class="controls">
+        <a href="javascript:sendtheLeads();" class="btn btn-success">
+          Send
+        </a>
+      </div>
+      <hr>
 
-       
-      </div>
-      <div class="col-md-4"></div>
+
     </div>
-    <div class="row">
-      <div class="col-md-10">
-         <div id="sendLeadsToClients"></div>
-      </div>
-    </div>
+    <div class="col-md-4"></div>
+  </div>
   <div class="row">
     <div class="col-md-10">
-          <table class="table" id="leads">
-            <thead>
-            <tr>
-              <th>ID</th>
-              <th>Campaign Name</th>
-              <th>State</th>
-              <th>Date</th>
-              <th>View</th>
-              <th>Send</th>
-            </tr>
-            </thead>
-          </table>
+      <div id="sendLeadsToClients"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-10">
+      <table class="table" id="leads">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Campaign Name</th>
+          <th>State</th>
+          <th>Date</th>
+          <th>View</th>
+          <th>Send</th>
+        </tr>
+        </thead>
+      </table>
     </div>
     <!-- /.panel panel-white -->
   </div>
@@ -102,12 +102,12 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="exampleModalLabel">Send lead </h4>
       </div>
-        <div class="modal-body">
+      <div class="modal-body">
 
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>
@@ -150,23 +150,27 @@
 
 <script type="text/javascript">
   function sendtheLeads() {
-    
+
     var start = document.querySelector('input[name=start]').value;
     var end = document.querySelector('input[name=end]').value;
     var client = document.querySelector('select[name=client]').value;
-
+    var state = document.querySelector('select[name=state]').value;
+    var source = document.querySelector('select[name=source]').value;
+    var loader = '<div class="loader">Loading...</div>';
+    var infoblock=document.querySelector('#sendLeadsToClients');
+    infoblock.innerHTML=loader;
     if(!(start && end)) {
-        alert('Please select Date range');
-        return;
-      }
+      alert('Please select Date range');
+      return;
+    }
     console.log(start, end, client);
     $.ajax({
         type: "POST",
         url: '<?php echo __HOST__ . '/leads/sendLead/' ?>',
-        data: { start: start, end: end, client: client},
+        data: { start: start, end: end, client: client, state: state, source: source},
         success: function (data) {
           console.log(data);
-          document.querySelector('#sendLeadsToClients').innerHTML = data;
+          infoblock.innerHTML = data;
         }
     });
   }
@@ -174,7 +178,7 @@
   $(document).ready(function () {
     var sendLeadForm = $('#sendLeadForm');
     $('#sendLead').on('shown.bs.modal', function (e) {
-       $('#sendLead').find('#lead_id').val(e.relatedTarget.getAttribute('attr-id'))
+      $('#sendLead').find('#lead_id').val(e.relatedTarget.getAttribute('attr-id'))
     });
     sendLeadForm.submit(function (e) {
       e.preventDefault();
@@ -215,7 +219,7 @@
                 "source": $('#sources').val(),
                 "state": $('#state').val()
               } );
-          }
+            }
           },
           "aoColumnDefs": [
             { 'bSortable': false, 'aTargets': [ 4 ] }

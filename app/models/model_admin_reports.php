@@ -1,6 +1,14 @@
 <?php
 class Model_Admin_Reports extends Model
 {
+  private $sql_sources = "SELECT `lf`.`id` as `id`, `lf`.`full_name` as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`l`.`datetime`), \"%e %b %Y\" ) AS `Date`, 
+`lf`.`state` as `state`,
+`c`.`name` as `Source`,
+ `lf`.`address`, `lf`.`city`,  `lf`.`state`,  `lf`.`postcode`, `lf`.`suburb`, `lf`.`system_size`, `lf`.`roof_type`, `lf`.`electricity`, `lf`.`house_age`, `lf`.`house_type`, `lf`.`system_for`, `lf`.`note`
+FROM `leads` as `l` 
+LEFT JOIN `campaigns` as c ON `l`.`campaign_id` = `c`.`id` 
+LEFT JOIN `leads_lead_fields_rel` as `lf` ON `lf`.`id`=`l`.`id` 
+WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
 
   public function getLeadSources()
   {
@@ -35,11 +43,12 @@ class Model_Admin_Reports extends Model
     $start = strtotime($_REQUEST["start"]);
     $end = strtotime($_REQUEST["end"]) + 86400;
     $timestamp = time();
+    $state = $_REQUEST["State"];
     if(empty($_REQUEST["start"])){
       $start = strtotime("midnight", $timestamp);
       $end = strtotime("tomorrow", $start) - 1;
     }
-    // get approved leads and sum
+    // get approved rejected leads and sum
     $sql = 'SELECT lf.id as `id`, lf.full_name as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`ld`.`timedate`), "%e %b %Y" ) AS `Date`, lr.reason as `Rejection reason`,';
     $sql .= ' `lf`.`address`, `lf`.`city`,  `lf`.`state`, `lf`.`postcode`, `lf`.`suburb`, `lf`.`system_size`, `lf`.`roof_type`, `lf`.`electricity`, `lf`.`house_age`, `lf`.`house_type`, `lf`.`system_for`, `lf`.`note`';
     $sql .= ' FROM `leads_delivery` as ld ';
@@ -47,9 +56,12 @@ class Model_Admin_Reports extends Model
     $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
     $sql .= ' INNER JOIN `leads_lead_fields_rel` as lf ON lf.id = lr.lead_id';
     $sql .= ' WHERE lr.approval = 0';
-    $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+    $sql .= ' AND (lr.date BETWEEN '.$start.' AND '.$end.')';
     if (!($client == 0)) {
       $sql .= ' AND ld.client_id =' . $client;
+    }
+    if ($state) {
+      $sql .= " AND lf.state = '$state'";
     }
     $res = $con->query($sql);
     $approved = array();
@@ -72,7 +84,6 @@ class Model_Admin_Reports extends Model
 
   public function getReceived()
   {
-
     $source = $_REQUEST["source"];
     $state = $_REQUEST["State"];
     $start = strtotime($_REQUEST["start"]);
@@ -93,7 +104,7 @@ class Model_Admin_Reports extends Model
     $sql .= ' LEFT JOIN  `campaigns` as c ON c.id = l.campaign_id';
     $sql .= ' WHERE 1=1';
     $sql .= ' AND '. $data;
-    if ($campaign_id) {
+    if($campaign_id){
       $sql.= ' AND l.campaign_id = '.$campaign_id;
     }
     if ($state){
@@ -127,6 +138,8 @@ class Model_Admin_Reports extends Model
     $start = strtotime($_REQUEST["start"]);
     $end = strtotime($_REQUEST["end"]) + 86400;
     $timestamp = time();
+    $state = $_REQUEST["State"];
+
     if(empty($_REQUEST["start"])){
       $start = strtotime("midnight", $timestamp);
       $end = strtotime("tomorrow", $start) - 1;
@@ -142,6 +155,9 @@ class Model_Admin_Reports extends Model
     $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
     if (!($client == 0)) {
       $sql .= ' AND ld.client_id =' . $client;
+    }
+    if($state){
+      $sql .= " AND lf.state = '$state'";
     }
     $res = $con->query($sql);
     $approved = array();
@@ -169,6 +185,7 @@ class Model_Admin_Reports extends Model
     $start = strtotime($_REQUEST["start"]);
     $end = strtotime($_REQUEST["end"]) + 86400;
     $timestamp = time();
+    $state = $_REQUEST["State"];
     if(empty($_REQUEST["start"])){
       $start = strtotime("midnight", $timestamp);
       $end = strtotime("tomorrow", $start) - 1;
@@ -176,6 +193,7 @@ class Model_Admin_Reports extends Model
 
     $sql = 'SELECT lf.id as `id`, lf.full_name as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`ld`.`timedate`), "%e %b %Y" ) AS `Date`, c.campaign_name as `Client Name`,';
     $sql .= ' `lf`.`address`, `lf`.`city`,  `lf`.`state`,  `lf`.`postcode`, `lf`.`suburb`, `lf`.`system_size`, `lf`.`roof_type`, `lf`.`electricity`, `lf`.`house_age`, `lf`.`house_type`, `lf`.`system_for`, `lf`.`note`';
+    $sql .= ', DATE_FORMAT(FROM_UNIXTIME(`ld`.`open_time`), "%e %b %Y" ) as `Open time` ';
     $sql .= 'FROM `leads_delivery` as ld ';
     $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
     $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
@@ -185,6 +203,10 @@ class Model_Admin_Reports extends Model
     if (!($client == 0)) {
       $sql .= ' AND ld.client_id =' . $client;
     }
+    if($state){
+      $sql .= " AND lf.state = '$state'";
+    }
+
     $res = $con->query($sql);
     $distributed = array();
     if ($res) {
@@ -198,6 +220,7 @@ class Model_Admin_Reports extends Model
       $distributed[] = $col;
 
       while($line = $res->fetch_assoc()){
+        if($line['Open time']=='1 Jan 1970') $line['Open time']='Still not open :(';
         $distributed[] = $line;
       }
     } else {
@@ -223,10 +246,10 @@ class Model_Admin_Reports extends Model
   {
     $con = $this->db();
     $client = $_POST["client"];
+    $state = $_REQUEST["State"];
     if(!empty($_POST["start"])){
       $start = strtotime($_POST["start"]);
       $end = strtotime($_POST["end"]) + 86400;
-
     }
     else {
       $timestamp = time();
@@ -238,10 +261,14 @@ class Model_Admin_Reports extends Model
     $sql = 'SELECT COUNT(*) as amount, SUM(c.lead_cost) as total_cost  FROM `leads_delivery` as ld ';
     $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
     $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
+    $sql .= ' LEFT JOIN `leads_lead_fields_rel` as lf ON lf.id=ld.lead_id';
     $sql .= ' WHERE (lr.approval > 0 OR lr.approval IS NULL)';
     $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
     if (!($client == 0)) {
       $sql .= ' AND ld.client_id =' . $client;
+    }
+    if($state){
+      $sql .= " AND lf.state = '$state'";
     }
 
     $res = $con->query($sql);
@@ -255,10 +282,14 @@ class Model_Admin_Reports extends Model
 
     $sql2 = 'SELECT COUNT(*) as amount FROM `leads_delivery` as ld ';
     $sql2 .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
+    $sql2 .= ' LEFT JOIN `leads_lead_fields_rel` as lf ON lf.id=ld.lead_id';
     $sql2 .= ' WHERE lr.approval=0';
-    $sql2 .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+    $sql2 .= ' AND (lr.date BETWEEN '.$start.' AND '.$end.')';
     if ($client != 0) {
       $sql2 .= ' AND ld.client_id =' . $client;
+    }
+    if($state){
+      $sql2 .= " AND lf.state = '$state'";
     }
     $res = $con->query($sql2);
     if ($res) {
@@ -266,22 +297,32 @@ class Model_Admin_Reports extends Model
     } else {
       echo "0";
     }
-//  DISTINCT
-    $sqlDestributed  = 'SELECT COUNT(ld.lead_id) as amount, SUM(c.cost) as camp_cost FROM `leads_delivery` as ld';
-    $sqlDestributed .= ' INNER JOIN `leads` as l ON l.id=ld.lead_id';
-    $sqlDestributed .= ' INNER JOIN `campaigns` as c ON c.id = l.campaign_id';
-    $sqlDestributed .= ' WHERE 1=1 AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+
+//  Distributed
+    $sqlDistributed  = 'SELECT COUNT(ld.lead_id) as amount, SUM(c.cost) as camp_cost FROM `leads_delivery` as ld';
+    $sqlDistributed .= ' INNER JOIN `leads` as l ON l.id=ld.lead_id';
+    $sqlDistributed .= ' INNER JOIN `campaigns` as c ON c.id = l.campaign_id';
+    $sqlDistributed .= ' LEFT JOIN `leads_lead_fields_rel` as lf ON lf.id=ld.lead_id';
+    $sqlDistributed .= ' WHERE 1=1 AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
     if (!($client == 0)) {
-      $sqlDestributed .= ' AND ld.client_id =' . $client;
+      $sqlDistributed .= ' AND ld.client_id =' . $client;
+    }
+    if($state){
+      $sqlDistributed .= " AND lf.state = '$state'";
     }
 
-    $res = $con->query($sqlDestributed);
+    $res = $con->query($sqlDistributed);
     if($res){
       $distributed = $res->fetch_assoc();
     }
 
+    if($rejected["amount"]){
+      $rejectedP = $rejected["amount"] / $distributed["amount"];
+    } else {
+      $rejectedP = 0;
+    }
+//    dd($sql);
 
-    $rejectedP = $rejected["amount"] / $distributed["amount"];
     $ds =  $distributed["amount"] . " leads <br>Distributed";
     // $ds_beg = "leads <br>Distributed 1 to 15 ";
     $acs = $approved['amount']. " leads Accepted by clients";
@@ -295,7 +336,60 @@ class Model_Admin_Reports extends Model
     echo $this->formStatView($rejectedPercent, 'window-close', 'getRejected');
     echo $this->formStatView($rev, 'shopping-cart');
     // echo $this->formStatView($ds_beg, 'users', 'getDistributed');
+    if(!empty($_POST["start"])) {
+      $uq = http_build_query(array(
+        'start'   => strtotime($_REQUEST["start"]),
+        'end'     => strtotime($_REQUEST["end"]) + 86400,
+        'client'  => $_REQUEST["client"]
+      ));
+      echo "<div class='clearfix'></div><a href='downloadAcceptedRejected?$uq' class='btn btn-primary'>Download Accepted or Rejected leads</a>";
+    }
+  }
 
+  public function downloadAcceptedRejected()
+  {
+    $con = $this->db();
+    $client = $_REQUEST["client"];
+    $start = $_REQUEST["start"];
+    $end = $_REQUEST["end"] + 86400;
+    $timestamp = time();
+    $state = $_REQUEST["State"];
+    if(empty($_REQUEST["start"])){
+      $start = strtotime("midnight", $timestamp);
+      $end = strtotime("tomorrow", $start) - 1;
+    }
+    // get approved leads and sum
+    $sql = 'SELECT lf.id as `id`, lf.full_name as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`ld`.`timedate`), "%e %b %Y" ) AS `Date`, c.campaign_name as `Client Name`, c.email as `Client Email`, ';
+    $sql .= ' `lf`.`address`, `lf`.`city`,  `lf`.`state`,  `lf`.`postcode`, `lf`.`suburb`, `lf`.`system_size`, `lf`.`roof_type`, `lf`.`electricity`, `lf`.`house_age`, `lf`.`house_type`, `lf`.`system_for`, `lf`.`note`';
+    $sql .= ' ,`lr`.`approval` as `Rejected/Accepted`';
+    $sql .= ' FROM `leads_delivery` as ld ';
+    $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
+    $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
+    $sql .= ' INNER JOIN `leads_lead_fields_rel` as lf ON lf.id = lr.lead_id';
+    $sql .= ' WHERE 1=1';
+//    $sql .= ' WHERE (lr.approval > 0 OR lr.approval IS NULL)';
+    $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+    if (!($client == 0)) {
+      $sql .= ' AND ld.client_id =' . $client;
+    }
+    $res = $con->query($sql);
+    $approved = array();
+    if ($res) {
+      $col = $res->fetch_assoc();
+      $prearr = array();
+      foreach($col as $k=>$v){
+        $prearr[] = $k;
+      }
+      $approved[] = $prearr;
+      $approved[] = $col;
+      while($line = $res->fetch_assoc()){
+        $line["Rejected/Accepted"] = formatReject($line["Rejected/Accepted"]);
+        $approved[] = $line;
+      }
+    } else {
+      echo "No data\n";
+    }
+    return $approved;
   }
 
   public function getAverageReportsNew()
@@ -306,6 +400,7 @@ class Model_Admin_Reports extends Model
     $start = $st->getTimestamp();
     $st->modify("+14 days");
     $end = $st->getTimestamp();
+//    $state = $_REQUEST["state"];
     if( $now < $end ) {
       // do nothing
     } else {
@@ -321,9 +416,9 @@ class Model_Admin_Reports extends Model
     $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
     $sql .= ' WHERE (lr.approval > 0 OR lr.approval IS NULL)';
     $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
-    if (!($client == 0)) {
-      $sql .= ' AND ld.client_id =' . $client;
-    }
+//    if (!($client == 0)) {
+//      $sql .= ' AND ld.client_id =' . $client;
+//    }
 
     $res = $con->query($sql);
     $approved = array();
@@ -338,25 +433,25 @@ class Model_Admin_Reports extends Model
     $sql2 .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
     $sql2 .= ' WHERE lr.approval=0';
     $sql2 .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
-    if ($client != 0) {
-      $sql2 .= ' AND ld.client_id =' . $client;
-    }
+//    if ($client != 0) {
+//      $sql2 .= ' AND ld.client_id =' . $client;
+//    }
     $res = $con->query($sql2);
     if ($res) {
       $rejected = $res->fetch_assoc();
     } else {
       echo "0";
     }
-//  DISTINCT
-    $sqlDestributed  = 'SELECT COUNT(ld.lead_id) as amount, SUM(c.cost) as camp_cost FROM `leads_delivery` as ld';
-    $sqlDestributed .= ' INNER JOIN `leads` as l ON l.id=ld.lead_id';
-    $sqlDestributed .= ' INNER JOIN `campaigns` as c ON c.id = l.campaign_id';
-    $sqlDestributed .= ' WHERE 1=1 AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
-    if (!($client == 0)) {
-      $sqlDestributed .= ' AND ld.client_id =' . $client;
-    }
+//  Distributed
+    $sqlDistributed  = 'SELECT COUNT(ld.lead_id) as amount, SUM(c.cost) as camp_cost FROM `leads_delivery` as ld';
+    $sqlDistributed .= ' INNER JOIN `leads` as l ON l.id=ld.lead_id';
+    $sqlDistributed .= ' INNER JOIN `campaigns` as c ON c.id = l.campaign_id';
+    $sqlDistributed .= ' WHERE 1=1 AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+//    if (!($client == 0)) {
+//      $sqlDistributed .= ' AND ld.client_id =' . $client;
+//    }
 
-    $res = $con->query($sqlDestributed);
+    $res = $con->query($sqlDistributed);
     if($res){
       $distributed = $res->fetch_assoc();
     }
@@ -398,11 +493,6 @@ class Model_Admin_Reports extends Model
 
     $resCoast = $income['cost'] - $CoastLids['cost'];
 
-
-    // $sqlincomeLids = "SELECT SUM(c.cost) as cost FROM `campaigns` as c";
-    // $sqlincomeLids .= " LEFT JOIN `leads` as ld ON ld.campaign_id = c.id";
-    // $sqlincomeLids .= " WHERE 1=1 AND (ld.datetime BETWEEN ".$start." AND ".$end.")";
-
     $sqlAver  = 'SELECT COUNT(ld.id) as amount, SUM(c.lead_cost) as client_cost FROM `leads_delivery` as ld';
     $sqlAver .= ' INNER JOIN `clients` as c ON c.id=ld.client_id';
     $sqlAver .= ' WHERE 1=1 AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
@@ -422,7 +512,7 @@ class Model_Admin_Reports extends Model
     $rev = $approved["total_cost"] ? $approved["total_cost"] . " $<br>Lead Revenue" : 0 . " $<br>Lead Revenue";
     $countld = $CountLids['amount']. " leads<br> Total generated";
     $coastld = $CoastLids['cost']. " $<br>Total cost of<br> leads generated ";
-    $totalcoast = $resCoast. " $<br> Total income of<br>leads distributed ";
+    $totalcost = $resCoast. " $<br> Total income of<br>leads distributed ";
     $totalAverage = $average. " $<br>Average sales<br>per lead";
     echo $mes;
     echo $this->formStatView($ds, 'users', 'getDistributed');
@@ -430,11 +520,18 @@ class Model_Admin_Reports extends Model
     echo $this->formStatView($ras, 'window-close', 'getRejected');
     echo $this->formStatView($rejectedPercent, 'window-close', 'getRejected');
     echo $this->formStatView($rev, 'shopping-cart');
+<<<<<<< HEAD
     echo $this->formStatView($countld, 'window-close', 'getRejected');
     echo $this->formStatView($coastld, 'window-close', 'getRejected');
     echo $this->formStatView($totalcoast, 'window-close', 'getRejected');
     echo $this->formStatView($totalAverage, 'window-close', 'getRejected');
 
+=======
+    echo $this->formStatView($countld, 'users');
+    echo $this->formStatView($coastld, '');
+    echo $this->formStatView($totalcost, 'shopping-cart');
+    echo $this->formStatView($totalAverage, 'user');
+>>>>>>> 67fa8c067e6abc6e4c4afc62457dace8bf164616
   }
 
 

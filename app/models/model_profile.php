@@ -19,13 +19,14 @@ class Model_Profile extends Model {
             'weekly' => 'Weekly caps'
       );
 
-  public function UserChangeNotif($p){
+  public function UserChangeNotif($p, $before=''){
     $profile = '<h2>Client "'.$p["campaign_name"].'" have change their profile information</h2>';
     $profile .= "<table>";
-    // prepeare info 
+    // prepeare info
+    $profile .= '<tr>';
     foreach ($p as $k => $v) {
       if( $k == "id" || $k == "lead_cost" || $k == "xero_id" || $k == "xero_name" ){
-        // blanc]
+        // blank
       }elseif ($k=="password") {
           $profile.= "<tr>";
           $profile.= "<td>".$this->form_keys["$k"]."</td>";
@@ -57,10 +58,11 @@ class Model_Profile extends Model {
 
     $mail->isHTML(true);
 
-    $mail->AddReplyTo("info@energysmart.com.au", "LeadPoint Notification");
+    $mail->AddReplyTo("info@energysmart.com.au", "Energy Smart Notification");
 
-    $mail->SetFrom('info@energysmart.com.au', 'LeadPoint Notification');
+    $mail->SetFrom('info@energysmart.com.au', 'Energy Smart Notification');
 
+    
     $mail->AddAddress(ADMINEMAIL, 'Joash Boyton');
 
     $mail->Subject = 'Client "'.$p["campaign_name"].'" have change their profile information';
@@ -73,7 +75,7 @@ class Model_Profile extends Model {
       echo $emailSending = "Mailer Error: " . $mail->ErrorInfo;
       return FALSE;
     } else {
-      return "Message sent";
+      return "Success";
     }
   }
 
@@ -84,7 +86,6 @@ class Model_Profile extends Model {
       $sql.= ' LEFT JOIN `clients_criteria` ON clients.id = clients_criteria.id';
       $sql.= ' LEFT JOIN `users` ON clients.id = users.id';
       $sql.= ' WHERE clients.id = '.$id;
-      
       $profile = '<div class="success">';
       $con = $this->db();
       $res = $con->query($sql);
@@ -99,9 +100,9 @@ class Model_Profile extends Model {
                   $profile.= "<label for='$k'>".$this->form_keys["$k"]."</label>";
                   $profile.=  "<textarea class='form-control' id='$k' readonly='readonly' name='postcodes' type='text'>$v</textarea>";
                   $profile.= "</div>";
-              }elseif($k == "lead_cost" || $k == "xero_id" || $k == "xero_name" ) {
+              } elseif($k == "lead_cost" || $k == "xero_id" || $k == "xero_name" ) {
 
-              }else{
+              } else {
                   $profile.= "<div class='form-group'>";
                   $profile.= "<label for='$k'>".$this->form_keys["$k"]."</label>";
                   $profile.= '<input class="form-control" type="text" name="'.$k.'" value="'.$v.'" readonly="readonly" > ' ;
@@ -117,7 +118,7 @@ class Model_Profile extends Model {
     foreach ($post as $k => $v) {
       if ($k=="phone") {
         $p["phone"] = phone_valid($v);
-      } else if($k=="postcode"){
+      } else if($k=="postcode") {
         $p["postcode"] = (int)postcodes_valid($v);
       }
       else {

@@ -52,35 +52,32 @@ class Controller_Admin extends Controller
     }
     foreach ($result as $r) {
       $id = $r["id"];
-      $sql = "UPDATE `clients` SET `email` = 'tonkoshkurik@yandex.ua' WHERE `clients`.`id` =".$id;
+      $sql = "UPDATE `clients` SET `email` = 'sergiy.tonkoshkuryk@jointoit.com' WHERE `clients`.`id` =".$id;
       $res = $con->query($sql);
       if($res) echo "clients.true";
     }
   }
   function action_test()
   {
-    $con = $this->db();
-    $sql = "SELECT * FROM `leads` LEFT JOIN `leads_lead_fields_rel` ON leads.id=leads_lead_fields_rel.id WHERE `leads`.`datetime` BETWEEN 1480550400 AND 1483142400";
-    if($res = $con->query($sql)){
-      foreach ($res as $r){
-        $result[] = $r;
-      }
-//      var_dump($result);
-      $count = 0;
-      foreach ($result as $t){
-        if($count < 15){
-          $this->sendTest($t);
-          var_dump($t);
-          $count++;
-        }
-      }
-    }
+//    $con = $this->db();
+//    $sql = "SELECT * FROM `leads` LEFT JOIN `leads_lead_fields_rel` ON leads.id=leads_lead_fields_rel.id WHERE `leads`.`datetime` BETWEEN 1480550400 AND 1483142400";
+//    if($res = $con->query($sql)){
+//      foreach ($res as $r){
+//        $result[] = $r;
+//      }
+//      $count = 0;
+//      foreach ($result as $t){
+//        if($count < 15){
+//          $this->sendTest($t);
+//          var_dump($t);
+//          $count++;
+//        }
+//      }
+//    }
   }
   private function sendTest($p){
     $ch = curl_init();
     $formpost = http_build_query($p);
-//    var_dump($formpost);
-//    die;
     curl_setopt($ch, CURLOPT_URL,"http:/leadpoint.dev/api/in");
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS,

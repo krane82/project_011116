@@ -1,6 +1,6 @@
-<link rel="stylesheet" href="http://leadpoint.energysmart.com.au/template/charts/morris.css">
-<script src="http://leadpoint.energysmart.com.au/template/charts/morris.js"></script>
-<script src="http://leadpoint.energysmart.com.au/template/charts/raphael-min.js"></script>
+<link rel="stylesheet" href="<?= __HOST__ ?>/assets/plugins/morris/morris.css">
+<script src="<?= __HOST__ ?>/assets/plugins/morris/morris.min.js"></script>
+<script src="<?= __HOST__ ?>/assets/plugins/morris/raphael.min.js"></script>
 <!-- Flot charts -->
 <!--<script src="http://leadpoint.energysmart.com.au/template/js/flot/jquery.flot.js"></script>-->
 <!--<script src="http://leadpoint.energysmart.com.au/template/js/flot/jquery.flot.resize.min.js"></script>-->
@@ -37,7 +37,8 @@
       "<td>" . $v["revenue"] ."$". "</td>";
       echo "</tr>";
       $c++;
-    } ?>
+    }
+    ?>
   </table>
 </div>
 

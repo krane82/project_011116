@@ -10,6 +10,7 @@
               <th>Date</th>
               <th>Campaign Name</th>
               <th>Open email</th>
+              <th>Last open</th>
             </tr>
             </thead>
           </table>

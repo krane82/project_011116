@@ -1,23 +1,29 @@
 <?php
 class Model_Api extends Model {
+  private $debug_api = FALSE;
 
-  public function proccess_lead($post) {
+  public function proccess_lead($post, $counter=0, $addToTable=true, $leadId=0) {
     $p = $this->checkdata($post);
-    $lead_id = $this->addleadtotable($p);
-    if(!$lead_id) {
+    if ($addToTable) {
+      $lead_id = $this->addleadtotable($p);
+    } else {
+      $lead_id=$leadId;
+    } if (!$lead_id) {
       return FALSE;
     }
     $clients = $this->getClients($p);
-    $resp =  $this->sendToClients($clients, $lead_id, $p);
+    $resp =  $this->sendToClients($clients, $lead_id, $p, $counter);
     return $resp;
   }
 
 
-  private function sendToClients($clients, $lead_id ,$p){
-    $counter = 0;
-    $sended ='';
+  private function sendToClients($clients, $lead_id ,$p, $counter){
+    $sended = '';
     foreach ($clients as $c ) {
       $client_id = $c["id"];
+      //here will be checking if is already delivered to current client
+      $clients = explode(',', $p['clients']);
+      if (in_array($client_id, $clients)) continue;
       $passedcaps = $this->checkClientsLimits($client_id);
       if($passedcaps AND $counter < 4) {
         $readyLeadInfo = prepareLeadInfo($p);
@@ -30,7 +36,7 @@ class Model_Api extends Model {
         }
       }
     }
-    return "Sended to $counter clients \n" . $sended;
+    return "Sent to $counter clients \n";// . $sended;
   }
 
   private function getLastDeliveryID(){
@@ -44,10 +50,10 @@ class Model_Api extends Model {
   public function addToDeliveredTable($client_id, $lead_id, $p){
     $con = $this->db();
     $now = time();
-    $sql = "INSERT INTO `leads_delivery` (lead_id, client_id, timedate) VALUES ($lead_id, $client_id, $now)";
-    var_dump($sql);
-    $sql_r = "INSERT INTO `leads_rejection` (lead_id, client_id, date, approval) VALUES ($lead_id, $client_id, $now, 1)";
-    var_dump($sql_r);
+    $sql = "INSERT INTO `leads_delivery` (lead_id, client_id, timedate) VALUES ('".$lead_id."', '".$client_id."', '".$now."')";
+//    var_dump($sql);
+    $sql_r = "INSERT INTO `leads_rejection` (lead_id, client_id, date, approval) VALUES ('".$lead_id."', '".$client_id."', '".$now."', '1')";
+//    var_dump($sql_r);
     if($con->query($sql) && $con->query($sql_r)) { $delivered=1; }
     if($delivered){
       return TRUE;
@@ -121,8 +127,8 @@ class Model_Api extends Model {
       $sql.= ' LEFT JOIN `clients` as c ON cc.id = c.id';
       if(!empty($post["state"]) AND !empty($post["postcode"])) {
         $sql .= ' WHERE ( cc.states_filter LIKE "%' . $post["state"] . '%" OR cc.postcodes LIKE "%'.$post["postcode"].'%" )';
-      // } else if(!empty($post["state"])) {
-      //   $sql .= ' WHERE cc.states_filter LIKE "%' . $post["state"] . '%"';
+        // } else if(!empty($post["state"])) {
+        //   $sql .= ' WHERE cc.states_filter LIKE "%' . $post["state"] . '%"';
       } else if(!empty($post["postcode"])){
         $sql.= ' WHERE cc.postcodes LIKE "%'.$post["postcode"].'%"';
       }
@@ -145,34 +151,32 @@ class Model_Api extends Model {
       return FALSE;
     }
 
+    if($this->debug_api) {
 
-    // LOGS
-    #start buffering (all activity to the buffer)
-    ob_start() ;
-    $fileName = date("Y-m-d-h-i-s");
-    $fileName .= "log.html";
+      // LOGS
+      // #start buffering (all activity to the buffer)
+      ob_start();
+      $fileName = __FILE__ . "/logs/";
+      $fileName .= date("Y-m-d-h-i-s");
+      $fileName .= "log.html";
 
-    $myfile = fopen($fileName, "w");
-    ?>
-
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>LOG</title>
-    </head>
-    <body>
-    
+      $myfile = fopen($fileName, "w");
 
 
-    <?php
-                                                
-    echo "CLIENTS : \n";
-    var_dump($clients);
-    echo "===========\n";
-    echo "===========POST===========\n";
-    var_dump($_POST);
-    echo "\n=================\n";
+      echo '<!DOCTYPE html>
+            <html>
+            <head>
+              <title>LOG</title>
+            </head>
+            <body>';
 
+      echo "CLIENTS : \n";
+      var_dump($clients);
+      echo "===========\n";
+      echo "===========POST===========\n";
+      var_dump($_POST);
+      echo "\n=================\n";
+    }
     // GET destribution ORDER
     $now = time();
     $st = new DateTime(date('Y-m-01', $now));
@@ -204,50 +208,51 @@ class Model_Api extends Model {
 
     if(count($order)){
 
-    usort($clients, function ($a, $b) use ($order) {
-      $pos_a = array_search($a['id'], $order);
-      $pos_b = array_search($b['id'], $order);
-      return $pos_a - $pos_b;
-    });
+      usort($clients, function ($a, $b) use ($order) {
+        $pos_a = array_search($a['id'], $order);
+        $pos_b = array_search($b['id'], $order);
+        return $pos_a - $pos_b;
+      });
 
-    echo  "\n===============$order================\n";
-    var_dump($order);
-    echo  "\n================================\n";
+      if($this->debug_api) {
+        echo "\n===============$order================\n";
+        var_dump($order);
+        echo "\n================================\n";
 
-    echo  "\n======CLIENTS SORTED===========\n";
-    var_dump($clients);
-    echo  "\n================================\n";
-    echo "</body></html>";
+        echo "\n======CLIENTS SORTED===========\n";
+        var_dump($clients);
+        echo "\n================================\n";
+        echo "</body></html>";
 
 
-    # dump buffered $classvar to $outStringVar
-    $outStringVar = ob_get_contents();
+        # dump buffered $classvar to $outStringVar
+        $outStringVar = ob_get_contents();
 
-    fwrite($myfile, $outStringVar);
-    fclose($myfile);
-    # clean the buffer & stop buffering output
-    ob_end_clean() ;
-    // END LOGS
+        fwrite($myfile, $outStringVar);
+        fclose($myfile);
+        # clean the buffer & stop buffering output
+        ob_end_clean();
+        // END LOGS
+      }
+      // function custom_compare($a, $b){
+      //   global $order;
+      //   $key_a = array_search($a["id"], $order);
+      //   $key_b = array_search($b["id"], $order);
+      //   if($key_a === false && $key_b === false) { // both items are dont cares
+      //       return 0;                      // a == b
+      //   }
+      //   else if ($key_a === false) {           // $a is a dont care item
+      //       return 1;                      // $a > $b
+      //   }
+      //   else if ($key_b === false) {           // $b is a dont care item
+      //       return -1;                     // $a < $b
+      //   }
+      //   else {
+      //       return $key_a - $key_b;
+      //   }
+      // }
 
-    // function custom_compare($a, $b){
-    //   global $order;
-    //   $key_a = array_search($a["id"], $order);
-    //   $key_b = array_search($b["id"], $order);
-    //   if($key_a === false && $key_b === false) { // both items are dont cares
-    //       return 0;                      // a == b
-    //   }
-    //   else if ($key_a === false) {           // $a is a dont care item
-    //       return 1;                      // $a > $b
-    //   }
-    //   else if ($key_b === false) {           // $b is a dont care item
-    //       return -1;                     // $a < $b
-    //   }
-    //   else {
-    //       return $key_a - $key_b;
-    //   }
-    // }
-
-    // usort($clients, "custom_compare");
+      // usort($clients, "custom_compare");
     }
     // Returnig ordered clients
     return $clients;
@@ -255,17 +260,42 @@ class Model_Api extends Model {
 
   private function checkdata($post){
     $p = array();
+//    if ( empty($post["full_name"]) || empty($post["email"]) || empty($post["phone"]) || empty($post["address"]) || empty("state") || empty("postcode") || empty($post["suburb"]) )
+//    {
+//      return FALSE;
+//    }
     foreach ($post as $k => $v) {
       if ($k=="phone") {
         $p["phone"] = phone_valid($v);
       } else if($k=="postcode"){
         $p["postcode"] = postcodes_valid($v);
-      }
-      else {
+        if(!$p["postcode"]) return;
+      } else {
         $p["$k"] = trim($v);
       }
     }
+    $p["state"] = $this->giveMeState($p["postcode"]);
     return $p;
+  }
+  private function giveMeState($code)
+  {
+    $con=$this->db();
+    $sql="SELECT * FROM states_postcodes";
+    $res=$con->query($sql);
+    while ($row=$res->fetch_assoc())
+    {
+      $result[$row['state']][]=explode(':',$row['postcodes']);
+    }
+    foreach ($result as $item=>$key)
+    {
+      foreach ($key as $key1)
+      {
+        if ($code>=$key1[0] && $code<=$key1[1])
+        {return $item;}
+        return 'unmatched';
+      }
+
+    }
   }
 
   private function addleadtotable($post)
@@ -333,5 +363,23 @@ class Model_Api extends Model {
 //    }
 //    return $readyLeadInfo;
 //  }
-
+//Mironenko method - returns list of sent leads with count of delivers
+  public function getSentLeads()
+  {
+    //this variable is for show how many days from query do we need, will be saved in DB and added from interface
+    include "model_settings.php";
+    $settings=new Model_Settings();
+    $data=$settings->getSettings();
+    $con = $this->db();
+    $range = time() - ($data['days'] * 86400);
+    $sql = "SELECT le_fi.*, count(led.lead_id) as 'count', group_concat(led.client_id) as 'clients' FROM leads lea left join leads_lead_fields_rel le_fi on lea.id=le_fi.id left join leads_delivery led on lea.id=led.lead_id where lea.datetime>'" . $range . "'
+    group by(le_fi.id)";
+    $res=$con->query($sql);
+    $result = array();
+    while ($row = $res->fetch_assoc()) {
+      //if($row['count']<4) $result[] = $row;
+      $result[] = $row;
+    }
+    return $result;
+  }
 }
