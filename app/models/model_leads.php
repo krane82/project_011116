@@ -46,6 +46,7 @@ class Model_Leads extends Model {
     $sql.= ' LEFT JOIN `clients` as c ON cc.id = c.id';
     $sql.= " WHERE cc.id=$id";
     $res = $con->query($sql);
+    //return $sql;
     if ($res) {
       $client = $res->fetch_assoc();
     } else {
@@ -56,7 +57,18 @@ class Model_Leads extends Model {
 
   public function senLead($client_id, $lead_id)
   {
+    //var_dump($client_id);
     $receivers=$this->getLeadFromDelivered($lead_id);
+    //This can be optionally commented
+    //Check when you try to resend lead
+    //to current client if this lead is already
+    //sent 4 or more times
+    $counter = count($receivers);
+    if($counter>=4)
+    {
+      return 'This lead already sent 4 times';
+    }
+    //End of check if send 4 or more times for current client
     if($client_id != 0){
       if(in_array($client_id, $receivers ))
       {
@@ -68,6 +80,7 @@ class Model_Leads extends Model {
       $c = $this->getClientById($client_id);
       if($passedCaps) {
         $delivery_id = $this->getLastDeliveryID() + 1;
+        //var_dump($c);
         $sent = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"],$delivery_id);
         if($sent) {
           $this->api->addToDeliveredTable($client_id, $lead_id, $readyLeadInfo);
@@ -83,8 +96,9 @@ class Model_Leads extends Model {
     {
       $leadInfo = $this->getLeadInfo($lead_id);
       $clients = $this->api->getClients($leadInfo);
-      // print_r($clients);
-      // exit;
+      //var_dump($clients);
+      //if (count($clients==0)) return 'No clients found for this lead';
+
       $result = $this->sendToClients($clients, $lead_id, $leadInfo);
       return $result;
     }

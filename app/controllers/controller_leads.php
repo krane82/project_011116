@@ -53,7 +53,7 @@ class Controller_leads extends Controller
       $source=$_POST["source"];
       $client = $_POST["client"];
       $data=$this->model->getList($start, $end, $state, $source);
-      $i=1;
+      $i=0;
       foreach($data as $item)
       {
         if($x=$this->model->senLead($client,$item)) print $x;

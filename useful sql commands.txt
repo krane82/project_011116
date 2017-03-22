@@ -1,0 +1,17 @@
+update leads_lead_fields_rel set state='NSW' where id>8047 and postcode between 1000 and 2599;
+update leads_lead_fields_rel set state='NSW' where id>8047 and postcode between 2620 and 2898;
+update leads_lead_fields_rel set state='NSW' where id>8047 and postcode between 2921 and 2999;
+update leads_lead_fields_rel set state='VIC' where id>8047 and postcode between 3000 and 3999;
+update leads_lead_fields_rel set state='VIC' where id>8047 and postcode between 8000 and 8999;
+update leads_lead_fields_rel set state='QLD' where id>8047 and postcode between 4000 and 4999;
+update leads_lead_fields_rel set state='QLD' where id>8047 and postcode between 9000 and 9999;
+update leads_lead_fields_rel set state='SA' where id>8047 and postcode between 5000 and 5799;
+update leads_lead_fields_rel set state='SA' where id>8047 and postcode between 5800 and 5999;
+update leads_lead_fields_rel set state='WA' where id>8047 and postcode between 6000 and 6797;
+update leads_lead_fields_rel set state='WA' where id>8047 and postcode between 6800 and 6999;
+update leads_lead_fields_rel set state='TAS' where id>8047 and postcode between 7000 and 7799;
+update leads_lead_fields_rel set state='TAS' where id>8047 and postcode between 7800 and 7999;
+
+update leads_lead_fields_rel set state='ACT' where postcode between 0200 and 0299;
+update leads_lead_fields_rel set state='ACT' where postcode between 2600 and 2619;
+update leads_lead_fields_rel set state='ACT' where postcode between 2900 and 2920;
