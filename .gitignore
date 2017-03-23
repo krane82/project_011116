@@ -7,4 +7,5 @@ tags
 ftpsync.settings
 credentials.php
 landing.html
+index.php
 logs/*
