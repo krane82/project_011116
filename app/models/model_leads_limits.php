@@ -12,8 +12,7 @@ public function getLimits()
     $con = $this->db();
     $beginOfMonth = strtotime(date('Y-m-01'));
     $Monday = strtotime("Monday this week");
-    $Now = time();
-    $sql="select c.id, c.campaign_name, cri.weekly, cri.monthly, count(ld.timedate) as thisMonth
+    $sql="select c.id, c.campaign_name, cri.weekly, (cri.weekly*4) as monthly, count(ld.timedate) as thisMonth
  from clients c
 left join clients_criteria cri on c.id=cri.id left join leads_delivery ld on c.id=ld.client_id
  and ld.timedate > '".$beginOfMonth."' group by c.campaign_name";
@@ -25,7 +24,6 @@ left join clients_criteria cri on c.id=cri.id left join leads_delivery ld on c.i
     {
         $result[$row['id']]=$row;
     }
-    //return $sql1;
     while($row1=$res1->fetch_assoc())
     {
         $result[$row1['id']]['thisWeek']=(int)$row1['thisWeek'];

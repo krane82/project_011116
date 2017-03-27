@@ -89,47 +89,19 @@ class Model_Api extends Model {
 
   public function checkClientsLimits($id)
   {
-    $Monday = strtotime( "Monday this week" );
-    $FirstOfMonth = strtotime(date('Y-m-01'));
-    $now = time();
-    $sqlM = "SELECT count(*) FROM `leads_delivery` WHERE client_id = $id AND (timedate BETWEEN $FirstOfMonth AND $now)";
-    $sqlW = "SELECT count(*) FROM `leads_delivery` WHERE client_id = $id AND (timedate BETWEEN $Monday AND $now)";
-    $sqlCaps = "SELECT weekly, monthly  FROM `clients_criteria` WHERE id=$id";
-
     $con = $this->db();
-
-    $capsr = $con->query($sqlCaps);
-    $caps = $capsr->fetch_assoc();
-
-    $sqlMr = $con->query($sqlM);
-    $sqlMM = $sqlMr->fetch_assoc();
-
-    if(!$caps["monthly"]){
-      $caps["monthly"] = 999999999;
+    $monday = strtotime("Monday this week");
+    $sql="select count(led.id), cc.weekly from `leads_delivery` as led right join clients_criteria cc on cc.id=led.client_id where cc.id = '".$id."' AND led.timedate BETWEEN '".$monday."' AND current_timestamp";
+    $res=$con->query($sql);
+    $result=$res->fetch_assoc();
+    if (!$result['weekly']) {
+      $result["weekly"] = 999999999;
     }
-
-    if(!$caps["weekly"]){
-      $caps["weekly"] = 999999999;
-    }
-
-
-    if( $sqlMM["count(*)"] <= $caps["monthly"]){
-      $id_passed = $id;
+    $con->close();
+    if ($result["count(led.id)"] < $result["weekly"]) {
+      return $id;
     } else {
-      echo "monthly not passed!";
-      $con->close();
-      return FALSE;
-    }
-
-    $sqlWr = $con->query($sqlW);
-    $sqlWW = $sqlWr->fetch_assoc();
-
-    if($sqlWW["count(*)"] <= $caps["weekly"]){
-      $id_passed = $id;
-      $con->close();
-      return $id_passed;
-    } else {
-      $con->close();
+      echo "weekly not passed!";
       return FALSE;
     }
   }

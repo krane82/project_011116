@@ -43,7 +43,7 @@ class Controller_leads extends Controller
       echo "lead not found";
     }
   }
-
+  
   function action_sendLead()
   {
     if(isset($_POST["client"])) {

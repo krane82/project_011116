@@ -32,7 +32,7 @@ class Controller_Profile extends Controller {
     session_start();
     $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
     if($id = $_SESSION["user_id"]){
-      $sql = 'SELECT clients.id, users.password, clients.email, clients.campaign_name, clients.full_name, clients.phone, clients.city, clients.state, clients.country, clients.lead_cost, clients_criteria.postcodes, clients_criteria.states_filter, clients_billing.xero_id, clients_billing.xero_name, clients_criteria.monthly ,clients_criteria.weekly';
+      $sql = 'SELECT clients.id, users.password, clients.email, clients.campaign_name, clients.full_name, clients.phone, clients.city, clients.state, clients.country, clients.lead_cost, clients_criteria.postcodes, clients_criteria.states_filter, clients_billing.xero_id, clients_billing.xero_name, clients_criteria.weekly';
       $sql.= ' FROM `clients`';
       $sql.= ' LEFT JOIN `clients_billing` ON clients.id = clients_billing.id';
       $sql.= ' LEFT JOIN `clients_criteria` ON clients.id = clients_criteria.id';
@@ -53,7 +53,6 @@ class Controller_Profile extends Controller {
         'states_filter' => 'States filter',
         'xero_id' => 'Xero id',
         'xero_name' => 'Xero name',
-        'monthly' => 'Monthly caps',
         'weekly' => 'Weekly caps'
       );
       $con = $this->db();
@@ -109,7 +108,7 @@ class Controller_Profile extends Controller {
     $country = $chekedPOST["country"];
     $states_filter = $chekedPOST["states_filter"];
     $weekly = (int)$chekedPOST["weekly"];
-    $monthly = (int)$chekedPOST["monthly"];
+    //$monthly = (int)$chekedPOST["monthly"];
 
     $con = $this->db();
 
@@ -120,7 +119,7 @@ class Controller_Profile extends Controller {
     if($con->query($sql1)) $res1 = 1;
 
     $sql2 = "UPDATE `clients_criteria`";
-    $sql2.= " SET weekly = '$weekly', monthly='$monthly', states_filter='$states_filter', postcodes='$postcodes'";
+    $sql2.= " SET weekly = '$weekly', states_filter='$states_filter', postcodes='$postcodes'";
     $sql2.= " WHERE id='$id'";
 
     if($con->query($sql2)) $res2 = 1;

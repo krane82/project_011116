@@ -96,7 +96,7 @@ class Model_Leads extends Model {
       }
     }
   }
-  public function senLeadToCurrent($client_id, $lead_id, $c)
+  private function senLeadToCurrent($client_id, $lead_id, $c)
   {
     $receivers=$this->getLeadFromDelivered($lead_id);
     $counter = count($receivers);
@@ -120,7 +120,7 @@ class Model_Leads extends Model {
         return "Cannot send over client caps...";
       }
   }
-  public function senLeadToAll($lead_id)
+  private function senLeadToAll($lead_id)
   {
     $receivers=$this->getLeadFromDelivered($lead_id);
     $counter = count($receivers);
@@ -148,7 +148,7 @@ class Model_Leads extends Model {
     return false;
   }
 
-  public function getList($start, $end, $state=false, $source=false)
+  private function getList($start, $end, $state=false, $source=false)
   {
     $con = $this->db();
     $sql = "SELECT l.id FROM leads AS `l` LEFT JOIN `leads_lead_fields_rel` AS `lf` ON `lf`.`id`=`l`.`id` WHERE l.datetime BETWEEN '".$start."' AND '".$end."'";
@@ -211,40 +211,21 @@ class Model_Leads extends Model {
     }
     return FALSE;
   }
-  private function checkClientsLimits($id)
+  public function checkClientsLimits($id)
   {
-    $Monday = strtotime( "Monday this week" );
-    $FirstOfMonth = strtotime(date('Y-m-01'));
-    $now = time();
-    $sqlM = "select count(*) from `leads_delivery` where client_id = $id AND (timedate BETWEEN $FirstOfMonth AND $now)";
-    $sqlW = "select count(*) from `leads_delivery` where client_id = $id AND (timedate BETWEEN $Monday AND $now)";
-    $sqlCaps = "SELECT weekly, monthly  FROM `clients_criteria` WHERE id=$id";
     $con = $this->db();
-    $capsr = $con->query($sqlCaps);
-    $caps = $capsr->fetch_assoc();
-    $sqlMr = $con->query($sqlM);
-    $sqlMM = $sqlMr->fetch_assoc();
-    if(!$caps["monthly"]){
-      $caps["monthly"] = 999999999;
+    $monday = strtotime("Monday this week");
+    $sql="select count(led.id), cc.weekly from `leads_delivery` as led right join clients_criteria cc on cc.id=led.client_id where cc.id = '".$id."' AND led.timedate BETWEEN '".$monday."' AND current_timestamp";
+    $res=$con->query($sql);
+    $result=$res->fetch_assoc();
+    if (!$result['weekly']) {
+      $result["weekly"] = 999999999;
     }
-    if(!$caps["weekly"]){
-      $caps["weekly"] = 999999999;
-    }
-    if( $sqlMM["count(*)"] <= $caps["monthly"]){
-      $id_passed = $id;
+    $con->close();
+    if ($result["count(led.id)"] < $result["weekly"]) {
+      return $id;
     } else {
-      echo "monthly not passed!";
-      $con->close();
-      return FALSE;
-    }
-    $sqlWr = $con->query($sqlM);
-    $sqlWW = $sqlWr->fetch_assoc();
-    if($sqlWW["count(*)"] <= $caps["weekly"]){
-      $id_passed = $id;
-      $con->close();
-      return $id_passed;
-    } else {
-      $con->close();
+      echo "weekly not passed!";
       return FALSE;
     }
   }
