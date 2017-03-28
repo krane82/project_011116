@@ -143,6 +143,20 @@ class Controller_CLients extends Controller {
               echo '<div class="form-group">
                 <textarea class="form-control" placeholder="Post codes" type="text" id="postcode" name="postcodes">'. $v .'</textarea> 
               </div>';
+            }else if($k=="weekly") {
+                echo "<div class='form-group' onclick='limits(this,event)'>";
+                echo "<label for='$k'>".$form_keys["$k"]."</label><br>";
+                if($v || $v==='0') {
+                    echo "<p><label><input type='radio' name='limits' value='limited' checked><b> LIMITED </b>";
+                    echo "<label><input type='radio' name='limits' value='unlimited'><b> UNLIMITED </b></p>";
+                    echo '<input class="form-control" type="text" name="'.$k.'" value="'.$v.'"  > ' ;
+                }
+                else {
+                    echo "<p><label><input type='radio' name='limits' value='limited'><b> LIMITED </b>";
+                    echo "<label><input type='radio' name='limits' value='unlimited' checked><b> UNLIMITED </b></p>";
+                    echo '<input class="form-control" type="text" name="'.$k.'" value="'.$v.'"  disabled> ' ;
+                }
+                    echo "</div>";
             } else {
                 echo "<div class='form-group'>";
                 echo "<label for='$k'>".$form_keys["$k"]."</label>";
@@ -175,8 +189,12 @@ class Controller_CLients extends Controller {
       $postcodes = postcodes_valid($_POST["postcodes"]);
       $country = $_POST["country"];
       $states_filter = $_POST["states_filter"];
-      $weekly = (int)$_POST["weekly"];
-
+      if($_POST['limits']=='limited') {
+          $weekly = (int)$_POST["weekly"];
+      }
+      else {
+          $weekly = 'null';
+      }
 //      echo '<pre>';
 //      var_dump($_POST);
 //       echo '</pre>';
