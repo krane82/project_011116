@@ -93,6 +93,7 @@ class Controller_Profile extends Controller {
   }
   
   public function action_UpdateProfileSuccess(){
+    session_start();
     $chekedPOST = $this->model->checkdata($_POST);
     $id = $chekedPOST["id"];
     $client_name = $chekedPOST["campaign_name"];
@@ -130,7 +131,7 @@ class Controller_Profile extends Controller {
     $sql3.= " WHERE id='$id'";
     $res3 = $con->query($sql3);
 
-    if(empty($_POST["password"])){
+    if(trim($_POST["password"]) === ""){
       $sql3 = "UPDATE `users`";
       $sql3.= " SET email = '$email', active='$status', full_name='$full_name'";
       $sql3.= " WHERE id='$id'";
