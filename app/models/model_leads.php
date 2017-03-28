@@ -218,7 +218,7 @@ class Model_Leads extends Model {
     $sql="select count(led.id), cc.weekly from `leads_delivery` as led right join clients_criteria cc on cc.id=led.client_id where cc.id = '".$id."' AND led.timedate BETWEEN '".$monday."' AND current_timestamp";
     $res=$con->query($sql);
     $result=$res->fetch_assoc();
-    if (!$result['weekly']) {
+    if ($result['weekly']==null) {
       $result["weekly"] = 999999999;
     }
     $con->close();
