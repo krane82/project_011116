@@ -118,7 +118,7 @@ class Model_Profile extends Model {
       if ($k=="phone") {
         $p["phone"] = phone_valid($v);
       } else if($k=="postcode") {
-        $p["postcode"] = (int)postcodes_valid($v);
+        $p["postcode"] = postcodes_valid($v);
       }
       else {
         $p["$k"] = trim($v);
