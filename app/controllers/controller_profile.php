@@ -125,12 +125,6 @@ class Controller_Profile extends Controller {
 
     if($con->query($sql2)) $res2 = 1;
 
-
-    $sql3 = "UPDATE `users`";
-    $sql3.= " SET email = '$email', password='$password', active='$status', full_name='$full_name'";
-    $sql3.= " WHERE id='$id'";
-    $res3 = $con->query($sql3);
-
     if(trim($_POST["password"]) === ""){
       $sql3 = "UPDATE `users`";
       $sql3.= " SET email = '$email', active='$status', full_name='$full_name'";
