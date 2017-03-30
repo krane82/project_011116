@@ -68,9 +68,9 @@ class Controller_client_leads extends Controller
     $columns = array(
       array( 'db' => '`a`.`lead_id`', 'dt' => 0, 'field' => 'lead_id'  ),
       array( 'db' => '`llf`.`full_name`', 'dt' => 1, 'field' => 'full_name'  ),
-      array('db'=>'`a`.`date`',       'dt' => 2, 'formatter' => function( $d ) {
+      array('db'=>'`lld`.`timedate`',       'dt' => 2, 'formatter' => function( $d ) {
         return date('d/m/Y', $d);
-      }, 'field'=>'date'),
+      }, 'field'=>'timedate'),
       array( 'db' => '`a`.`approval`',  'dt' => 3, 'formatter'=>function($d){
         switch ($d) {
           case 0:
@@ -132,7 +132,8 @@ class Controller_client_leads extends Controller
 
     $joinQuery = "FROM `{$table}` AS `a` LEFT JOIN `clients` AS `c` ON (`a`.`client_id` = `c`.`id`) LEFT JOIN `leads_lead_fields_rel` as `llf` ON ( `a`.`lead_id` = `llf`.`id` ) ";
     $joinQuery .= " LEFT JOIN `leads` as `l` ON `l`.`id`=`a`.`lead_id` ";
-    $where = "`a`.`client_id` = $user_id";
+    $joinQuery .=" JOIN `leads_delivery` `lld` on `a`.`lead_id` = `lld`.`lead_id` ";
+    $where = "`a`.`client_id` = $user_id AND lld.client_id='".$user_id."'";
 
     echo json_encode(
       SSP::simple( $_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where )

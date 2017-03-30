@@ -43,7 +43,7 @@ class Controller_leads extends Controller
       echo "lead not found";
     }
   }
-
+  
   function action_sendLead()
   {
     if(isset($_POST["client"])) {
@@ -51,25 +51,14 @@ class Controller_leads extends Controller
       $end = strtotime($_POST["end"])+ 86400;
       $state = $_POST["state"];
       $source=$_POST["source"];
-      $client = $_POST["client"];
-      $data=$this->model->getList($start, $end, $state, $source);
-      $i=1;
-      foreach($data as $item)
-      {
-        if($x=$this->model->senLead($client,$item)) print $x;
-        $i++;
-        usleep(250000);
-      }
-      print $i.' Leads done';
-      // need to get leads from #start to #end
-      // end automaticaly send each of this with $this->sendleads(0, $lead_id)
-      //echo "Sending to $_POST[client] with " . date("Y-m-t", $start) . " - " .  date("Y-m-t", $end);
+      $client_id = $_POST["client"];
+      echo $this->model->senManyLeads($client_id, $start, $end, $state, $source);
     } else {
-      // Sending one lead to one client
+//      // Sending one lead to one client
       $client_id =$_POST["id"];
       $lead_id = $_POST["lead_id"];
-      echo $this->model->senLead($client_id, $lead_id);
-    }
+      echo $this->model->senOneLead($client_id,$lead_id);
+      }
   }
 
 

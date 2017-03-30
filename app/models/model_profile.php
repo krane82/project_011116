@@ -14,9 +14,8 @@ class Model_Profile extends Model {
             'postcodes' => 'Postcodes matches',
             'states_filter' => 'States filter',
             'xero_id' => 'Xero id',
-            'xero_name' => 'Xero name',
-            'monthly' => 'Monthly caps',
-            'weekly' => 'Weekly caps'
+            'xero_name' => 'Xero name'
+            //'weekly' => 'Weekly caps'
       );
 
   public function UserChangeNotif($p, $before=''){
@@ -80,7 +79,7 @@ class Model_Profile extends Model {
   }
 
   public function get_profile_data($id) {
-      $sql = ' SELECT clients.id, clients.email, clients.campaign_name, clients.full_name, clients.phone, clients.city, clients.state, clients.country, clients.lead_cost, clients_criteria.postcodes, clients_criteria.states_filter, clients_billing.xero_id, clients_billing.xero_name, clients_criteria.monthly ,clients_criteria.weekly'; 
+      $sql = ' SELECT clients.id, clients.email, clients.campaign_name, clients.full_name, clients.phone, clients.city, clients.state, clients.country, clients.lead_cost, clients_criteria.postcodes, clients_criteria.states_filter, clients_billing.xero_id, clients_billing.xero_name';
       $sql.= ' FROM `clients`';
       $sql.= ' LEFT JOIN `clients_billing` ON clients.id = clients_billing.id';
       $sql.= ' LEFT JOIN `clients_criteria` ON clients.id = clients_criteria.id';
@@ -119,7 +118,7 @@ class Model_Profile extends Model {
       if ($k=="phone") {
         $p["phone"] = phone_valid($v);
       } else if($k=="postcode") {
-        $p["postcode"] = (int)postcodes_valid($v);
+        $p["postcode"] = postcodes_valid($v);
       }
       else {
         $p["$k"] = trim($v);

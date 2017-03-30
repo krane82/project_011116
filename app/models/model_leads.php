@@ -32,20 +32,20 @@ class Model_Leads extends Model {
     $con = $this->db();
     $sql = "SELECT * FROM leads_lead_fields_rel WHERE id='".$id."'";
     $res = $con->query($sql);
-    if($res){
-      $r = $res->fetch_assoc();
-      return $r;
-    } else
-      return "Lead not found";
+    if($res) {
+      if ($r = $res->fetch_assoc()) return $r;
+      return false;
+    }
   }
   private function getClientById($id)
   {
     $con = $this->db();
-    $sql = 'SELECT cc.id, c.email, c.full_name';
+    $sql = 'SELECT cc.id, c.email, c.full_name, cc.postcodes';
     $sql.= ' FROM `clients_criteria` as cc';
     $sql.= ' LEFT JOIN `clients` as c ON cc.id = c.id';
     $sql.= " WHERE cc.id=$id";
     $res = $con->query($sql);
+    //return $sql;
     if ($res) {
       $client = $res->fetch_assoc();
     } else {
@@ -53,19 +53,60 @@ class Model_Leads extends Model {
     }
     return $client;
   }
-
-  public function senLead($client_id, $lead_id)
+  public function senManyLeads($client_id, $start, $end, $state, $source)
+  {
+    $data=$this->getList($start, $end, $state, $source);
+    $i=0;
+    if($client_id!=0) {
+      $c = $this->getClientById($client_id);
+      foreach ($data as $lead_id) {
+        if ($x = $this->senLeadToCurrent($client_id, $lead_id,$c)) print $x . '<br>';
+        else {
+          print 'Error!';
+        }
+        $i++;
+        usleep(250000);
+      }
+    }
+    else {
+      foreach ($data as $lead_id) {
+        if ($x = $this->senLeadToAll($lead_id)
+        ) print $x . '<br>';
+        else {
+          print 'error!';
+        }
+        $i++;
+        usleep(250000);
+      }
+    }
+    print $i.' Leads done';
+  }
+  public function senOneLead($client_id,$lead_id)
+  {
+    if($client_id!=0) {
+      $c = $this->getClientById($client_id);
+      if ($x = $this->senLeadToCurrent($client_id, $lead_id, $c)) print $x;
+      else {
+        print 'Error!';
+      }
+    } else {
+      if ($x = $this->senLeadToAll($lead_id)) print $x;
+      else {
+        print 'Error!';
+      }
+    }
+  }
+  private function senLeadToCurrent($client_id, $lead_id, $c)
   {
     $receivers=$this->getLeadFromDelivered($lead_id);
-    if($client_id != 0){
-      if(in_array($client_id, $receivers ))
-      {
-        return "This client already has this lead";
-      }
-      $leadInfo = $this->getLeadInfo($lead_id);
+    $counter = count($receivers);
+    if($counter>=4) return 'This lead already sent 4 times';
+    $leadInfo = $this->getLeadInfo($lead_id);
+    $postcodes=explode(',',$c['postcodes']);
+    if (!in_array($leadInfo['postcode'],$postcodes)) return 'This client is unmatched to receive this lead';
+    if(in_array($client_id, $receivers )) return "This client already has this lead";
       $readyLeadInfo = prepareLeadInfo($leadInfo);
       $passedCaps = $this->api->checkClientsLimits($client_id);
-      $c = $this->getClientById($client_id);
       if($passedCaps) {
         $delivery_id = $this->getLastDeliveryID() + 1;
         $sent = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"],$delivery_id);
@@ -78,16 +119,17 @@ class Model_Leads extends Model {
       } else {
         return "Cannot send over client caps...";
       }
-    }
-    if($client_id == 0)
-    {
-      $leadInfo = $this->getLeadInfo($lead_id);
-      $clients = $this->api->getClients($leadInfo);
-      // print_r($clients);
-      // exit;
-      $result = $this->sendToClients($clients, $lead_id, $leadInfo);
-      return $result;
-    }
+  }
+  private function senLeadToAll($lead_id)
+  {
+    $receivers=$this->getLeadFromDelivered($lead_id);
+    $counter = count($receivers);
+    if($counter>=4) return 'This lead already sent 4 times';
+    $leadInfo = $this->getLeadInfo($lead_id);
+    $state=$leadInfo['state'];
+    if(!$clients = $this->api->getClients($leadInfo)) return "No clients matches for this lead, or they are inactive";
+    $result = $this->sendToClients($clients, $lead_id, $leadInfo);
+    return $result;
   }
   private function getLeadFromDelivered($id)
   {
@@ -106,7 +148,7 @@ class Model_Leads extends Model {
     return false;
   }
 
-  public function getList($start, $end, $state=false, $source=false)
+  private function getList($start, $end, $state=false, $source=false)
   {
     $con = $this->db();
     $sql = "SELECT l.id FROM leads AS `l` LEFT JOIN `leads_lead_fields_rel` AS `lf` ON `lf`.`id`=`l`.`id` WHERE l.datetime BETWEEN '".$start."' AND '".$end."'";
@@ -130,6 +172,8 @@ class Model_Leads extends Model {
     {
       return 'This lead already sent 4 times';
     }
+    $readyLeadInfo = prepareLeadInfo($p);
+    $delivery_id = $this->getLastDeliveryID();
     $sentTo = '';
     foreach ($clients as $c) {
       $id = $c["id"];
@@ -138,16 +182,18 @@ class Model_Leads extends Model {
         continue;
       }
       $passedCaps = $this->checkClientsLimits($id);
-      if($passedCaps AND $counter < 4) {
-        $readyLeadInfo = prepareLeadInfo($p);
-        $delivery_id = $this->getLastDeliveryID() + 1;
+      if($passedCaps) {
         $sent = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"],$delivery_id);
         if($sent) {
           $counter++;
           $sentTo .= "Lead #$lead_id sent to $c[full_name] : $c[email]<br>\n";
           $this->api->addToDeliveredTable($id, $lead_id, $readyLeadInfo);
+          $delivery_id+=1;
+          return 'Lead sent and added to database';
         }
+        return 'for some reason lead can not be sent';
       }
+      return 'Out of clients caps';
     }
     return $sentTo;
   }
@@ -165,40 +211,21 @@ class Model_Leads extends Model {
     }
     return FALSE;
   }
-  private function checkClientsLimits($id)
+  public function checkClientsLimits($id)
   {
-    $Monday = strtotime( "Monday this week" );
-    $FirstOfMonth = strtotime(date('Y-m-01'));
-    $now = time();
-    $sqlM = "select count(*) from `leads_delivery` where client_id = $id AND (timedate BETWEEN $FirstOfMonth AND $now)";
-    $sqlW = "select count(*) from `leads_delivery` where client_id = $id AND (timedate BETWEEN $Monday AND $now)";
-    $sqlCaps = "SELECT weekly, monthly  FROM `clients_criteria` WHERE id=$id";
     $con = $this->db();
-    $capsr = $con->query($sqlCaps);
-    $caps = $capsr->fetch_assoc();
-    $sqlMr = $con->query($sqlM);
-    $sqlMM = $sqlMr->fetch_assoc();
-    if(!$caps["monthly"]){
-      $caps["monthly"] = 999999999;
+    $monday = strtotime("Monday this week");
+    $sql="select count(led.id), cc.weekly from `leads_delivery` as led right join clients_criteria cc on cc.id=led.client_id where cc.id = '".$id."' AND led.timedate BETWEEN '".$monday."' AND current_timestamp";
+    $res=$con->query($sql);
+    $result=$res->fetch_assoc();
+    if ($result['weekly']==null) {
+      $result["weekly"] = 999999999;
     }
-    if(!$caps["weekly"]){
-      $caps["weekly"] = 999999999;
-    }
-    if( $sqlMM["count(*)"] <= $caps["monthly"]){
-      $id_passed = $id;
+    $con->close();
+    if ($result["count(led.id)"] < $result["weekly"]) {
+      return $id;
     } else {
-      echo "monthly not passed!";
-      $con->close();
-      return FALSE;
-    }
-    $sqlWr = $con->query($sqlM);
-    $sqlWW = $sqlWr->fetch_assoc();
-    if($sqlWW["count(*)"] <= $caps["weekly"]){
-      $id_passed = $id;
-      $con->close();
-      return $id_passed;
-    } else {
-      $con->close();
+      echo "weekly not passed!";
       return FALSE;
     }
   }
@@ -209,13 +236,7 @@ class Model_Leads extends Model {
       $sql = 'SELECT cc.id, c.email, c.full_name';
       $sql.= ' FROM `clients_criteria` as cc';
       $sql.= ' LEFT JOIN `clients` as c ON cc.id = c.id';
-      if(!empty($post["state"]) AND !empty($post["postcode"])) {
-        $sql .= ' WHERE cc.states_filter LIKE "%' . $post["state"] . '%" OR cc.postcodes LIKE "%'.$post["postcode"].'%"';
-      } else if(!empty($post["state"])) {
-        $sql .= ' WHERE cc.states_filter LIKE "%' . $post["state"] . '%"';
-      } else if(!empty($post["postcode"])){
-        $sql.= ' WHERE cc.postcodes LIKE "%'.$post["postcode"].'%"';
-      }
+      $sql .= ' WHERE cc.states_filter LIKE "%' . $post["state"] . '%" AND cc.postcodes LIKE "%'.$post["postcode"].'%"';
       $sql .= ' AND c.status = 1';
       $sql .= ' ORDER BY c.lead_cost DESC';
     } else {

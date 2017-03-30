@@ -14,8 +14,6 @@ class Controller_Api extends Controller {
 
   public function action_in()
   {
-    print '<pre>';
-    print_r ($_POST);
     if(isset($_POST['source']))
     {
       $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);

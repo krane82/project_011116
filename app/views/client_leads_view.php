@@ -1,7 +1,10 @@
 
 
 <div class="panel panel-white ">
-  <div class="col-md-3"></div>
+  <div class="col-md-3">
+    <p>Serach by Name</p>
+    <input type="text" id="nameSearch">
+  </div>
   <div class='col-md-5 col-xs-12  text-center'>
     <h3>Download leads by period</h3>
     <br>
@@ -55,10 +58,12 @@
 </div>
 
 <script>
+
   $(document).ready(function () {
     var leads = $('#client_leads');
+
     var table = leads.DataTable({
-      "processing": true,
+      //"processing": true,
       "serverSide": true,
       "ajax": {
         "url": "<?php echo __HOST__ . "/client_leads/" ?>getLeads",
@@ -76,6 +81,19 @@
         "sInfoFiltered": ""
       }
     });
+    //Mironenko Added Search Function
+
+    /////////////
+    var nameSearch=document.getElementById('nameSearch');
+    //var dateSearch=document.getElementById('dateSearch');
+    nameSearch.onkeyup=function(){
+      table
+          .columns(1)
+          .search(this.value)
+          .draw()
+    };
+
+    //End of adding Serach Fields
     var modalBody = '<form id="rejectForm">' +
      '<p>Choose your rejection reason: </p>' +
      '<label><input type="radio" name="reason" value="1" required> Outside of nominated area service (2 days to reject)</label><br>'+
@@ -173,5 +191,7 @@
     $('.input-daterange').datepicker({
       multidate: "true"
     });
+   // $('.dateSearch').datepicker({format: 'dd/mm/yyyy'});
   });
 </script>
+<!--<script src="cdn.datatables.net/plug-ins/1.10.13/filtering/row-based/range_dates.js"></script>-->

@@ -4,7 +4,14 @@ class Model_Api extends Model {
 
   public function proccess_lead($post, $counter=0, $addToTable=true, $leadId=0) {
     $p = $this->checkdata($post);
-    if ($addToTable) {
+      if($p["phone"])
+      {
+        if($this->phoneReject($p["phone"]))
+        {
+          return 'This phone has been already sent in this week';
+        }
+      }
+       if ($addToTable) {
       $lead_id = $this->addleadtotable($p);
     } else {
       $lead_id=$leadId;
@@ -15,7 +22,16 @@ class Model_Api extends Model {
     $resp =  $this->sendToClients($clients, $lead_id, $p, $counter);
     return $resp;
   }
-
+  private function phoneReject($phone)
+  {
+    $con = $this->db();
+    $stop=time()-86400*7;
+    $sql="SELECT ler.id from leads_lead_fields_rel as ler left join leads le on ler.id=le.id WHERE ler.phone='".$phone."' AND le.datetime>'".$stop."'";
+    //return $sql();
+    $res=$con->query($sql);
+    if($res->fetch_assoc()) return true;
+    return false;
+  }
 
   private function sendToClients($clients, $lead_id ,$p, $counter){
     $sended = '';
@@ -73,47 +89,19 @@ class Model_Api extends Model {
 
   public function checkClientsLimits($id)
   {
-    $Monday = strtotime( "Monday this week" );
-    $FirstOfMonth = strtotime(date('Y-m-01'));
-    $now = time();
-    $sqlM = "SELECT count(*) FROM `leads_delivery` WHERE client_id = $id AND (timedate BETWEEN $FirstOfMonth AND $now)";
-    $sqlW = "SELECT count(*) FROM `leads_delivery` WHERE client_id = $id AND (timedate BETWEEN $Monday AND $now)";
-    $sqlCaps = "SELECT weekly, monthly  FROM `clients_criteria` WHERE id=$id";
-
     $con = $this->db();
-
-    $capsr = $con->query($sqlCaps);
-    $caps = $capsr->fetch_assoc();
-
-    $sqlMr = $con->query($sqlM);
-    $sqlMM = $sqlMr->fetch_assoc();
-
-    if(!$caps["monthly"]){
-      $caps["monthly"] = 999999999;
+    $monday = strtotime("Monday this week");
+    $sql="select count(led.id), cc.weekly from `leads_delivery` as led right join clients_criteria cc on cc.id=led.client_id where cc.id = '".$id."' AND led.timedate BETWEEN '".$monday."' AND current_timestamp";
+    $res=$con->query($sql);
+    $result=$res->fetch_assoc();
+    if ($result['weekly']==null) {
+      $result["weekly"] = 999999999;
     }
-
-    if(!$caps["weekly"]){
-      $caps["weekly"] = 999999999;
-    }
-
-
-    if( $sqlMM["count(*)"] <= $caps["monthly"]){
-      $id_passed = $id;
+    $con->close();
+    if ($result["count(led.id)"] < $result["weekly"]) {
+      return $id;
     } else {
-      echo "monthly not passed!";
-      $con->close();
-      return FALSE;
-    }
-
-    $sqlWr = $con->query($sqlW);
-    $sqlWW = $sqlWr->fetch_assoc();
-
-    if($sqlWW["count(*)"] <= $caps["weekly"]){
-      $id_passed = $id;
-      $con->close();
-      return $id_passed;
-    } else {
-      $con->close();
+      echo "weekly not passed!";
       return FALSE;
     }
   }
@@ -121,17 +109,11 @@ class Model_Api extends Model {
   public function getClients($post){
     $clients = array();
     $con = $this->db();
-    if( !empty($post["state"]) || !empty($post["postcode"]) ){
+    if( !empty($post["state"]) && !empty($post["postcode"]) ){
       $sql = 'SELECT cc.id, c.email, c.full_name';
       $sql.= ' FROM `clients_criteria` as cc';
       $sql.= ' LEFT JOIN `clients` as c ON cc.id = c.id';
-      if(!empty($post["state"]) AND !empty($post["postcode"])) {
-        $sql .= ' WHERE ( cc.states_filter LIKE "%' . $post["state"] . '%" AND cc.postcodes LIKE "%'.$post["postcode"].'%" )';
-        // } else if(!empty($post["state"])) {
-        //   $sql .= ' WHERE cc.states_filter LIKE "%' . $post["state"] . '%"';
-      } else if(!empty($post["postcode"])){
-        $sql.= ' WHERE cc.postcodes LIKE "%'.$post["postcode"].'%"';
-      }
+      $sql .= ' WHERE ( cc.states_filter LIKE "%' . $post["state"] . '%" AND cc.postcodes LIKE "%'.$post["postcode"].'%" )';
       $sql .= ' AND c.status = 1';
       $sql .= ' ORDER BY c.lead_cost DESC';
     } else {
@@ -290,12 +272,11 @@ class Model_Api extends Model {
     {
       foreach ($key as $key1)
       {
-        if ($code>=$key1[0] && $code<=$key1[1])
-        {return $item;}
-        return 'unmatched';
-     }
 
+        if ($code>=(int)$key1[0] && $code<=(int)$key1[1]) return $item;
+      }
     }
+    return 'Unmatched';
   }
 
   private function addleadtotable($post)

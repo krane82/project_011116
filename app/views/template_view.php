@@ -7,6 +7,7 @@
   <meta name="description" content="Energy Smart system" />
 
 <!--  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>-->
+<link rel="shortcut icon" type="image/x-icon" href="http://www.energysmart.com.au/wp-content/uploads/2015/05/favicon.png">
   <link href="<?php echo __HOST__; ?>/assets/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet" type="text/css"//>
   <!-- <link href="<?php echo __HOST__; ?>/assets/plugins/uniform/css/uniform.default.min.css" rel="stylesheet" type="text/css"//> -->
   <link href="<?php echo __HOST__; ?>/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>

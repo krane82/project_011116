@@ -103,7 +103,7 @@ class Controller_CLients extends Controller {
 //    var_dump($_POST);
     if($_POST["id"]){
       $id = $_POST["id"];
-      $sql = ' SELECT clients.id, clients.email, clients.campaign_name, users.password, clients.full_name, clients.phone, clients.city, clients.state, clients.country, clients.lead_cost, clients_criteria.postcodes, clients_criteria.states_filter, clients_billing.xero_id, clients_billing.xero_name, clients_criteria.monthly ,clients_criteria.weekly';
+      $sql = ' SELECT clients.id, clients.email, clients.campaign_name, users.password, clients.full_name, clients.phone, clients.city, clients.state, clients.country, clients.lead_cost, clients_criteria.postcodes, clients_criteria.states_filter, clients_billing.xero_id, clients_billing.xero_name, clients_criteria.weekly';
       $sql.= ' FROM `clients`';
       $sql.= ' LEFT JOIN `clients_billing` ON clients.id = clients_billing.id';
       $sql.= ' LEFT JOIN `clients_criteria` ON clients.id = clients_criteria.id';
@@ -124,7 +124,6 @@ class Controller_CLients extends Controller {
             'states_filter' => 'States filter',
             'xero_id' => 'Xero id',
             'xero_name' => 'Xero name',
-            'monthly' => 'Monthly',
             'weekly' => 'Weekly'
       );
 //      echo $sql;
@@ -144,6 +143,20 @@ class Controller_CLients extends Controller {
               echo '<div class="form-group">
                 <textarea class="form-control" placeholder="Post codes" type="text" id="postcode" name="postcodes">'. $v .'</textarea> 
               </div>';
+            }else if($k=="weekly") {
+                echo "<div class='form-group' onclick='limits(this,event)'>";
+                echo "<label for='$k'>".$form_keys["$k"]."</label><br>";
+                if($v || $v==='0') {
+                    echo "<p><label><input type='radio' name='limits' value='limited' checked><b> LIMITED </b>";
+                    echo "<label><input type='radio' name='limits' value='unlimited'><b> UNLIMITED </b></p>";
+                    echo '<input class="form-control" type="text" name="'.$k.'" value="'.$v.'"  > ' ;
+                }
+                else {
+                    echo "<p><label><input type='radio' name='limits' value='limited'><b> LIMITED </b>";
+                    echo "<label><input type='radio' name='limits' value='unlimited' checked><b> UNLIMITED </b></p>";
+                    echo '<input class="form-control" type="text" name="'.$k.'" value="'.$v.'"  disabled> ' ;
+                }
+                    echo "</div>";
             } else {
                 echo "<div class='form-group'>";
                 echo "<label for='$k'>".$form_keys["$k"]."</label>";
@@ -176,9 +189,12 @@ class Controller_CLients extends Controller {
       $postcodes = postcodes_valid($_POST["postcodes"]);
       $country = $_POST["country"];
       $states_filter = $_POST["states_filter"];
-      $weekly = (int)$_POST["weekly"];
-      $monthly = (int)$_POST["monthly"];
-
+      if($_POST['limits']=='limited') {
+          $weekly = (int)$_POST["weekly"];
+      }
+      else {
+          $weekly = 'null';
+      }
 //      echo '<pre>';
 //      var_dump($_POST);
 //       echo '</pre>';
@@ -199,7 +215,7 @@ class Controller_CLients extends Controller {
       if($con->query($sql1)) $res1 = 1;
 
       $sql2 = "UPDATE `clients_criteria`";
-      $sql2.= " SET weekly = $weekly, monthly=$monthly, states_filter='$states_filter', postcodes='$postcodes'";
+      $sql2.= " SET weekly = $weekly, states_filter='$states_filter', postcodes='$postcodes'";
       $sql2.= " WHERE id='$id'";
       if($con->query($sql2)) $res2 = 1;
 

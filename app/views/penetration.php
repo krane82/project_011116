@@ -27,6 +27,9 @@
 <div class="col-lg-6" id="VIC"></div>
 <div class="col-lg-6" id="WA"></div>
 </div>
+<div class="row">
+<div class="col-lg-6" id="ACT"></div>
+</div>
 </div>
     <div class="modal fade" id="penModal" role="dialog" tabindex="-1">
         <div class="modal-dialog" style=" margin-top: 15%">
@@ -80,6 +83,7 @@
 					var TASData=Data.TAS;
 					var VICData=Data.VIC;
 					var WAData=Data.WA;
+					var ACTdata=Data.ACT;
 					if(NSWData)fill("NSW",NSWData);
 					else $('#NSW').html('<h3>No leads in NSW for this period</h3>');
 					if(QLDData)fill("QLD",QLDData);
@@ -92,6 +96,8 @@
 					else $('#VIC').html('<h3>No leads in VIC for this period</h3>');
 					if(WAData)fill("WA",WAData);
 					else $('#WA').html('<h3>No leads in WA for this period</h3>');
+                    if(ACTdata)fill("ACT",ACTData);
+                    else $('#ACT').html('<h3>No leads in ACT for this period</h3>');
 
 				}
 				});
@@ -104,6 +110,7 @@ var SAData=Data.SA;
 var TASData=Data.TAS;
 var VICData=Data.VIC;
 var WAData=Data.WA;
+var ACTData=Data.ACT;
 if(NSWData)fill("NSW",NSWData);
 					else $('#NSW').html('<h3>No leads in NSW for this period</h3>');
 					if(QLDData)fill("QLD",QLDData);
@@ -116,6 +123,9 @@ if(NSWData)fill("NSW",NSWData);
 					else $('#VIC').html('<h3>No leads in VIC for this period</h3>');
 					if(WAData)fill("WA",WAData);
 					else $('#WA').html('<h3>No leads in WA for this period</h3>');
+                    if(ACTData)fill("ACT",ACTData);
+                    else $('#ACT').html('<h3>No leads in ACT for this period</h3>');
+
 tab=$('#codesTab').DataTable();
 function fill(name,datArray)
 {$(function () {
