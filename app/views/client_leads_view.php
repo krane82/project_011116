@@ -25,8 +25,8 @@
 </div>
 
 <hr>
-
-<table class="table" id="client_leads">
+<div class="table-responsive">
+<table class="table responsive" id="client_leads">
   <thead>
   <tr>
     <th>ID</th>
@@ -39,7 +39,7 @@
   </tr>
   </thead>
 </table>
-
+</div>
 <div id="LeadInfo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="LeadInfo">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

@@ -2,7 +2,8 @@
 <div class="panel panel-white ">
 <div class="col-md-12">
   <div class="row">
-      <table class="table" id="approvals">
+  <div class="table-responsive">
+      <table class="table display responsive no-wrap" id="approvals">
         <thead>
         <tr>
           <th>ID</th>
@@ -32,6 +33,7 @@
         </tr>
         </tfoot>
       </table>
+    </div>
   </div>
 </div>
 <!-- /.panel panel-white -->

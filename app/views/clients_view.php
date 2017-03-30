@@ -1,6 +1,8 @@
+<div class="table-responsive">
 <?php
 echo $table;
 ?>
+</div>
 
 <hr>
 <input type="button" class="btn btn-primary" value="ADD NEW" onclick="addnew();">
