@@ -30,24 +30,4 @@ left join clients_criteria cri on c.id=cri.id left join leads_delivery ld on c.i
     }
 return $result;
 }
-public function getMaches($begin=false,$end=false)
-{
-    $con = $this->db();
-    $beginOfMonth = strtotime(date('Y-m-01'));
-    $Now = time();
-    $sql="SELECT le.postcode, COUNT( le.id ) ,led.lead_id, GROUP_CONCAT( cli.campaign_name )
-FROM leads_lead_fields_rel AS le
-LEFT JOIN leads_delivery AS led ON le.id = led.lead_id
-LEFT JOIN clients cli ON led.client_id = cli.id
-WHERE led.timedate BETWEEN '".$beginOfMonth."' AND '".$Now."'
-GROUP BY led.lead_id";
-    $res=$con->query($sql);
-    $result=array();
-    while($row=$res->fetch_assoc())
-    {
-        $result[]=$row;
-    }
-    return $result;
-}
-
 }

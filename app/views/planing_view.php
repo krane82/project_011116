@@ -13,6 +13,7 @@
         <input type="submit" class="btn btn-primary" value="Show Leads Count">
     </div>
 </form>
+<div class="table-responsive">
 <table id="plan" class="display table table-condensed table-striped table-hover table-bordered pull-left">
     <thead>
     <tr>
@@ -42,6 +43,7 @@
 ?>
     </tbody>
 </table>
+</div>
 <script>
     $(document).ready(function () {
     var campaign=$('.campaign');

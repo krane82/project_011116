@@ -19,7 +19,8 @@
 <h2 class="text-center">Client Lead Distribution Order</h2>
 <br>
 <div class="panel panel-white ">
-  <table class="table">
+<div class="table-responsive">
+  <table class="table responsive">
     <tr>
       <td>Client </td>
       <td>Cost per lead </td>
@@ -40,6 +41,7 @@
     }
     ?>
   </table>
+</div>
 </div>
 
 <script>
