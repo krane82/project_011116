@@ -69,7 +69,7 @@ class Controller_client_leads extends Controller
       array( 'db' => '`a`.`lead_id`', 'dt' => 0, 'field' => 'lead_id'  ),
       array( 'db' => '`llf`.`full_name`', 'dt' => 1, 'field' => 'full_name'  ),
       array('db'=>'`a`.`date`',       'dt' => 2, 'formatter' => function( $d ) {
-        return date('d/m/Y', $d);
+        return date('d/m/Y h:i:s A', $d);
       }, 'field'=>'date'),
       array( 'db' => '`a`.`approval`',  'dt' => 3, 'formatter'=>function($d){
         switch ($d) {

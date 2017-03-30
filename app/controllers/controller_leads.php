@@ -94,7 +94,7 @@ class Controller_leads extends Controller
         array( 'db' => '`ld`.`lead_id`',        'dt' => 1, 'field' => 'lead_id'),
         array( 'db' => '`ll`.`postcode`',        'dt' => 2, 'field'=> 'postcode' ),
         array('db'=>'`ld`.`timedate`', 'dt' => 3, 'formatter' => function( $d, $row ) {
-          return date('d/m/Y', $d);
+          return date('d/m/Y h:i:s A', $d);
         }, 'field'=>'timedate'),
         array('db'=> '`c`.`campaign_name`', 'dt'=>4, 'field'=>'campaign_name'),
         array('db'=> '`ld`.`open_email`', 'dt'=>5, 'formatter'=>function($d, $row){
@@ -151,7 +151,7 @@ class Controller_leads extends Controller
         array( 'db' => '`c`.`name`',        'dt' => 1, 'field' => 'name'),
         array( 'db' => '`lf`.`state`',        'dt' => 2, 'field'=> 'state' ),
         array('db'=>'`l`.`datetime`', 'dt' => 3, 'formatter' => function( $d, $row ) {
-          return date('m/d/Y', $d);
+          return date('d/m/Y h:i:s A', $d);
         }, 'field'=>'datetime'),
         array('db'=> '`l`.`id`', 'dt'=>4, 'formatter'=>function($d, $row){
           return "<a href='#' class='viewLeadInfo btn btn-info' attr-id='$row[0]' data-toggle=\"modal\" data-target=\"#LeadInfo\">View</a>";

@@ -86,10 +86,10 @@ class Controller_approvals extends Controller
 //      }, 'field'=>'date'),
 //      array( 'db' => '`c`.`email`',        'dt' => 2, 'field'=> 'email' ),
       array('db'=>'`ld`.`timedate`',       'dt' => 2, 'formatter' => function( $d, $row ) {
-        return date('m/d/Y', $d);
+        return date('d/m/Y h:i:s A', $d);
       }, 'field'=>'timedate'),
       array('db'=>'`a`.`date`', 'dt' => 3, 'formatter' => function( $d ) {
-        return date('m/d/Y', $d);
+        return date('d/m/Y h:i:s A', $d);
       }, 'field'=>'date'),
       array( 'db' => '`a`.`reason`',        'dt' => 4, 'field' => 'reason'),
       array( 'db' => '`a`.`note`',        'dt' => 5, 'field' => 'note'),
