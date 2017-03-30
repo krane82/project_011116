@@ -1,5 +1,6 @@
 <h1 class="text-center">Clients Caps</h1>
 <div class="dataTables_wrapper no-footer">
+<div class="table-responsive">
     <table class="display table table-condensed table-striped table-hover table-bordered pull-left dataTable no-footer" id="limits">
         <thead>
         <tr>
@@ -24,6 +25,7 @@
         }
         ?>
     </table>
+</div>
 </div>
 <script>
     var options={

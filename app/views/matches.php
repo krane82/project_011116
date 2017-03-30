@@ -1,16 +1,3 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Admin
- * Date: 10.02.2017
- * Time: 11:15
- */
-?>
-<head>
-    <style>
-        /*td {width:200px; border:solid 1px green}
-    </style>
-</head>
 <h1 class="text-center">PostCodes Matches</h1>
 <div class="dataTables_wrapper no-footer">
     <form id="getLeads">
@@ -26,10 +13,8 @@
             <input type="submit" class="btn btn-primary" value="View leads">
         </div>
     </form>
-    <?php
-//    print '<pre>';
-//    var_dump($data);?>
-    <table id ="matches" class="table dataTable no-footer">
+<div class="table-responsive">
+<table id ="matches" class="table dataTable responsive no-footer">
 <thead>
 <tr>
 <td>Post Codes</td>
@@ -51,6 +36,7 @@ print '</tr>';
 <!--<td>--><?php //print_r($data)?><!--</td>-->
 </tbody>
 </table>
+</div>
 </div>
 
 

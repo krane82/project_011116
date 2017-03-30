@@ -1,6 +1,7 @@
 
 <h1 class="text-center">Campaigns</h1>
-<table id="campaigns" class="display table table-condensed table-striped table-hover table-bordered pull-left" cellspacing="0" width="100%">
+<div class="table-responsive">
+<table id="campaigns" class="display table responsive table-condensed table-striped table-hover table-bordered pull-left" cellspacing="0" width="100%">
   <thead>
   <tr>
     <th>id</th>
@@ -13,7 +14,7 @@
   </tr>
   </thead>
 </table>
-
+</div>
 <!-- #addNewCampaign -->
 <h3>Add new campaign</h3>
 

@@ -1,7 +1,8 @@
 <div class="container">
   <div class="row">
     <div class="col-md-10">
-          <table class="table" id="leads_delivery">
+    <div class="table-responsive">
+          <table class="table responsive" id="leads_delivery">
             <thead>
             <tr>
               <th>ID</th>
@@ -14,6 +15,7 @@
             </tr>
             </thead>
           </table>
+        </div>
     </div>
     <!-- /.panel panel-white -->
   </div>

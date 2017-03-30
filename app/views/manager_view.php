@@ -13,6 +13,7 @@
         <input type="submit" class="btn btn-primary" value="Show Leads Count">
     </div>
 </form>
+<div class="table-responsive">
 <table id="plan" class="display table table-condensed table-striped table-hover table-bordered pull-left">
     <thead>
     <tr>
@@ -42,6 +43,7 @@
     ?>
     </tbody>
 </table>
+</div>
     <div id='infodiv'>
         <div class="row">
             <div class="col-lg-6" id="NSW"></div>
