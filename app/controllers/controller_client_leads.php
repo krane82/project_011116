@@ -69,10 +69,11 @@ class Controller_client_leads extends Controller
     $primaryKey = 'id';
     $now = time();
     $columns = array(
+
         array( 'db' => '`a`.`lead_id`', 'dt' => 0, 'field' => 'lead_id'  ),
         array( 'db' => '`llf`.`full_name`', 'dt' => 1, 'field' => 'full_name'  ),
         array('db'=>'`lld`.`timedate`',       'dt' => 2, 'formatter' => function( $d ) {
-          return date('d/m/Y', $d);
+          return date('d/m/Y h:i:s A', $d);
         }, 'field'=>'timedate'),
         array( 'db' => '`a`.`approval`',  'dt' => 3, 'formatter'=>function($d){
           switch ($d) {
@@ -124,6 +125,7 @@ class Controller_client_leads extends Controller
           }
         },
             'field' => 'decline_reason')
+
     );
 
     $sql_details = array(
