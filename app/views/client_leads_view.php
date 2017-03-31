@@ -1,5 +1,3 @@
-
-
 <div class="panel panel-white ">
   <div class="col-md-3"></div>
   <div class='col-md-5 col-xs-12  text-center'>
