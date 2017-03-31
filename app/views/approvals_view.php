@@ -159,6 +159,7 @@ $(document).ready(function () {
           }
         } );
     } );
+
 });
     function acceptLead(id, client_id){
       $.ajax({
