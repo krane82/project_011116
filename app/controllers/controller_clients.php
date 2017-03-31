@@ -241,8 +241,6 @@ class Controller_CLients extends Controller {
   }
 
   function action_addNewClient(){
-      include "app/models/model_leads.php";
-      $lead=new Model_Leads();
       if(isset($_POST["campaign_name"])  && isset($_POST["email"])) {
       $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
       $client_name = $_POST["campaign_name"];
@@ -301,11 +299,8 @@ class Controller_CLients extends Controller {
         echo "Clients not added! DB error";
         exit;
      }
-     $start=time()-86400*7;
-     $end=time();
-     print '<br>Trying to send existing leads. . .<br>';
-     print($lead->senManyLeads($last_id, $start, $end, '',0));
-     $con->close();
+
+      $con->close();
      }
     }
   function action_delete_campaign(){

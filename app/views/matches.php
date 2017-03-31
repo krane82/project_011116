@@ -35,7 +35,7 @@
 <td>Post Codes</td>
 <td>Matches</td>
 <td>Client Name</td>
-<td>Last Date Sent Through CRM</td>
+<td>Date Receiving to CRM</td>
 </tr>
 </thead>
 <tbody>
