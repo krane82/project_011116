@@ -259,7 +259,7 @@ class Controller_CLients extends Controller {
   }
 
   function action_addNewClient(){
-    if(isset($_POST["campaign_name"])  && isset($_POST["email"])) {
+      if(isset($_POST["campaign_name"])  && isset($_POST["email"])) {
       $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
       $client_name = $_POST["campaign_name"];
       $status = 1;
@@ -269,6 +269,12 @@ class Controller_CLients extends Controller {
       $password = md5($_POST["password"]);
       $xero_id = $_POST["xero_id"];
       $xero_name = $_POST["xero_name"];
+      if($_POST['limits']=='limited')
+      {
+            $weekly = (int)$_POST["weekly"];
+      } else {
+            $weekly = 'null';
+      }
       $phone = phone_valid($_POST["phone"]);
       $city = $_POST["city"];
       $state = $_POST["state"];
@@ -301,8 +307,8 @@ class Controller_CLients extends Controller {
       if($con->query($sql2)) $clients_aded = 1;
 
       $sql3 = 'INSERT INTO `clients_criteria`';
-      $sql3.= '(id, states_filter, postcodes )';
-      $sql3.= " VALUES ($last_id, '$states_filter', '$postcodes' )";
+      $sql3.= '(id, weekly, states_filter, postcodes )';
+      $sql3.= " VALUES ($last_id, $weekly, '$states_filter', '$postcodes' )";
       
       if($con->query($sql3)) $criteria_added = 1;
       if($user_added && $billing_added && $clients_aded && $criteria_added ) { 
