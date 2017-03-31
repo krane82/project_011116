@@ -20,20 +20,10 @@
 <td>Post Codes</td>
 <td>Matches</td>
 <td>Client Name</td>
+<td>Date Receiving to CRM</td>
 </tr>
 </thead>
 <tbody>
-<?php foreach ($data as $item)
-{
-print '<tr>';
-//print '<td>'.$key.'</td>';
-print '<td>'.$item['postcode'].'</td>';
-print '<td>'.$item['COUNT( le.id )'].'</td>';
-print '<td>'.substr($item['GROUP_CONCAT( cli.campaign_name )'],0,50).'</td>';
-print '</tr>';
-}
-?>
-<!--<td>--><?php //print_r($data)?><!--</td>-->
 </tbody>
 </table>
 </div>
@@ -43,8 +33,23 @@ print '</tr>';
 <script type="text/javascript">
     $(document).ready(function () {
         var form=$('#getLeads');
-        var table=$('#matches');
-        table=table.DataTable();
+        var table=$('#matches').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "<?php echo __HOST__ . '/Leads_Limits/matchesAjax' ?>",
+                "type": "POST",
+                "data": function ( d ) {
+                    return $.extend( {}, d, {
+                        "st": $('input[name=start]').val(),
+                        "en": $('input[name=end]').val(),
+                    } );
+                }
+            },
+            "order": [[ 3, "desc" ]]
+        });
+
+
         form.submit(function (e) {
             e.preventDefault();
             var start = form.find('input[name=start]').val();

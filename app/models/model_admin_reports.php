@@ -49,7 +49,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       $end = strtotime("tomorrow", $start) - 1;
     }
     // get approved rejected leads and sum
-    $sql = 'SELECT lf.id as `id`, lf.full_name as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`ld`.`timedate`), "%e %b %Y" ) AS `Date`, lr.reason as `Rejection reason`,';
+    $sql = 'SELECT lf.id as `id`, lf.full_name as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`ld`.`timedate`), "%e %b %Y %h:%i:%s" ) AS `Date`, lr.reason as `Rejection reason`,';
     $sql .= ' `lf`.`address`, `lf`.`suburb`,  `lf`.`state`, `lf`.`postcode`, `lf`.`system_size`, `lf`.`roof_type`, `lf`.`electricity`, `lf`.`house_age`, `lf`.`house_type`, `lf`.`system_for`, `lf`.`note`';
     $sql .= ' FROM `leads_delivery` as ld ';
     $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
@@ -97,7 +97,8 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $data = "(`l`.`datetime` BETWEEN $start AND $end)";
     $con = $this->db();
 
-    $sql = 'SELECT lf.id as `id`, lf.full_name as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`l`.`datetime`), "%e %b %Y" ) AS `Date`, c.name as `Campaign`,';
+
+    $sql = 'SELECT lf.id as `id`, lf.full_name as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`l`.`datetime`), "%e %b %Y %h:%i:%s" ) AS `Date`, c.name as `Campaign`,';
     $sql .= ' `lf`.`address`, `lf`.`suburb`,  `lf`.`state`,  `lf`.`postcode`, `lf`.`system_size`, `lf`.`roof_type`, `lf`.`electricity`, `lf`.`house_age`, `lf`.`house_type`, `lf`.`system_for`, `lf`.`note`';
     $sql .= ' FROM `leads` as l ';
     $sql .= ' LEFT JOIN `leads_lead_fields_rel` as lf ON lf.id=l.id';
@@ -145,8 +146,10 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       $end = strtotime("tomorrow", $start) - 1;
     }
     // get approved leads and sum
-    $sql = 'SELECT lf.id as `id`, lf.full_name as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`ld`.`timedate`), "%e %b %Y" ) AS `Date`, c.campaign_name as `Client Name`, c.email as `Client Email`, ';
+
+    $sql = 'SELECT lf.id as `id`, lf.full_name as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`ld`.`timedate`), "%e %b %Y %h:%i:%s" ) AS `Date`, c.campaign_name as `Client Name`, c.email as `Client Email`, ';
     $sql .= ' `lf`.`address`, `lf`.`suburb`,  `lf`.`state`,  `lf`.`postcode`, `lf`.`system_size`, `lf`.`roof_type`, `lf`.`electricity`, `lf`.`house_age`, `lf`.`house_type`, `lf`.`system_for`, `lf`.`note`';
+
     $sql .= ' FROM `leads_delivery` as ld ';
     $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
     $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
@@ -191,8 +194,10 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       $end = strtotime("tomorrow", $start) - 1;
     }
 
-    $sql = 'SELECT lf.id as `id`, lf.full_name as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`ld`.`timedate`), "%e %b %Y" ) AS `Date`, c.campaign_name as `Client Name`,';
+
+    $sql = 'SELECT lf.id as `id`, lf.full_name as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`ld`.`timedate`), "%e %b %Y %h:%i:%s" ) AS `Date`, c.campaign_name as `Client Name`,';
     $sql .= ' `lf`.`address`, `lf`.`suburb`, `lf`.`state`,  `lf`.`postcode`, `lf`.`system_size`, `lf`.`roof_type`, `lf`.`electricity`, `lf`.`house_age`, `lf`.`house_type`, `lf`.`system_for`, `lf`.`note`';
+
     $sql .= ', DATE_FORMAT(FROM_UNIXTIME(`ld`.`open_time`), "%e %b %Y" ) as `Open time` ';
     $sql .= 'FROM `leads_delivery` as ld ';
     $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
@@ -400,6 +405,8 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $start = $st->getTimestamp();
     $st->modify("+14 days");
     $end = $st->getTimestamp();
+    // var_dump($end);
+    // exit();
 //    $state = $_REQUEST["state"];
     if( $now < $end ) {
       // do nothing
@@ -410,6 +417,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
  
     $begs = date('Y-m-d', $start);
     $ends = date('Y-m-d', $end);
+
    
     $sql = 'SELECT COUNT(*) as amount, SUM(c.lead_cost) as total_cost  FROM `leads_delivery` as ld ';
     $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
@@ -450,6 +458,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
 //    if (!($client == 0)) {
 //      $sqlDistributed .= ' AND ld.client_id =' . $client;
 //    }
+// var_dump($sqlDistributed);
 
     $res = $con->query($sqlDistributed);
     if($res){
@@ -500,8 +509,12 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     if($res){
       $result = $res->fetch_assoc();
     }
+
+
     $average = round($result['client_cost'] / $result['amount'], 2);
 
+    $average_sales = round($distributed["amount"] / $CountLids['amount'], 2);
+    
 
     $rejectedP = $rejected["amount"] / $distributed["amount"];
     $ds =  $distributed["amount"] . " leads <br>Distributed";
@@ -514,16 +527,27 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $coastld = $CoastLids['cost']. " $<br>Total cost of<br> leads generated ";
     $totalcost = $resCoast. " $<br> Total income of<br>leads distributed ";
     $totalAverage = $average. " $<br>Average sales<br>per lead";
+    $av_sel = $average_sales . " Leads<br>Received";
     echo $mes;
     echo $this->formStatView($ds, 'users', 'getDistributed');
     echo $this->formStatView($acs, 'check', 'getAccepted');
     echo $this->formStatView($ras, 'window-close', 'getRejected');
     echo $this->formStatView($rejectedPercent, 'window-close', 'getRejected');
     echo $this->formStatView($rev, 'shopping-cart');
+
+    // echo $this->formStatView($countld, 'window-close', 'getRejected');
+    // echo $this->formStatView($coastld, 'window-close', 'getRejected');
+    // echo $this->formStatView($totalcoast, 'window-close', 'getRejected');
+    // echo $this->formStatView($totalAverage, 'window-close', 'getRejected');
+
+
     echo $this->formStatView($countld, 'users');
     echo $this->formStatView($coastld, '');
     echo $this->formStatView($totalcost, 'shopping-cart');
     echo $this->formStatView($totalAverage, 'user');
+    echo $this->formStatView($av_sel, 'user');
+    
+
   }
 
 
