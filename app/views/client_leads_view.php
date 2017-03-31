@@ -32,14 +32,29 @@
         <th>ID</th>
         <th>Name</th>
         <th>Date</th>
+        <th>State</th>
+        <th>Postcode</th>
         <th>Status</th>
         <th>Action</th>
         <th>Lead details</th>
         <th>Rejection details</th>
       </tr>
-      </thead>
-    </table>
-  </div>
+  </thead>
+  <tfoot>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Date</th>
+            <th>State</th>
+            <th>Postcode</th>
+            <th>Status</th>
+            <th>Action</th>
+            <th>Lead details</th>
+            <th>Rejection details</th>
+        </tr>
+  </tfoot>
+</table>
+</div>
 </div>
 
 <div id="LeadInfo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="LeadInfo">
@@ -71,9 +86,20 @@
         "url": "<?php echo __HOST__ . "/client_leads/" ?>getLeads",
         "type": "POST"
       },
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            { "searchable": false },
+            null,
+            { "searchable": false },
+            { "searchable": false },
+
+        ],
       "aoColumnDefs": [
-        { 'bSortable': false, 'aTargets': [ 4,5,6 ] }
-      ],
+        { 'bSortable': false, 'aTargets': [ 6,7,8 ]}],
       "order": [[ 2, "desc" ]],
       "aLengthMenu": [
         [100, 200, -1],
@@ -83,19 +109,47 @@
         "sInfoFiltered": ""
       }
     });
-    //Mironenko Added Search Function
 
-    /////////////
-    var nameSearch=document.getElementById('nameSearch');
-    //var dateSearch=document.getElementById('dateSearch');
-    nameSearch.onkeyup=function(){
-      table
-          .columns(1)
-          .search(this.value)
-          .draw()
-    };
+//      $('#client_leads tfoot th').each( function () {
+//          var title = $('#client_leads thead tr:eq(0) th').eq($(this).index()).text();
+//          var html_string = '';
+//          var input_style = ' style="width:100%; padding:1px !important; margin-left:-2px; margin-bottom: 0px;"';
+//          var select_style = ' style="width:100%; padding:1px; margin-left:-2px; margin-bottom: 0px; height: 24px;"';
+//
+//          if ($(this).index() == 2 || $(this).index() == 3) {
+//
+//              html_string = '<input type="text" ' + input_style + ' class="datepicker">';
+//          }
+//      });
 
-    //End of adding Serach Fields
+      $('#client_leads tfoot th').each( function () {
+          var title = $(this).text();
+          if (title=='Status' || title=='Lead details' || title=='Rejection details'){
+              return;
+          }
+          $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+      } );
+      table.columns().every( function () {
+          var that = this;
+
+          $( 'input', this.footer() ).on( 'keyup change', function () {
+              if ( that.search() !== this.value ) {
+                  that
+                      .search( this.value )
+                      .draw();
+              }
+          } );
+      } );
+
+      var r = $('#client_leads tfoot tr');
+      r.find('th').each(function(){
+          $(this).css('padding', 8);
+      });
+      $('#client_leads thead').append(r);
+      $('input').css('text-align', 'center');
+
+
+
     var modalBody = '<form id="rejectForm">' +
      '<p>Choose your rejection reason: </p>' +
      '<label><input type="radio" name="reason" value="1" required> Outside of nominated area service (2 days to reject)</label><br>'+
@@ -135,6 +189,7 @@
           }
         });
       }
+
       if (e.target && e.target.matches('a.leadreject')) {
         e.preventDefault();
         var btn = e.target;
@@ -189,6 +244,7 @@
           }
         });
       }
+
     });
     $('.input-daterange').datepicker({
       multidate: "true"

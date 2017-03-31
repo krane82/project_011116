@@ -108,6 +108,7 @@ $(document).ready(function () {
         var select_style = ' style="width:100%; padding:1px; margin-left:-2px; margin-bottom: 0px; height: 24px;"';
 
         if ($(this).index() == 2 || $(this).index() == 3){
+
           html_string = '<input type="text" ' + input_style + ' class="datepicker">';
         }
         else if ( $(this).index() == 7 ) {
@@ -160,6 +161,7 @@ $(document).ready(function () {
           }
         } );
     } );
+
 });
     function acceptLead(id, client_id){
       $.ajax({
