@@ -1,11 +1,25 @@
 .idea
+
 .vscode
+
 config.php
+
 tags
+
 .tags*
+
 *.DS_Store
+
 ftpsync.settings
+
 credentials.php
+
 landing.html
+<<<<<<< HEAD
 index.php
+=======
+
+index.php
+
+>>>>>>> artur
 logs/*
