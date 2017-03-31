@@ -1,6 +1,8 @@
+<div class="table-responsive">
 <?php
 echo $table;
 ?>
+</div>
 
 <hr>
 <input type="button" class="btn btn-primary" value="ADD NEW" onclick="addnew();">
@@ -61,11 +63,11 @@ echo $table;
               <input class="form-control" placeholder="Xero Name" type="text" id="xero_name" name="xero_name">
             </div>
 
-              <div class="form-group">
-                <label><input type='radio' name='limits' value='limited' checked><b> LIMITED </b>
-                <label><input type='radio' name='limits' value='unlimited'><b> UNLIMITED </b>
+              <div class="form-group" onclick="limits(this,event)">
+                <label class="radio-inline"><input type='radio' name='limits' value='limited' checked><b> LIMITED </b></label>
+                <label class="radio-inline"><input type='radio' name='limits' value='unlimited'><b> UNLIMITED </b></label>
 
-                <input class="form-control" placeholder="Xero Name" type="text" id="xero_name" name="xero_name">
+                <input class="form-control" placeholder="Weekly limit of leads" type="text" id="weekly" name="weekly">
               </div>
 
             <input type="hidden" id="status" name="status" value="1" >
