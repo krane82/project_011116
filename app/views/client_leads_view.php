@@ -1,5 +1,3 @@
-
-
 <div class="panel panel-white ">
   <div class="col-md-3">
     <p>Serach by Name</p>
@@ -24,22 +22,26 @@
   <div class="col-md-2"></div>
 </div>
 
-<hr>
-<div class="table-responsive">
-<table class="table responsive" id="client_leads">
-  <thead>
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Date</th>
-    <th>Status</th>
-    <th>Action</th>
-    <th>Lead details</th>
-    <th>Rejection details</th>
-  </tr>
-  </thead>
-</table>
+<hr style="clear: both;">
+
+<div class="col-md-12">
+  <div class="table-responsive">
+    <table class="table responsive" id="client_leads">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Action</th>
+        <th>Lead details</th>
+        <th>Rejection details</th>
+      </tr>
+      </thead>
+    </table>
+  </div>
 </div>
+
 <div id="LeadInfo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="LeadInfo">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

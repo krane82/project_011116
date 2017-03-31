@@ -1,8 +1,10 @@
+<div class="col-md-12">
 <div class="table-responsive">
 <?php
 echo $table;
 ?>
 </div>
+</div><!-- .col-md-12 -->
 
 <hr>
 <input type="button" class="btn btn-primary" value="ADD NEW" onclick="addnew();">
