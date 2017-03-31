@@ -193,7 +193,7 @@
       </div>
       <?php }  else echo "<br>"; ?>
       <ul class="menu accordion-menu">
-<!--        <li><a href="--><?php //echo __HOST__; ?><!--/client/dashboard" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>-->
+        <li><a href="<?php echo __HOST__; ?>/client/dashboard" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>
         <li><a href="<?php echo __HOST__; ?>/profile/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
 
         <!-- <li><a href="<?php // echo __HOST__; ?>/campaigns/" class="waves&#45;effect waves&#45;button"><span class="menu&#45;icon glyphicon glyphicon&#45;briefcase"></span><p>Campaigns</p></a> -->
