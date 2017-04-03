@@ -15,11 +15,6 @@ ftpsync.settings
 credentials.php
 
 landing.html
-<<<<<<< HEAD
-index.php
-=======
-
 index.php
 
->>>>>>> artur
 logs/*

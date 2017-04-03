@@ -1,5 +1,5 @@
 <?php
-function send_m($clientEmail, $p, $name, $tracking_number, $alttext = '')
+function send_m($clientEmail, $p, $name, $tracking_number, $alttext = '',$linkToReject)
 {
   $mail = new PHPMailer;
   //  $mail->isSendmail();
@@ -7,7 +7,6 @@ function send_m($clientEmail, $p, $name, $tracking_number, $alttext = '')
   $path = $_SERVER['DOCUMENT_ROOT'];
   $path .= "/credentials.php";
   require_once($path);
-
   $mail->IsSMTP(); // telling the class to use SMTP
   $mail->SMTPAuth   = true;                  // enable SMTP authentication
   $mail->Host       = MAIL_HOST;    // sets the SMTP server
@@ -474,6 +473,7 @@ $content .= <<<EOD
                             period. Failure to adhere to this timescale will result in the enquiry being chargeable at
                             the full rate. We are unable to process returns via email or telephone - they must be
                             entered through the portal.</p>
+                            <a href="$linkToReject">Or you also can reject the current lead</a>
                         </th>
                       </tr>
                       </tbody>

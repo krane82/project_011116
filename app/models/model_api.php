@@ -44,7 +44,9 @@ class Model_Api extends Model {
       if($passedcaps AND $counter < 4) {
         $readyLeadInfo = prepareLeadInfo($p);
         $delivery_id = $this->getLastDeliveryID() + 1;
-        $sent = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"], $delivery_id);
+        $linkToReject=$this->formLink($client_id, $delivery_id);
+        //var_dump($linkToReject);die();
+        $sent = $this->sendToClient($c["email"], $readyLeadInfo, $c["full_name"], $delivery_id, $linkToReject);
         if($sent) {
           $counter++;
           $this->addToDeliveredTable($client_id, $lead_id, $readyLeadInfo);
@@ -55,7 +57,14 @@ class Model_Api extends Model {
     return "Sent to $counter clients \n";// . $sended;
   }
 
-  private function getLastDeliveryID(){
+  private function formLink($client, $delivery)
+  {
+  $link=__HOST__.'/leadreject/index?';
+  $hash=$client.'&'.$delivery;
+  $link.=base64_encode($hash);
+  return $link;
+  }
+    private function getLastDeliveryID(){
     $sql = "SELECT `id` FROM leads_delivery ORDER BY `id` DESC LIMIT 1";
     $db  = DB::getInstance();
     $res = $db->get_row($sql);
@@ -78,10 +87,10 @@ class Model_Api extends Model {
     }
   }
 
-  private function sendToClient($mail, $p, $client_name, $track_id)
+  private function sendToClient($mail, $p, $client_name, $track_id, $linkToReject)
   {
     if($mail) {
-      send_m($mail, $p, $client_name, $track_id);
+      send_m($mail, $p, $client_name, $track_id, '',$linkToReject);
       return TRUE;
     }
     return FALSE;

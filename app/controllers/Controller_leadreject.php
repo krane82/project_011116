@@ -1,12 +1,17 @@
 <?php
-
-/**
- * Created by PhpStorm.
- * User: Admin
- * Date: 03.04.2017
- * Time: 16:53
- */
-class Controller_leadreject
+class Controller_Leadreject extends Controller
 {
+    function __construct() {
+        $this->model = new Model_Leadreject();
+        $this->view = new View();
+    }
 
+    function action_index() {
+       $data=$this->model->getLead();
+       include_once 'app/views/leadreject.php';
+    }
+
+    function action_reject() {
+        var_dump ($this->model->rejectLead());
+    }
 }
