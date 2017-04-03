@@ -1,10 +1,10 @@
 <?php
 class Model_Rerouting extends Model {
-private $api;
-function __construct($api)
-{
-  $this->api = $api;
-}
+//private $api;
+//function __construct($api)
+//{
+//  $this->api = $api;
+//}
 
 private function getLeadInfo($id)
 {
@@ -285,13 +285,12 @@ if(isset($_POST)){
     
   }
 
-
- 
-  foreach($id_lead_code as $id_lead){ 
+    $id_leads_code = "";
+  foreach($id_lead_code as $id_lead){
    
     foreach($id_lead as $id_leads){
 
-    $id_leads_code .= $id_leads['id'].', '; 
+            $id_leads_code .= $id_leads.', ';
     }
   }
 

@@ -26,6 +26,7 @@ class Model_Client_Leads extends Model {
     if ($res) {
       $col = $res->fetch_assoc();
       $prearr = array();
+
       foreach($col as $k=>$v){
         $prearr[] = $k;
       }

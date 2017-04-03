@@ -1,9 +1,29 @@
-<hr style="clear: both;">
+<div class="panel panel-white ">
+  <div class="col-md-3"></div>
+  <div class='col-md-5 col-xs-12  text-center'>
+    <h3>Download leads by period</h3>
+    <br>
+    <form action="downloadleads" id="LeadsForClient">
+      <div class="form-group">
+        <div class="input-daterange input-group" id="datepicker">
+          <input type="text" class="input-sm form-control" name="start" value="<?php print date('m/01/Y')?>"/>
+          <span class="input-group-addon">to</span>
+          <input type="text" class="input-sm form-control" name="end" value="<?php print date('m/d/Y')?>" />
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Download leads">
+      </div>
+    </form>
+  </div>
+  <div class="col-md-2"></div>
+</div>
 
-<div class="col-md-12">
-  <div class="table-responsive">
-    <table class="table responsive" id="client_leads">
-      <thead>
+<hr>
+
+<table class="table table_leads" id="client_leads">
+  <thead>
+
       <tr>
         <th>ID</th>
         <th>Name</th>
@@ -227,10 +247,10 @@
     });
    // $('.dateSearch').datepicker({format: 'dd/mm/yyyy'});
   });
-</s
+</script>
 <style>
     tfoot{
         width:100%;
     }
-</style>cript>
+</style>
 <!--<script src="cdn.datatables.net/plug-ins/1.10.13/filtering/row-based/range_dates.js"></script>-->
