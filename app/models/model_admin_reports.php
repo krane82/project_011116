@@ -505,13 +505,21 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       $result = $res->fetch_assoc();
     }
 
-
-    $average = round($result['client_cost'] / $result['amount'], 2);
-
-    $average_sales = round($distributed["amount"] / $CountLids['amount'], 2);
-    
-
-    $rejectedP = $rejected["amount"] / $distributed["amount"];
+   if($result['amount'] == 0){
+        $average = 0;
+   }else{
+        $average = round($result['client_cost'] / $result['amount'], 2);
+   }
+      if($CountLids['amount'] == 0){
+            $average_sales = 0;
+      }else{
+            $average_sales = round($distributed["amount"] / $CountLids['amount'], 2);
+      }
+    if($distributed["amount"] == 0){
+        $rejectedP = 0;
+    }else{
+        $rejectedP = $rejected["amount"] / $distributed["amount"];
+    }
     $ds =  $distributed["amount"] . " leads <br>Distributed";
     $acs = $approved['amount']. " leads Accepted by clients";
     $ras = $rejected["amount"] . " leads Rejected <br>by clients";
