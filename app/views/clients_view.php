@@ -4,8 +4,7 @@
 echo $table;
 ?>
 </div>
-</div><!-- .col-md-12 -->
-
+</div>
 <hr>
 <input type="button" class="btn btn-primary" value="ADD NEW" onclick="addnew();">
 <hr>
