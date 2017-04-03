@@ -101,6 +101,7 @@ $(document).ready(function () {
       }
     });
 
+
     $('#approvals tfoot th').each( function () {
         var title = $('#approvals thead tr:eq(0) th').eq( $(this).index() ).text();
         var html_string = '';
@@ -145,7 +146,7 @@ $(document).ready(function () {
     // Apply the search
     table.columns().eq( 0 ).each( function ( colIdx ) {
         $( 'input, select', table.column( colIdx ).footer() ).on( 'keyup change', function () {
-          if(colIdx != 2 || colIdx != 3){
+          if(colIdx == 2 || colIdx == 3){
             var dorn = Date.parse( this.value + ' 00:00:00 GMT +1100' );
             console.log(dorn);
             var stamp = Math.floor( Number(dorn) / 10000000 );
