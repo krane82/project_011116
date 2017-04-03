@@ -241,4 +241,15 @@ echo $table;
         ev.preventDefault();
     });
   });
+  function limits(t,e){
+    if (e.target.value=="unlimited")
+    {
+      t.lastElementChild.setAttribute("disabled","disabled");
+    }
+    else if (e.target.value=="limited")
+    {
+      t.lastElementChild.removeAttribute("disabled");
+    }
+    else return;
+  }
 </script>

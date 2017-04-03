@@ -74,6 +74,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       $approved[] = $prearr;
       $approved[] = $col;
       while($line = $res->fetch_assoc()){
+        $line['phone']='Ph: '.$line['phone'];
         $approved[] = $line;
       }
     } else {
@@ -122,6 +123,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       $received[] = $prearr;
       $received[] = $col;
       while($line = $res->fetch_assoc()){
+        $line['phone']='Ph: '.$line['phone'];
         $received[] = $line;
       }
     } else {
@@ -170,6 +172,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       $approved[] = $prearr;
       $approved[] = $col;
       while($line = $res->fetch_assoc()){
+        $line['phone']='Ph: '.$line['phone'];
         $approved[] = $line;
       }
     } else {
@@ -221,6 +224,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
 
       while($line = $res->fetch_assoc()){
         if($line['Open time']=='1 Jan 1970') $line['Open time']='Still not open :(';
+        $line['phone']='Ph: '.$line['phone'];
         $distributed[] = $line;
       }
     } else {
