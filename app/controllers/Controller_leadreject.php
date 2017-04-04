@@ -7,11 +7,13 @@ class Controller_Leadreject extends Controller
     }
 
     function action_index() {
+//        print '<pre>';
+//        var_dump($_SERVER);die();
        $data=$this->model->getLead();
        include_once 'app/views/leadreject.php';
     }
 
     function action_reject() {
-        var_dump ($this->model->rejectLead());
+        $this->model->rejectLead();
     }
 }
