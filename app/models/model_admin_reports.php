@@ -504,10 +504,23 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     if($res){
       $result = $res->fetch_assoc();
     }
-    $average = round($result['client_cost'] / $result['amount'], 2);
 
+    if($result['amount'] == 0){
+        $average = 0;
+    }else{
+        $average = round($result['client_cost'] / $result['amount'], 2);
+    }
+    if($CountLids['amount'] == 0){
+      $average_sales = 0;
+    }else{
+      $average_sales = round($distributed["amount"] / $CountLids['amount'], 2);
+    }
+    if($distributed["amount"] == 0){
+        $rejectedP = 0;
+    }else{
+        $rejectedP = $rejected["amount"] / $distributed["amount"];
+    }
 
-    $rejectedP = $rejected["amount"] / $distributed["amount"];
     $ds =  $distributed["amount"] . " leads <br>Distributed";
     $acs = $approved['amount']. " leads Accepted by clients";
     $ras = $rejected["amount"] . " leads Rejected <br>by clients";
@@ -518,6 +531,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $coastld = $CoastLids['cost']. " $<br>Total cost of<br> leads generated ";
     $totalcost = $resCoast. " $<br> Total income of<br>leads distributed ";
     $totalAverage = $average. " $<br>Average sales<br>per lead";
+    $av_sel = $average_sales. " Leads<br>Received";
     echo $mes;
     echo $this->formStatView($ds, 'users', 'getDistributed');
     echo $this->formStatView($acs, 'check', 'getAccepted');
