@@ -306,6 +306,17 @@ function send_m($clientEmail, $p, $name, $tracking_number, $alttext = '',$linkTo
     min-width: 0;
   }
 }
+a.button7 {
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  padding: .8em 1em calc(.8em + 3px);
+  border-radius: 3px;
+  background: rgb(64,199,129);
+  box-shadow: 0 -3px rgb(53,167,110) inset;
+  transition: 0.2s;
+} 
+a.button7:hover { background: rgb(53, 167, 110); }
 </style>
     <!-- <style> -->
 <table class="body body-style" data-made-with-foundation=""
@@ -473,7 +484,14 @@ $content .= <<<EOD
                             period. Failure to adhere to this timescale will result in the enquiry being chargeable at
                             the full rate. We are unable to process returns via email or telephone - they must be
                             entered through the portal.</p>
-                            <a href="$linkToReject">Or you also can reject the current lead</a>
+                            <a href="$linkToReject" style="font-weight: 700;
+  color: white;
+  text-decoration: none;
+  padding: .8em 1em calc(.8em + 3px);
+  border-radius: 3px;
+  background: rgb(64,199,129);
+  box-shadow: 0 -3px rgb(53,167,110) inset;
+  transition: 0.2s; float:right">Or you also can reject the current lead</a>
                         </th>
                       </tr>
                       </tbody>
