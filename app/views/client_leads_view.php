@@ -75,6 +75,7 @@
 
 <script>
 
+
     $(document).ready(function () {
         var leads = $('#client_leads');
 
@@ -122,119 +123,77 @@
 //          }
 //      });
 
-      $('#client_leads tfoot th').each( function () {
-          var title = $(this).text();
-          if (title=='Status' || title=='Lead details' || title=='Rejection details'){
-              return;
-          }
-          $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-      } );
-      table.columns().every( function () {
-          var that = this;
 
-          $( 'input', this.footer() ).on( 'keyup change', function () {
-              if ( that.search() !== this.value ) {
-                  that
-                      .search( this.value )
-                      .draw();
-              }
-          } );
-      } );
+        $('#client_leads tfoot th').each( function () {
+            var title = $(this).text();
+            if (title=='Status' || title=='Lead details' || title=='Rejection details'){
+                return;
+            }
+            $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        } );
+        table.columns().every( function () {
+            var that = this;
 
-      var r = $('#client_leads tfoot tr');
-      r.find('th').each(function(){
-          $(this).css('padding', 8);
-      });
-      $('#client_leads thead').append(r);
-      $('input').css('text-align', 'center');
+            $( 'input', this.footer() ).on( 'keyup change', function () {
+                if ( that.search() !== this.value ) {
+                    that
+                        .search( this.value )
+                        .draw();
+                }
+            } );
+        } );
+
+        var r = $('#client_leads tfoot tr');
+        r.find('th').each(function(){
+            $(this).css('padding', 8);
+
+        });
+        $('#client_leads thead').append(r);
+        $('input').css('text-align', 'center');
 
 
 
-    var modalBody = '<form id="rejectForm">' +
-     '<p>Choose your rejection reason: </p>' +
-     '<label><input type="radio" name="reason" value="1" required> Outside of nominated area service (2 days to reject)</label><br>'+
-     '<label><input type="radio" name="reason" value="2"> Duplicate (2 days to reject)</label><br>'+
-     '<label><input type="radio" name="reason" value="3"> Incorrect Phone Number (7 days to reject)</label><br>'+
-     '<label><input type="radio" name="reason" value="4"> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>'+
-     '<label><input type="radio" name="reason" value="5"> Customer is wanting Off Grid System (7 days to reject)</label><br>'+
-     '<label><input type="radio" name="reason" value="6"> Unable to contact withing 7 days (7 days to reject)</label><br>'+
-        '<textarea style="width:100%" rows="3" name="notes" required></textarea>' +
-        '</form>';
-    var modalBody1 = '<form id="rejectForm">' +
-        '<p>Choose your rejection reason: </p>' +
-        '<label><input type="radio" name="reason" value="1" disabled> Outside of nominated area service (2 days to reject)</label><br>'+
-        '<label><input type="radio" name="reason" value="2" disabled> Duplicate (2 days to reject)</label><br>'+
-        '<label><input type="radio" name="reason" value="3" required> Incorrect Phone Number (7 days to reject)</label><br>'+
-        '<label><input type="radio" name="reason" value="4"> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>'+
-        '<label><input type="radio" name="reason" value="5"> Customer is wanting Off Grid System (7 days to reject)</label><br>'+
-        '<label><input type="radio" name="reason" value="6"> Unable to contact withing 7 days (7 days to reject)</label><br>'+
-        '<textarea style="width:100%" rows="3" name="notes" required></textarea>' +
-        '</form>';
-    var modalFooter = '<input form="rejectForm" type="submit" class="btn btn-primary reject" value="Reject this lead"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
-    var tt = document.querySelector('#client_leads');
-    var modalka = $('#LeadInfo');
-    tt.addEventListener('click', function(e){
-      if (e.target && e.target.matches('a.viewLeadInfo')) {
+        var modalBody = '<form id="rejectForm">' +
+            '<p>Choose your rejection reason: </p>' +
+            '<label><input type="radio" name="reason" value="1" required> Outside of nominated area service (2 days to reject)</label><br>'+
+            '<label><input type="radio" name="reason" value="2"> Duplicate (2 days to reject)</label><br>'+
+            '<label><input type="radio" name="reason" value="3"> Incorrect Phone Number (7 days to reject)</label><br>'+
+            '<label><input type="radio" name="reason" value="4"> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>'+
+            '<label><input type="radio" name="reason" value="5"> Customer is wanting Off Grid System (7 days to reject)</label><br>'+
+            '<label><input type="radio" name="reason" value="6"> Unable to contact withing 7 days (7 days to reject)</label><br>'+
+            '<textarea style="width:100%" rows="3" name="notes" required></textarea>' +
+            '</form>';
+        var modalBody1 = '<form id="rejectForm">' +
+            '<p>Choose your rejection reason: </p>' +
+            '<label><input type="radio" name="reason" value="1" disabled> Outside of nominated area service (2 days to reject)</label><br>'+
+            '<label><input type="radio" name="reason" value="2" disabled> Duplicate (2 days to reject)</label><br>'+
+            '<label><input type="radio" name="reason" value="3" required> Incorrect Phone Number (7 days to reject)</label><br>'+
+            '<label><input type="radio" name="reason" value="4"> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>'+
+            '<label><input type="radio" name="reason" value="5"> Customer is wanting Off Grid System (7 days to reject)</label><br>'+
+            '<label><input type="radio" name="reason" value="6"> Unable to contact withing 7 days (7 days to reject)</label><br>'+
+            '<textarea style="width:100%" rows="3" name="notes" required></textarea>' +
+            '</form>';
+        var modalFooter = '<input form="rejectForm" type="submit" class="btn btn-primary reject" value="Reject this lead"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+        var tt = document.querySelector('#client_leads');
+        var modalka = $('#LeadInfo');
+        tt.addEventListener('click', function(e){
+            if (e.target && e.target.matches('a.viewLeadInfo')) {
                 e.preventDefault();
                 var btn = e.target;
                 var id = btn.getAttribute('attr-lead-id');
                 modalka.find('.modal-header').text('Lead details');
                 modalka.find('.modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
                 $.ajax({
-                type: "POST",
-                url: '<?php echo __HOST__ . '/client_leads/LeadInfo/' ?>',
-                data: { id: id },
-                success: function (data) {
-                modalka.find('.modal-body').html(data);
+                    type: "POST",
+                    url: '<?php echo __HOST__ . '/client_leads/LeadInfo/' ?>',
+                    data: { id: id },
+                    success: function (data) {
+                        modalka.find('.modal-body').html(data);
+                    }
+                });
             }
 
-            });
-                $('#client_leads thead').append(r);
-                $('input').css('text-align', 'center');
-
-
-
-                var modalBody = '<form id="rejectForm">' +
-                '<p>Choose your rejection reason: </p>' +
-                '<label><input type="radio" name="reason" value="1" required> Outside of nominated area service (2 days to reject)</label><br>'+
-                '<label><input type="radio" name="reason" value="2"> Duplicate (2 days to reject)</label><br>'+
-                '<label><input type="radio" name="reason" value="3"> Incorrect Phone Number (7 days to reject)</label><br>'+
-                '<label><input type="radio" name="reason" value="4"> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>'+
-                '<label><input type="radio" name="reason" value="5"> Customer is wanting Off Grid System (7 days to reject)</label><br>'+
-                '<label><input type="radio" name="reason" value="6"> Unable to contact withing 7 days (7 days to reject)</label><br>'+
-                '<textarea style="width:100%" rows="3" name="notes" required></textarea>' +
-                '</form>';
-                var modalBody1 = '<form id="rejectForm">' +
-                '<p>Choose your rejection reason: </p>' +
-                '<label><input type="radio" name="reason" value="1" disabled> Outside of nominated area service (2 days to reject)</label><br>'+
-                '<label><input type="radio" name="reason" value="2" disabled> Duplicate (2 days to reject)</label><br>'+
-                '<label><input type="radio" name="reason" value="3" required> Incorrect Phone Number (7 days to reject)</label><br>'+
-                '<label><input type="radio" name="reason" value="4"> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>'+
-                '<label><input type="radio" name="reason" value="5"> Customer is wanting Off Grid System (7 days to reject)</label><br>'+
-                '<label><input type="radio" name="reason" value="6"> Unable to contact withing 7 days (7 days to reject)</label><br>'+
-                '<textarea style="width:100%" rows="3" name="notes" required></textarea>' +
-                '</form>';
-                var modalFooter = '<input form="rejectForm" type="submit" class="btn btn-primary reject" value="Reject this lead"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
-                var tt = document.querySelector('#client_leads');
-                var modalka = $('#LeadInfo');
-                tt.addEventListener('click', function(e){
-                if (e.target && e.target.matches('a.viewLeadInfo')) {
-                e.preventDefault();
-                var btn = e.target;
-                var id = btn.getAttribute('attr-lead-id');
-                modalka.find('.modal-header').text('Lead details');
-                modalka.find('.modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
-                $.ajax({
-                type: "POST",
-                url: '<?php echo __HOST__ . '/client_leads/LeadInfo/' ?>',
-                data: { id: id },
-                success: function (data) {
-                modalka.find('.modal-body').html(data);
-            }
-            });
-            }
-
-                if (e.target && e.target.matches('a.leadreject')) {
+            if (e.target && e.target.matches('a.leadreject')) {
                 e.preventDefault();
                 var btn = e.target;
                 var sure = true;
@@ -244,58 +203,59 @@
                 console.log(e.target.dataset.info);
                 //console.log(permission);
                 if(!e.target.dataset.info){
-                var sure = confirm('Are you sure you want to reject lead "' + leadName + '"?');
-            }
+                    var sure = confirm('Are you sure you want to reject lead "' + leadName + '"?');
+                }
                 if (!sure) {
-                return;
-            }
+                    return;
+                }
                 modalka.find('.modal-header').text('Reject lead "' + leadName + '"');
                 if(permission) {
-                modalka.find('.modal-body').html(modalBody1);
-            } else {
-                modalka.find('.modal-body').html(modalBody);
-            }
+                    modalka.find('.modal-body').html(modalBody1);
+                } else {
+                    modalka.find('.modal-body').html(modalBody);
+                }
                 document.querySelector('#LeadInfo .modal-footer').innerHTML = modalFooter;
                 modalka.modal("show");
                 $('#rejectForm').submit(function(e){
-                e.preventDefault();
-                var reason = $(this).find('input[name=reason]:checked').val();
-                var notes = $(this).find('textarea[name=notes]').val();
-                $.ajax({
-                type: "POST",
-                url: '<?php echo __HOST__ . '/client_leads/reject_Lead/' ?>',
-                data: { lead_id: id,
-                reject_reason: reason, notes: notes },
-                success: function (data) {
-                console.log(data);
-                if(data === "Success") { modalka.modal("hide"); table.ajax.reload(); }
+                    e.preventDefault();
+                    var reason = $(this).find('input[name=reason]:checked').val();
+                    var notes = $(this).find('textarea[name=notes]').val();
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo __HOST__ . '/client_leads/reject_Lead/' ?>',
+                        data: { lead_id: id,
+                            reject_reason: reason, notes: notes },
+                        success: function (data) {
+                            console.log(data);
+                            if(data === "Success") { modalka.modal("hide"); table.ajax.reload(); }
+                        }
+                    });
+                });
             }
-            });
-            });
-            }
-                if (e.target && e.target.matches('a.RejectionDetails')) {
+            if (e.target && e.target.matches('a.RejectionDetails')) {
                 e.preventDefault();
                 var btn = e.target;
                 var id = btn.getAttribute('attr-lead-id');
                 modalka.find('.modal-header').text('Rejection Details');
                 modalka.find('.modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
                 $.ajax({
-                type: "POST",
-                url: '<?php echo __HOST__ . '/client_leads/rejectInfo/' ?>',
-                data: { id: id },
-                success: function (data) {
-                modalka.find('.modal-body').html(data);
-            }
-            });
+                    type: "POST",
+                    url: '<?php echo __HOST__ . '/client_leads/rejectInfo/' ?>',
+                    data: { id: id },
+                    success: function (data) {
+                        modalka.find('.modal-body').html(data);
+                    }
+                });
             }
 
-            });
-                $('.input-daterange').datepicker({
-                multidate: "true"
-            });
-                // $('.dateSearch').datepicker({format: 'dd/mm/yyyy'});
-            });
+        });
+        $('.input-daterange').datepicker({
+            multidate: "true"
+        });
+        // $('.dateSearch').datepicker({format: 'dd/mm/yyyy'});
     });
+
 </script>
+
 
 <!--<script src="cdn.datatables.net/plug-ins/1.10.13/filtering/row-based/range_dates.js"></script>-->
