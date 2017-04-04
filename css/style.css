@@ -192,13 +192,38 @@ input.searchbox {
   }
 }
 
-.test{
-    color: #000;
-}
 
 .fortable{
     width:100%;
 }
 
+@media (max-width: 1000px){
+    .postable{
+        margin-top: 95%;
+    }
+}
+@media (max-width: 1000px) and (min-width: 500px){
+    .postable{
+        margin-top: 65%;
+    }
+}
+
+@media (max-width: 970px) and (min-width: 769px) {
+    .postable {
+        margin-top: 39%;
+    }
+}
+
+@media (max-width: 760px) and (min-width: 550px) {
+    .postable {
+        margin-top: 54%;
+    }
+}
+
+@media (max-width: 319px) {
+    .postable {
+        margin-top: 143%;
+    }
+}
 
 

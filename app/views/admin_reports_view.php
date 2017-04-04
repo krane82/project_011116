@@ -54,7 +54,7 @@
       </div>
       <div class="col-md-2"></div>
     </div>
-    <div class="row">
+    <div class="row postable">
       <div class="col-md-12">
       <!-- .average-info -->
         <div class="average-info">
