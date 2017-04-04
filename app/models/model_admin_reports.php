@@ -528,6 +528,8 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     echo $this->formStatView($coastld, '');
     echo $this->formStatView($totalcost, 'shopping-cart');
     echo $this->formStatView($totalAverage, 'user');
+    echo $this->formStatView($av_sel, 'user');
+
   }
 
 
