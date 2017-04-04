@@ -521,16 +521,16 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
         $rejectedP = $rejected["amount"] / $distributed["amount"];
     }
 
-    $ds =  $distributed["amount"] . " leads <br>Distributed";
-    $acs = $approved['amount']. " leads Accepted by clients";
-    $ras = $rejected["amount"] . " leads Rejected <br>by clients";
-    $trs = $approved["total_cost"] . " total Revenue";
-    $rejectedPercent =  number_format($rejectedP * 100, 0) . '% Rejected<br> by clients';
-    $rev = $approved["total_cost"] ? $approved["total_cost"] . " $<br>Lead Revenue" : 0 . " $<br>Lead Revenue";
-    $countld = $CountLids['amount']. " leads<br> Total generated";
-    $coastld = $CoastLids['cost']. " $<br>Total cost of<br> leads generated ";
-    $totalcost = $resCoast. " $<br> Total income of<br>leads distributed ";
-    $totalAverage = $average. " $<br>Average sales<br>per lead";
+    $ds =  $distributed["amount"] . " leads <br>distributed";
+    $acs = $approved['amount']. " leads <br>accepted";
+    $ras = $rejected["amount"] . " leads <br>rejected";
+    //$trs = $approved["total_cost"] . " total Revenue";
+    $rejectedPercent =  number_format($rejectedP * 100, 0) . '% of leads <br>are rejected';
+    $rev = $approved["total_cost"] ? "$".$approved["total_cost"] . " <br>total revenue" : "$0 <br>total revenue";
+    $countld = $CountLids['amount']. " leads <br>generated in total";
+    $coastld = "$".$CoastLids['cost']. " <br> is the total<br> lead cost";
+    $totalcost ="$".$resCoast. " <br>total profit";
+    $totalAverage ="$".$average. " average <br>lead sale price";
     $av_sel = $average_sales. " Leads<br>Received";
     echo $mes;
     echo $this->formStatView($ds, 'users', 'getDistributed');
