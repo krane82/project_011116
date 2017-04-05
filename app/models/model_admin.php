@@ -112,4 +112,14 @@ class Model_Admin extends Model {
     }
     return FALSE;
   }
+
+  public function pendingPercent()
+  {
+    $con  = $this->db();
+    $Monday = strtotime("Monday this week");
+    $sql="select count(t1.id)/(select count(t2.id) from `leads_rejection` t2 where t2.approval!=1 AND t2.date>1491166800) from `leads_rejection` t1 where t1.date>'".$Monday."'";
+    $res=$con->query($sql);
+    $result=$res->fetch_array();
+    return (float)$result[0].'%';
+  }
 }

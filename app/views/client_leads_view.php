@@ -3,7 +3,7 @@
     <div class='col-md-5 col-xs-12  text-center'>
         <h3>Download leads by period</h3>
         <br>
-        <form action="/client_leads/downloadleads" id="LeadsForClient">
+        <form action="client_leads/downloadleads" id="LeadsForClient">
             <div class="form-group">
                 <div class="input-daterange input-group" id="datepicker">
                     <input type="text" class="input-sm form-control" name="start" value="<?php print date('m/01/Y')?>"/>
@@ -160,7 +160,7 @@
             '<label><input type="radio" name="reason" value="3"> Incorrect Phone Number (7 days to reject)</label><br>'+
             '<label><input type="radio" name="reason" value="4"> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>'+
             '<label><input type="radio" name="reason" value="5"> Customer is wanting Off Grid System (7 days to reject)</label><br>'+
-            '<label><input type="radio" name="reason" value="6"> Unable to contact withing 7 days (7 days to reject)</label><br>'+
+            '<label><input type="radio" name="reason" value="6"> Unable to contact within 7 days (7 days to reject)</label><br>'+
             '<textarea style="width:100%" rows="3" name="notes" required></textarea>' +
             '</form>';
         var modalBody1 = '<form id="rejectForm">' +
@@ -170,7 +170,7 @@
             '<label><input type="radio" name="reason" value="3" required> Incorrect Phone Number (7 days to reject)</label><br>'+
             '<label><input type="radio" name="reason" value="4"> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>'+
             '<label><input type="radio" name="reason" value="5"> Customer is wanting Off Grid System (7 days to reject)</label><br>'+
-            '<label><input type="radio" name="reason" value="6"> Unable to contact withing 7 days (7 days to reject)</label><br>'+
+            '<label><input type="radio" name="reason" value="6"> Unable to contact within 7 days (7 days to reject)</label><br>'+
             '<textarea style="width:100%" rows="3" name="notes" required></textarea>' +
             '</form>';
         var modalFooter = '<input form="rejectForm" type="submit" class="btn btn-primary reject" value="Reject this lead"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
