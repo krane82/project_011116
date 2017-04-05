@@ -3,7 +3,7 @@
     <div class='col-md-5 col-xs-12  text-center'>
         <h3>Download leads by period</h3>
         <br>
-        <form action="downloadleads" id="LeadsForClient">
+        <form action="client_leads/downloadleads" id="LeadsForClient">
             <div class="form-group">
                 <div class="input-daterange input-group" id="datepicker">
                     <input type="text" class="input-sm form-control" name="start" value="<?php print date('m/01/Y')?>"/>
