@@ -14,6 +14,9 @@
   <h4>Today stats</h4>
   <div class="dayle"></div>
 </div>
+<p><b>Percent of pending leads in this week</b></p>
+<input type="text" disabled value="<?php print $data['pendingPercent']?>" style="width:4em">
+
 <br>
 <hr>
 <h2 class="text-center">Client Lead Distribution Order</h2>
