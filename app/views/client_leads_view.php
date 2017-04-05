@@ -3,7 +3,7 @@
     <div class='col-md-5 col-xs-12  text-center'>
         <h3>Download leads by period</h3>
         <br>
-        <form action="downloadleads" id="LeadsForClient">
+        <form action="/client_leads/downloadleads" id="LeadsForClient">
             <div class="form-group">
                 <div class="input-daterange input-group" id="datepicker">
                     <input type="text" class="input-sm form-control" name="start" value="<?php print date('m/01/Y')?>"/>
@@ -114,7 +114,7 @@
 //      $('#client_leads tfoot th').each( function () {
 //          var title = $('#client_leads thead tr:eq(0) th').eq($(this).index()).text();
 //          var html_string = '';
-//          var input_style = ' style="width:100%; padding:1px !important; margin-left:-2px; margin-bottom: 0px;"';
+          var input_style = ' style="width:100%; padding:1px !important; margin-left:-2px; margin-bottom: 0px;"';
 //          var select_style = ' style="width:100%; padding:1px; margin-left:-2px; margin-bottom: 0px; height: 24px;"';
 //
 //          if ($(this).index() == 2 || $(this).index() == 3) {
@@ -129,7 +129,7 @@
             if (title=='Status' || title=='Lead details' || title=='Rejection details'){
                 return;
             }
-            $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+            $(this).html( '<input type="text" ' + input_style + ' placeholder="Search '+title+'" />' );
         } );
         table.columns().every( function () {
             var that = this;
