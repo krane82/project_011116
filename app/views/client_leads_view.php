@@ -3,7 +3,7 @@
     <div class='col-md-5 col-xs-12  text-center'>
         <h3>Download leads by period</h3>
         <br>
-        <form action="/client_leads/downloadleads" id="LeadsForClient">
+        <form action="client_leads/downloadleads" id="LeadsForClient">
             <div class="form-group">
                 <div class="input-daterange input-group" id="datepicker">
                     <input type="text" class="input-sm form-control" name="start" value="<?php print date('m/01/Y')?>"/>
@@ -74,11 +74,8 @@
 </div>
 
 <script>
-
-
     $(document).ready(function () {
         var leads = $('#client_leads');
-
         var table = leads.DataTable({
             //"processing": true,
             "serverSide": true,
@@ -96,7 +93,6 @@
                 null,
                 { "searchable": false },
                 { "searchable": false },
-
             ],
             "aoColumnDefs": [
                 { 'bSortable': false, 'aTargets': [ 6,7,8 ]}],
@@ -109,12 +105,10 @@
                 "sInfoFiltered": ""
             }
         });
-
-
 //      $('#client_leads tfoot th').each( function () {
 //          var title = $('#client_leads thead tr:eq(0) th').eq($(this).index()).text();
 //          var html_string = '';
-          var input_style = ' style="width:100%; padding:1px !important; margin-left:-2px; margin-bottom: 0px;"';
+        var input_style = ' style="width:100%; padding:1px !important; margin-left:-2px; margin-bottom: 0px;"';
 //          var select_style = ' style="width:100%; padding:1px; margin-left:-2px; margin-bottom: 0px; height: 24px;"';
 //
 //          if ($(this).index() == 2 || $(this).index() == 3) {
@@ -122,8 +116,6 @@
 //              html_string = '<input type="text" ' + input_style + ' class="datepicker">';
 //          }
 //      });
-
-
         $('#client_leads tfoot th').each( function () {
             var title = $(this).text();
             if (title=='Status' || title=='Lead details' || title=='Rejection details'){
@@ -133,7 +125,6 @@
         } );
         table.columns().every( function () {
             var that = this;
-
             $( 'input', this.footer() ).on( 'keyup change', function () {
                 if ( that.search() !== this.value ) {
                     that
@@ -142,17 +133,12 @@
                 }
             } );
         } );
-
         var r = $('#client_leads tfoot tr');
         r.find('th').each(function(){
             $(this).css('padding', 8);
-
         });
         $('#client_leads thead').append(r);
         $('input').css('text-align', 'center');
-
-
-
         var modalBody = '<form id="rejectForm">' +
             '<p>Choose your rejection reason: </p>' +
             '<label><input type="radio" name="reason" value="1" required> Outside of nominated area service (2 days to reject)</label><br>'+
@@ -160,7 +146,7 @@
             '<label><input type="radio" name="reason" value="3"> Incorrect Phone Number (7 days to reject)</label><br>'+
             '<label><input type="radio" name="reason" value="4"> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>'+
             '<label><input type="radio" name="reason" value="5"> Customer is wanting Off Grid System (7 days to reject)</label><br>'+
-            '<label><input type="radio" name="reason" value="6"> Unable to contact withing 7 days (7 days to reject)</label><br>'+
+            '<label><input type="radio" name="reason" value="6"> Unable to contact within 7 days (7 days to reject)</label><br>'+
             '<textarea style="width:100%" rows="3" name="notes" required></textarea>' +
             '</form>';
         var modalBody1 = '<form id="rejectForm">' +
@@ -170,7 +156,7 @@
             '<label><input type="radio" name="reason" value="3" required> Incorrect Phone Number (7 days to reject)</label><br>'+
             '<label><input type="radio" name="reason" value="4"> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>'+
             '<label><input type="radio" name="reason" value="5"> Customer is wanting Off Grid System (7 days to reject)</label><br>'+
-            '<label><input type="radio" name="reason" value="6"> Unable to contact withing 7 days (7 days to reject)</label><br>'+
+            '<label><input type="radio" name="reason" value="6"> Unable to contact within 7 days (7 days to reject)</label><br>'+
             '<textarea style="width:100%" rows="3" name="notes" required></textarea>' +
             '</form>';
         var modalFooter = '<input form="rejectForm" type="submit" class="btn btn-primary reject" value="Reject this lead"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
@@ -192,7 +178,6 @@
                     }
                 });
             }
-
             if (e.target && e.target.matches('a.leadreject')) {
                 e.preventDefault();
                 var btn = e.target;
@@ -247,14 +232,12 @@
                     }
                 });
             }
-
         });
         $('.input-daterange').datepicker({
             multidate: "true"
         });
         // $('.dateSearch').datepicker({format: 'dd/mm/yyyy'});
     });
-
 </script>
 
 
