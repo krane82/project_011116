@@ -35,6 +35,7 @@ class Model_Client_Leads extends Model {
       $data[] = $col;
 
       while($line = $res->fetch_assoc()){
+        $line['phone']='Ph: '.$line['phone'];
         $data[] = $line;
       }
     } else {

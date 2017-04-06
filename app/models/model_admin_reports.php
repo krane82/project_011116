@@ -531,7 +531,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $coastld = "$".$CoastLids['cost']. " <br> is the total<br> lead cost";
     $totalcost ="$".$resCoast. " <br>total profit";
     $totalAverage ="$".$average. " average <br>lead sale price";
-    $av_sel = $average_sales. " Leads<br>Received";
+    $av_sel ="Leads are sold an average of ". $average_sales. " times";
     echo $mes;
     echo $this->formStatView($ds, 'users', 'getDistributed');
     echo $this->formStatView($acs, 'check', 'getAccepted');

@@ -33,6 +33,9 @@ $yesturday = "0".$yesturday;
 <!--  <h4>Today stats</h4>-->
 <!--  <div class="dayle"></div>-->
 </div>
+<p><b>Percent of pending leads in this week</b></p>
+<input type="text" disabled value="<?php print $data['pendingPercent']?>" style="width:4em">
+
 <br>
 <hr>
 <h2 class="text-center">Client Lead Distribution Order</h2>
@@ -84,14 +87,14 @@ $yesturday = "0".$yesturday;
     lineColors:['#3660aa','#d3503e']
   });
 
-  $.ajax({
-    type: "POST",
-    url: '<?php echo __HOST__ . '/admin_reports/getAverage/' ?>',
-    data: {}, // serializes the form's elements.
-    success: function (data) {
-      document.querySelector('.dayle').innerHTML = data; // show response from the php script.
-    }
-  });
+//  $.ajax({
+//    type: "POST",
+//    url: '<?php //echo __HOST__ . '/admin_reports/getAverage/' ?>//',
+//    data: {}, // serializes the form's elements.
+//    success: function (data) {
+//      document.querySelector('.dayle').innerHTML = data; // show response from the php script.
+//    }
+//  });
 
   $.ajax({
     type: "POST",
@@ -109,7 +112,7 @@ $yesturday = "0".$yesturday;
   //   }
   // });
   $(document).ready(function () {
-
+      var form=$('#reportmain');
       form.submit(function (e) {
           e.preventDefault();
           var start = formS.find('input[name=start]').val();

@@ -25,7 +25,7 @@ class Model_Leadreject extends Model
     <label><input type="radio" name="reason" value="3"> Incorrect Phone Number (7 days to reject)</label><br>
     <label><input type="radio" name="reason" value="4"> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>
     <label><input type="radio" name="reason" value="5"> Customer is wanting Off Grid System (7 days to reject)</label><br>
-    <label><input type="radio" name="reason" value="6"> Unable to contact withing 7 days (7 days to reject)</label><br>
+    <label><input type="radio" name="reason" value="6"> Unable to contact within 7 days (7 days to reject)</label><br>
     <textarea style="width:100%" rows="3" name="notes" required></textarea>
     <input type="submit">
     </form>';
@@ -35,7 +35,7 @@ class Model_Leadreject extends Model
     <label><input type="radio" name="reason" value="3"> Incorrect Phone Number (7 days to reject)</label><br>
     <label><input type="radio" name="reason" value="4"> Indicated they won\'t purchase the specified service within 6 month (7 days to reject)</label><br>
     <label><input type="radio" name="reason" value="5"> Customer is wanting Off Grid System (7 days to reject)</label><br>
-    <label><input type="radio" name="reason" value="6"> Unable to contact withing 7 days (7 days to reject)</label><br>
+    <label><input type="radio" name="reason" value="6"> Unable to contact within 7 days (7 days to reject)</label><br>
     <textarea style="width:100%" rows="3" name="notes" required></textarea>
     <input type="submit">
     </form>';

@@ -35,6 +35,7 @@ class Controller_Admin extends Controller
       $data["title"] = "Dashboard";
       $data["order"] = $this->model->DistributionOrder();
       $data["MonthlyStats"] = $this->model->getMonthlyStats();
+      $data['pendingPercent']=$this->model->pendingPercent();
       $this->view->generate('dashboard_view.php', 'template_view.php', $data);
     } else {
       session_destroy();
