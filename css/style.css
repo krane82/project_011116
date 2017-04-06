@@ -226,6 +226,9 @@ input.searchbox {
     }
 }
 
+.reportsdate{
+    width:40%;
+}
 /*#client_leads tr td:last-child, #client_leads tr th:last-child {*/
     /*text-align: center;*/
 /*}*/

@@ -28,6 +28,7 @@ class Controller_Admin_Reports extends Controller
     }
   }
   function action_getDistributed(){
+
     $now = time();
     $filename =  'Leads_Distributed_' . date("Y_m_d", $now);
     $data = $this->model->getDistributed();
@@ -38,6 +39,7 @@ class Controller_Admin_Reports extends Controller
       fputcsv( $fp, $line );
     }
     fclose($fp);
+
   }
 
   function action_getAverage(){

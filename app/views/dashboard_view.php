@@ -9,30 +9,33 @@
 <div id="area-chart"></div>
 <hr>
 <?php
-$today = time();
-$yesturday = date("d", $today);
-$yesturday = $yesturday - 1;
-$yesturday = "0".$yesturday;
+    $today = time();
+    $yesterday = date("d", $today);
+    $yesterday = $yesterday - 1;
+    $yesterday = "0".$yesterday;
 ?>
 <div class="row">
-    <form id = "reportmain" method="post" action="/admin_reports/getAverage/">
-        <div class="form-group reportsdate">
-            <label for="datepicker">Select Date Range</label>
-            <div class="input-daterange input-group" id="datepicker">
-                <input type="text" class="input-sm form-control" name="start" value="<?php print date('m/'.$yesturday.'/Y')?>" />
-                <span class="input-group-addon">to</span>
-                <input type="text" class="input-sm form-control" name="end"  value="<?php print date('m/d/Y')?>" />
-            </div>
+        <div class="col-md-4"></div><div class="col-md-4 text-center">
+            <p>Select Date Range</p>
+            <form id = "reportmain" method="post" action="/admin_reports/getAverage/">
+                <div class="form-group ">
+                    <div class="input-daterange input-group" id="datepicker">
+                        <input type="text" class="input-sm form-control" name="start" value="<?php print date('m/'.$yesterday.'/Y')?>" />
+                        <span class="input-group-addon">to</span>
+                        <input type="text" class="input-sm form-control" name="end"  value="<?php print date('m/d/Y')?>" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary">
+                </div>
+            </form>
+            <div class="col-md-4"></div>
         </div>
-        <div class="form-group">
-            <input type="submit" class="btn btn-primary">
-        </div>
-    </form>
-  <div class="daylenew"></div>
-  <div class="clearfix"><br></div>
-<!--  <h4>Today stats</h4>-->
-<!--  <div class="dayle"></div>-->
 </div>
+
+<div class="daylenew"></div>
+<div class="clearfix"><br></div>
+
 <p><b>Percent of pending leads in this week</b></p>
 <input type="text" disabled value="<?php print $data['pendingPercent']?>" style="width:4em">
 
@@ -69,13 +72,16 @@ $yesturday = "0".$yesturday;
 <script>
 
   function getAccepted(){
-    document.location.href = '/admin_reports/getAccepted';
+    var data = $('#reportmain').serialize();
+    document.location.href = '/admin_reports/getAccepted?'+data;
   }
   function getDistributed() {
-    document.location.href = '/admin_reports/getDistributed';
+    var data = $('#reportmain').serialize();
+    document.location.href = '/admin_reports/getDistributed?'+data;
   }
   function getRejected(){
-    document.location.href = '/admin_reports/getRejected';
+    var data = $('#reportmain').serialize();
+    document.location.href = '/admin_reports/getRejected?'+data;
   }
 
   Morris.Bar({
@@ -87,53 +93,36 @@ $yesturday = "0".$yesturday;
     lineColors:['#3660aa','#d3503e']
   });
 
-//  $.ajax({
-//    type: "POST",
-//    url: '<?php //echo __HOST__ . '/admin_reports/getAverage/' ?>//',
-//    data: {}, // serializes the form's elements.
-//    success: function (data) {
-//      document.querySelector('.dayle').innerHTML = data; // show response from the php script.
-//    }
-//  });
-
+  var start = $('input[name=start]').val();
+  var end = $('input[name=end]').val();
   $.ajax({
     type: "POST",
     url: '<?php echo __HOST__ . '/admin_reports/getAverageNew/' ?>',
+      data: {start:start, end:end},
     success: function (data) {
       document.querySelector('.daylenew').innerHTML = data; // show response from the php script.
     }
   });
 
-  //  $.ajax({
-  //   type: "POST",
-  //   url: '<?php echo __HOST__ . '/admin_reports/getAverageNewSec/' ?>',
-  //   success: function (data) {
-  //     document.querySelector('.daylenewsec').innerHTML = data; // show response from the php script.
-  //   }
-  // });
+
   $(document).ready(function () {
-      var form=$('#reportmain');
+      var form = $('#reportmain');
       form.submit(function (e) {
           e.preventDefault();
-          var start = formS.find('input[name=start]').val();
-          var end = formS.find('input[name=end]').val();
-          var data = formS.serialize();
-          if (!(start && end)) {
-              alert('Please select Date range');
-              return;
-          }
-          $.ajax({
-              type: "POST",
-              url: '<?php echo __HOST__ . '/admin_reports/getSourceAverage/' ?>',
-              data: formS.serialize(), // serializes the form's elements.
-              success: function (d) {
-                  console.log(d);
-                  document.querySelector('.average-source-info').innerHTML = d; // show response from the php script.
-              }
-          });
+          var start = $('input[name=start]').val();
+          var end = $('input[name=end]').val();
+            $.ajax({
+             type: "POST",
+             url: '<?php echo __HOST__ . '/admin_reports/getAverageNew/' ?>',
+                data: {
+                    start:start,
+                    end:end
+                },
+                success: function (data) {
+                    document.querySelector('.daylenew').innerHTML = data; // show response from the php script.
+                }
+           });
       });
-
-
 
       $('.input-daterange').datepicker({
           multidate: "true"
