@@ -161,6 +161,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     if($state){
       $sql .= " AND lf.state = '$state'";
     }
+
     $res = $con->query($sql);
     $approved = array();
     if ($res) {
@@ -183,16 +184,18 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
 
   public function getDistributed()
   {
-    $con = $this->db();
-    $client = $_REQUEST["client"];
-    $start = strtotime($_REQUEST["start"]);
-    $end = strtotime($_REQUEST["end"]) + 86400;
-    $timestamp = time();
-    $state = $_REQUEST["State"];
-    if(empty($_REQUEST["start"])){
-      $start = strtotime("midnight", $timestamp);
-      $end = strtotime("tomorrow", $start) - 1;
-    }
+      $con = $this->db();
+
+        $client = $_REQUEST["client"];
+        $start = strtotime($_REQUEST["start"]);
+        $end = strtotime($_REQUEST["end"]) + 86400;
+        $timestamp = time();
+        $state = $_REQUEST["State"];
+        if(empty($_REQUEST["start"])){
+          $start = strtotime("midnight", $timestamp);
+          $end = strtotime("tomorrow", $start) - 1;
+        }
+
 
     $sql = 'SELECT lf.id as `id`, lf.full_name as `Full name`, lf.email, lf.phone, DATE_FORMAT(FROM_UNIXTIME(`ld`.`timedate`), "%e %b %Y" ) AS `Date`, c.campaign_name as `Client Name`,';
     $sql .= ' `lf`.`address`, `lf`.`suburb`, `lf`.`state`,  `lf`.`postcode`, `lf`.`system_size`, `lf`.`roof_type`, `lf`.`electricity`, `lf`.`house_age`, `lf`.`house_type`, `lf`.`system_for`, `lf`.`note`';
@@ -203,6 +206,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $sql .= ' INNER JOIN `leads_lead_fields_rel` as lf ON lf.id = ld.lead_id';
     $sql .= ' WHERE 1=1';
     $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+
     if (!($client == 0)) {
       $sql .= ' AND ld.client_id =' . $client;
     }
@@ -230,6 +234,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     } else {
       echo "No data\n";
     }
+
     return $distributed;
   }
 
@@ -399,19 +404,25 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
   public function getAverageReportsNew()
   {
     $con = $this->db();
-    $now = time();
-    $st = new DateTime(date('Y-m-01', $now));
-    $start = $st->getTimestamp();
-    $st->modify("+14 days");
-    $end = $st->getTimestamp();
-//    $state = $_REQUEST["state"];
-    if( $now < $end ) {
-      // do nothing
-    } else {
-      $start = $end;
-      $end = strtotime(date("Y-m-t", $now));
-    }
- 
+//      if(empty($_POST)){
+//        $now = time();
+//        $st = new DateTime(date('Y-m-01', $now));
+//        $start = $st->getTimestamp();
+//        $st->modify("+14 days");
+//        $end = $st->getTimestamp();
+//
+//        if( $now < $end ) {
+//
+//        } else {
+//          $start = $end;
+//          $end = strtotime(date("Y-m-t", $now));
+//        }
+//      }else{
+        $start = $_POST['start'];
+        $end = $_POST['end'];
+          $start = strtotime($start);
+          $end = strtotime($end);
+//      }
     $begs = date('Y-m-d', $start);
     $ends = date('Y-m-d', $end);
    
@@ -469,7 +480,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     //   $mes = "<h4>Information behind period 2017-02-16 - 2017-02-28</h4>";
     // }
    
-    $mes = "<h4>Information behind period ".$begs." to ".$ends."</h4>";
+//    $mes = "<h4>Information behind period ".$begs." to ".$ends."</h4>";
 
     $sqlCountLids = "SELECT COUNT(ld.id) as amount FROM `leads` as ld";
     $sqlCountLids .= " WHERE 1=1 AND (ld.datetime BETWEEN ".$start." AND ".$end.")";
@@ -532,7 +543,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $totalcost ="$".$resCoast. " <br>total profit";
     $totalAverage ="$".$average. " average <br>lead sale price";
     $av_sel ="Leads are sold an average of ". $average_sales. " times";
-    echo $mes;
+//    echo $mes;
     echo $this->formStatView($ds, 'users', 'getDistributed');
     echo $this->formStatView($acs, 'check', 'getAccepted');
     echo $this->formStatView($ras, 'window-close', 'getRejected');

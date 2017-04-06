@@ -25,7 +25,7 @@ $yesturday = "0".$yesturday;
             </div>
         </div>
         <div class="form-group">
-            <input type="submit" class="btn btn-primary">
+            <input type="button" class="btn btn-primary rep" value="Send">
         </div>
     </form>
   <div class="daylenew"></div>
@@ -69,13 +69,16 @@ $yesturday = "0".$yesturday;
 <script>
 
   function getAccepted(){
-    document.location.href = '/admin_reports/getAccepted';
+    var data = $('#reportmain').serialize();
+    document.location.href = '/admin_reports/getAccepted?'+data;
   }
   function getDistributed() {
-    document.location.href = '/admin_reports/getDistributed';
+    var data = $('#reportmain').serialize();
+    document.location.href = '/admin_reports/getDistributed?'+data;
   }
   function getRejected(){
-    document.location.href = '/admin_reports/getRejected';
+    var data = $('#reportmain').serialize();
+    document.location.href = '/admin_reports/getRejected?'+data;
   }
 
   Morris.Bar({
@@ -95,10 +98,12 @@ $yesturday = "0".$yesturday;
 //      document.querySelector('.dayle').innerHTML = data; // show response from the php script.
 //    }
 //  });
-
+  var start = $('input[name=start]').val();
+  var end = $('input[name=end]').val();
   $.ajax({
     type: "POST",
     url: '<?php echo __HOST__ . '/admin_reports/getAverageNew/' ?>',
+      data: {start:start, end:end},
     success: function (data) {
       document.querySelector('.daylenew').innerHTML = data; // show response from the php script.
     }
@@ -112,25 +117,26 @@ $yesturday = "0".$yesturday;
   //   }
   // });
   $(document).ready(function () {
-      var form=$('#reportmain');
-      form.submit(function (e) {
+      var form = $('#repornmain');
+      $('.rep').click(function (e) {
           e.preventDefault();
-          var start = formS.find('input[name=start]').val();
-          var end = formS.find('input[name=end]').val();
-          var data = formS.serialize();
-          if (!(start && end)) {
-              alert('Please select Date range');
-              return;
-          }
-          $.ajax({
-              type: "POST",
-              url: '<?php echo __HOST__ . '/admin_reports/getSourceAverage/' ?>',
-              data: formS.serialize(), // serializes the form's elements.
-              success: function (d) {
-                  console.log(d);
-                  document.querySelector('.average-source-info').innerHTML = d; // show response from the php script.
-              }
-          });
+          var start = $('input[name=start]').val();
+          var end = $('input[name=end]').val();
+
+          console.log(start);
+          console.log(end);
+
+            $.ajax({
+             type: "POST",
+             url: '<?php echo __HOST__ . '/admin_reports/getAverageNew/' ?>',
+                data:{start:start, end:end},
+             success: function (data) {
+                 console.log(data);
+               document.querySelector('.daylenew').innerHTML = data; // show response from the php script.
+             }
+           });
+
+
       });
 
 
