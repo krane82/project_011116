@@ -14,7 +14,6 @@ curl_setopt($cg, CURLOPT_HTTPHEADER, array(
  $ret1 = curl_exec($cg);
  $res=json_decode($ret1);
  curl_close;
- $str='';
  $arr=array();
  foreach($res->points as $item)
  {

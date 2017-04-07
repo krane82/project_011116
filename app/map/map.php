@@ -29,7 +29,7 @@
         line-height: 30px;
         padding-left: 10px;
       }
-	  .modalWait{
+	  #modalWait{
 		  position:absolute;
 		  top:0px; 
 		  right:0px;
@@ -37,6 +37,16 @@
 		  left:0px;
 		  z-index:10;
 		  background-color:rgba(0,0,0,0.5);
+		  display:none
+	  }
+	  #modalRespond{
+		  position:absolute;
+		  top:0px; 
+		  right:0px;
+		  bottom:0px;
+		  left:0px;
+		  z-index:10;
+		  background-color:white;
 		  display:none
 	  }
 	  .sk-circle {
@@ -164,7 +174,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   </head>
   <body>
-  	<div class="modalWait">
+  	<div id="modalWait">
 	<div class="sk-circle">
   <div class="sk-circle1 sk-child"></div>
   <div class="sk-circle2 sk-child"></div>
@@ -179,6 +189,10 @@
   <div class="sk-circle11 sk-child"></div>
   <div class="sk-circle12 sk-child"></div>
 </div>
+</div>
+<div id="modalRespond">
+<div><button type="button" style="float:right" id="closeButton" onclick="modalRespond.style.display='none'">Close List</button></div>
+<div></div>
 </div>
     <div id="floating-panel">
       <input id="address" type="textbox" placeholder="Address or ZIP">
@@ -195,11 +209,12 @@
 	  var latitude=-25.274398;
 	  var longitude=133.77513599999997;
 	  var radius=30;
-	  		  var modal=document.getElementsByClassName('modalWait');
+	  		  var modalWait=document.getElementById('modalWait');
+	  		  var modalRespond=document.getElementById('modalRespond');
 
 	  seek.onclick=function(){
 		  
-		  modal[0].style.display="block";
+		  modalWait.style.display="block";
 		  $('#editClient').show;
 		  radius=document.getElementById('radius').value || radius;
 		  
@@ -215,8 +230,11 @@
 			url: 'ajaxquery.php',
             data:  {"ltd":latitude,"lng":longitude,"radius":radius},
             success: function (data) {
-			modal[0].style.display="none";
-			alert(data)
+			modalWait.style.display="none";
+			//modalRespond.innerHTML=data;
+			modalRespond.children[1].innerHTML=data;
+			modalRespond.style.display="block";
+			console.log(data);
 		;}
         });
 		  };
@@ -233,7 +251,7 @@
 		  });}
 	  function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 5,
+          zoom: 4,
           center: {lat: latitude, lng: longitude}
         });
 		map.addListener('click', function(e) {
