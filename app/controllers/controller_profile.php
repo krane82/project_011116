@@ -72,12 +72,15 @@ class Controller_Profile extends Controller {
           } elseif ($k == "states_filter" ){
             echo "<div class='form-group'>";
             echo "<label for='$k'>". $form_keys["$k"] ."</label>";
-            echo '<input class="form-control" type="text" name="'.$k.'" value="'.$v.'" readonly="readonly" > ' ;
+            echo '<input class="form-control" type="text" name="'.$k.'" value="'.$v.'"> ' ;
             echo "</div>";
           } elseif ($k == "postcodes") {
             echo "<div class='form-group'>";
-            echo "<label for='$k'>".$form_keys["$k"]."</label>";
-            echo "<textarea class='form-control' name='postcodes' type='text' readonly=\"readonly\">$v</textarea>";
+            echo "<p>".$form_keys["$k"]."<button type=\"button\" style=\"float:right\" class=\"btn btn-sm btn-success\" data-toggle=\"collapse\" data-target=\"#map\">Select by radius</button></p></p>";
+            echo "<textarea class='form-control' name='postcodes' type='text'>$v</textarea>";
+            echo "<br><div id=\"map\" class=\"collapse\">
+              <iframe src=\"/app/map/map.php\" style=\"width:100%; height:400px\">Не работает</iframe>
+              </div>";
             echo "</div>";
           } else {
             echo "<div class='form-group'>";

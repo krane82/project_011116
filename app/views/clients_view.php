@@ -44,7 +44,12 @@ echo $table;
               <input class="form-control" placeholder="country" type="text" id="country" name="country" >
             </div>
             <div class="form-group">
+              <p>PostCodes<button type="button" style="float:right" class="btn btn-sm btn-success" data-toggle="collapse" data-target="#mapAddcl">Select by radius</button></p>
               <input class="form-control" placeholder="lead cost" type="text" id="lead_cost" name="lead_cost">
+              <div id="mapAddcl" class="collapse">
+                <br>
+                <iframe src="/app/map/map.php" style="width:100%; height:400px">Не работает</iframe>
+              </div>
             </div>
             <hr>
             <div class="form-group">
