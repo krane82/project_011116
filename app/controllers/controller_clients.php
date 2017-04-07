@@ -132,7 +132,12 @@ class Controller_CLients extends Controller {
                         echo "</div>";
                     } else if($k=="postcodes") {
                         echo '<div class="form-group">
+                        <p>PostCodes<button type="button" style="float:right" class="btn btn-sm btn-success" data-toggle="collapse" data-target="#map">Select by radius</button></p>
                 <textarea class="form-control" placeholder="Post codes" type="text" id="postcode" name="postcodes">'. $v .'</textarea> 
+              <div id="map" class="collapse">
+              <iframe src="/app/map/map.php" style="width:100%; height:400px">Не работает</iframe>
+              </div>
+              
               </div>';
                     }else if($k=="weekly") {
                         echo "<div class='form-group' onclick='limits(this,event)'>";
