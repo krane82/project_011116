@@ -13,7 +13,10 @@
 							<div class="form-group">
 								<input type="password" class="form-control" name="password" placeholder="Password" required>
 							</div>
-							<input type="submit" value="Login" name="btn" class="btn btn-success btn-block">
+                            <div class="form-group">
+                                <input type="checkbox" class="form-control" id="rem" name="rem_sys"><lable for="rem">remain in the system</lable>
+                            </div>
+                            <input type="submit" value="Login" name="btn" class="btn btn-success btn-block">
 						</form>
             <?php extract($data); ?>
             <?php if($login_status=="access_granted") { ?>

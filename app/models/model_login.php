@@ -7,6 +7,9 @@ class Model_Login extends Model {
     return $loginUser;
   }
   public function check_data($login, $password) {
+      if(isset($_POST['rem_sys'])){
+          $rem_the_sys = $_POST['rem_sys'];
+      }
     $con = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     if ($con->connect_errno) {
       printf("Connect failed: %s\n", $con->connect_error);
@@ -32,14 +35,54 @@ class Model_Login extends Model {
 //        setcookie("user_name", $data['full_name']);
 //        setcookie("user_id", $data["id"]);
       }
+        $ip = $_SERVER["REMOTE_ADDR"];
+        $username = $data['full_name'];
+        $salt = "DJHFY";
+        $res_cookie = md5($salt.$username.$ip.$salt);
+        setcookie("hash_sys", $res_cookie,time()+36000000);
+        $hash_sys = $_COOKIE['hash_sys'];
+
+        if(isset($rem_the_sys)){
+            $sql = "UPDATE `users`";
+            $sql .= "SET `rem_the_sys`='$hash_sys'";
+            $sql .= " WHERE `email`='$login' AND `password`='$password'";
+            $con = $this->db();
+            $res = $con->query($sql);
+        }else{
+            $sql = "UPDATE `users`";
+            $sql .= "SET `rem_the_sys`=''";
+            $sql .= " WHERE `email`='$login' AND `password`='$password'";
+            $con = $this->db();
+            $res = $con->query($sql);
+        }
       
     } else {
       $con->close();
       return FALSE;
     }
+
     $_SESSION["user_name"] = $data['full_name'];
     $_SESSION["user_id"] = (int)$data["id"];
     $con->close();
     return $data;
   }
+
+    public function rem_in_sys()
+    {
+        if(isset($_COOKIE['hash_sys'])){
+            $hash = $_COOKIE['hash_sys'];
+
+            $sql = "SELECT * FROM `users`";
+            $sql.= "WHERE `rem_the_sys`='$hash'";
+            $con = $this->db();
+            $res = $con->query($sql);
+            if($res->num_rows>0){
+                $r = $res->fetch_assoc();
+                return $r;
+            }else{
+                return "error";
+            }
+        }
+
+    }
 }
