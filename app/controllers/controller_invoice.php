@@ -32,15 +32,13 @@ class Controller_Invoice extends Controller
     {
         print $this->model->generate();
     }
-    function downloadcurrent()
+    function action_getListOfCurrent()
     {
-//
-//        $user=$_POST['user'];
-//        $file=$_POST['file'];
-       // die();
-        //$path=$_SERVER['DOCUMENT_ROOT'].'/docs/invoices/'.$user.'/'.$file;
-//        header('Content-type: application/csv'); // указываем, что это csv документ
-//        header("Content-Disposition: inline; filename=".$path); // указываем файл, с которым будем работать
-//        readfile($path); // считываем файл
+        $client=$_POST['client'];
+        print $this->model->getListOfCurrent($client);
+    }
+    function action_deleteFile()
+    {
+        $this->model->deleteFile();
     }
 }

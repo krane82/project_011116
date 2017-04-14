@@ -28,13 +28,12 @@ class Model_Invoice extends Model
     private function getData()
 {
     $con=$this->db();
+    $start=strtotime($_POST['start']);
+    $end=strtotime($_POST['end']);
     $client=$_POST['client'];
-    $startOfPeriod=date(strtotime('monday previous week'));
     $sql="SELECT ler.full_name, led.lead_id, cli.lead_cost, cli.campaign_name, cli.email, cli.phone from clients cli left join leads_delivery led on cli.id=led.client_id left join leads_lead_fields_rel ler on led.lead_id=ler.id where cli.id='".$client."'";
-    //return $sql;
-    //$sql.="and led.timedate>'".$startOfPeriod."'";
+    $sql.="and led.timedate between '".$start."' AND '".$end."'";
     $res=$con->query($sql);
-    //return $sql;
     if($res) {
         $result = $res->fetch_all();
         return $result;
@@ -44,7 +43,6 @@ class Model_Invoice extends Model
     public function generate()
     {
         $data=$this->getData();
-        //return var_dump($data);
         $userId=$_POST['client'];
         $today=date('d_m_Y');
         $company_name=$data[0][3];
@@ -305,4 +303,28 @@ E-mail: support@energysmart.com.au', '','L');
         }
             return $this->pdf->output($dir."/".$today.".pdf","F");
     }
+    public function getListOfCurrent($id)
+    {
+        $data=$this->getMyInvoices($id);
+        $dir=__HOST__.'/docs/invoices/'.$id.'/';
+        $result='<ul class="list-group">';
+        foreach ($data as $item)
+        {
+            if ($item=='.' || $item=='..')continue;
+            $result.='<li class="list-group-item"><a href="'.$dir.$item.'" target="_blank">'.$item.'</a><button type="button" value="'.$item.'" class="btn btn-xs btn-danger badge delbut">Delete</button></li>';
+        }
+        $result.='</ul>';
+        return $result;
+    }
+    public function deleteFile()
+    {
+        $id=$_POST['client'];
+        $file=$_POST['file'];
+        if(file_exists($_SERVER['DOCUMENT_ROOT'].'/docs/invoices/'.$id.'/'.$file)) {
+            unlink($_SERVER['DOCUMENT_ROOT'] . '/docs/invoices/' . $id . '/' . $file);
+        return 'deleted';
+        }
+    return 'File not exsist';
+        }
+
 }
