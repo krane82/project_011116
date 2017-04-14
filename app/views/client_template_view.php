@@ -200,7 +200,9 @@
         <!-- </li> -->
         <li><a href="<?php echo __HOST__; ?>/client_leads/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-th"></span><p>Leads</p></a>
         </li>
-<!--        <li ><a href="--><?php //echo __HOST__; ?><!--/client_reports/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-stats"></span><p>Reports</p></a>-->
+        <li><a href="<?php echo __HOST__; ?>/invoice/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p>Invoices</p></a>
+
+          <!--        <li ><a href="--><?php //echo __HOST__; ?><!--/client_reports/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-stats"></span><p>Reports</p></a>-->
 <!--        </li>-->
       </ul>
     </div><!-- Page Sidebar Inner -->
