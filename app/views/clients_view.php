@@ -44,16 +44,17 @@ echo $table;
               <input class="form-control" placeholder="country" type="text" id="country" name="country" >
             </div>
             <div class="form-group">
-              <p>PostCodes<button type="button" style="float:right" class="btn btn-sm btn-success" data-toggle="collapse" data-target="#mapAddcl">Select by radius</button></p>
               <input class="form-control" placeholder="lead cost" type="text" id="lead_cost" name="lead_cost">
+            </div>
+            <hr>
+            <div class="form-group">
+              <p>PostCodes<button type="button" style="float:right" class="btn btn-sm btn-success" data-toggle="collapse" data-target="#mapAddcl">Select by radius</button></p>
+              <input type="hidden" name="coords">
+              <textarea class="form-control" placeholder="Post codes" type="text" id="postcode" name="postcodes" ></textarea>
               <div id="mapAddcl" class="collapse">
                 <br>
                 <iframe src="/app/map/map.php" style="width:100%; height:400px">Не работает</iframe>
               </div>
-            </div>
-            <hr>
-            <div class="form-group">
-              <textarea class="form-control" placeholder="Post codes" type="text" id="postcode" name="postcodes" ></textarea> 
             </div>
             <div class="form-group">
               <input class="form-control" placeholder="States Filter - Ex: NSW,VIC,WA,QLD,SA,ACT,TAS" type="text" id="states_filter" name="states_filter">
@@ -257,5 +258,11 @@ echo $table;
       t.lastElementChild.removeAttribute("disabled");
     }
     else return;
+  }
+  function frameinf()
+  {
+    var frameinf=window.frames[0];
+    var framedata=frameinf.returnVal();
+    console.log(framedata);
   }
 </script>

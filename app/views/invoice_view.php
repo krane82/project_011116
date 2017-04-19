@@ -1,6 +1,3 @@
-<?php
-print '<pre>';
-?>
 <div class=""row">
 <div class="col-md-4">
     <form id="invoices">
@@ -8,9 +5,9 @@ print '<pre>';
         <div class="form-group">
 Select Date Range
             <div class="input-daterange input-group" id="datepicker">
-                <input type="text" class="input-sm st form-control" name="start"/>
+                <input type="text" class="input-sm st form-control" name="start" required/>
                 <span class="input-group-addon">to</span>
-                <input type="text" class="input-sm en form-control" name="end"/>
+                <input type="text" class="input-sm en form-control" name="end" required/>
             </div>
 Select Client
           <span id="infospan" class="label label-primary" style="float:right"></span>
@@ -61,6 +58,7 @@ Select Client
 
     $('#invoices').submit(function(e){
     e.preventDefault();
+    if(!client.value) return;
     infospan.innerHTML='Wait please. . . generating invoice';
     var data=$(this).serialize();
     $.ajax(
