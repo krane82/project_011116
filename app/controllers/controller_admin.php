@@ -6,8 +6,10 @@ class Controller_Admin extends Controller
   {
     $this->model = new Model_Admin();
     $this->view = new View();
+//      var_dump($_COOKIE);
   }
   function action_index() {
+
     $data["body_class"] = "page-header-fixed";
     $data["title"] = "Dashboard";
     session_start();
@@ -29,6 +31,7 @@ class Controller_Admin extends Controller
 
   function action_dashboard()
   {
+//     var_dump($_COOKIE);
     session_start();
     if ($_SESSION['admin'] == md5('admin')) {
       $data["body_class"] = "page-header-fixed";
@@ -98,6 +101,7 @@ class Controller_Admin extends Controller
 
   function action_logout()
   {
+    setcookie("hash_sys", "", time() - 100);
     session_start();
     session_destroy();
     header('Location:/login');

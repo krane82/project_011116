@@ -35,14 +35,16 @@ class Model_Login extends Model {
 //        setcookie("user_name", $data['full_name']);
 //        setcookie("user_id", $data["id"]);
       }
-        $ip = $_SERVER["REMOTE_ADDR"];
-        $username = $data['full_name'];
-        $salt = "DJHFY";
-        $res_cookie = md5($salt.$username.$ip.$salt);
-        setcookie("hash_sys", $res_cookie,time()+36000000);
-        $hash_sys = $_COOKIE['hash_sys'];
+
 
         if(isset($rem_the_sys)){
+            $ip = $_SERVER["REMOTE_ADDR"];
+            $username = $data['full_name'];
+            $salt = "DJHFY";
+            $res_cookie = md5($salt.$username.$ip.$salt);
+            setcookie("hash_sys", $res_cookie,time()+36000000);
+            $hash_sys = $_COOKIE['hash_sys'];
+
             $sql = "UPDATE `users`";
             $sql .= "SET `rem_the_sys`='$hash_sys'";
             $sql .= " WHERE `email`='$login' AND `password`='$password'";
