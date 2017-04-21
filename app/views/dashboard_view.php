@@ -31,6 +31,16 @@
             </form>
             <div class="col-md-4"></div>
         </div>
+
+        <div class="form-group">
+            <input type="button" class="btn btn-primary rep" value="Send">
+        </div>
+    </form>
+  <div class="daylenew"></div>
+  <div class="clearfix"><br></div>
+<!--  <h4>Today stats</h4>-->
+<!--  <div class="dayle"></div>-->
+
 </div>
 
 <div class="daylenew"></div>
@@ -93,6 +103,16 @@
     lineColors:['#3660aa','#d3503e']
   });
 
+
+//  $.ajax({
+//    type: "POST",
+//    url: '<?php //echo __HOST__ . '/admin_reports/getAverage/' ?>//',
+//    data: {}, // serializes the form's elements.
+//    success: function (data) {
+//      document.querySelector('.dayle').innerHTML = data; // show response from the php script.
+//    }
+//  });
+
   var start = $('input[name=start]').val();
   var end = $('input[name=end]').val();
   $.ajax({
@@ -106,6 +126,7 @@
 
 
   $(document).ready(function () {
+
       var form = $('#reportmain');
       form.submit(function (e) {
           e.preventDefault();
@@ -122,6 +143,7 @@
                     document.querySelector('.daylenew').innerHTML = data; // show response from the php script.
                 }
            });
+
       });
 
       $('.input-daterange').datepicker({
