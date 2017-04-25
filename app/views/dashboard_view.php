@@ -12,7 +12,11 @@
     $today = time();
     $yesterday = date("d", $today);
     $yesterday = $yesterday - 1;
+if($yesterday>9){
+
+}else{
     $yesterday = "0".$yesterday;
+}
 ?>
 <div class="row">
         <div class="col-md-4"></div><div class="col-md-4 text-center">
@@ -32,9 +36,9 @@
             <div class="col-md-4"></div>
         </div>
 
-        <div class="form-group">
-            <input type="button" class="btn btn-primary rep" value="Send">
-        </div>
+<!--        <div class="form-group">-->
+<!--            <input type="button" class="btn btn-primary rep" value="Send">-->
+<!--        </div>-->
     </form>
   <div class="daylenew"></div>
   <div class="clearfix"><br></div>
@@ -125,6 +129,8 @@
   });
 
 
+
+
   $(document).ready(function () {
 
       var form = $('#reportmain');
@@ -140,7 +146,7 @@
                     end:end
                 },
                 success: function (data) {
-                    document.querySelector('.daylenew').innerHTML = data; // show response from the php script.
+                    document.querySelector('.daylenew').innerHTML = data;
                 }
            });
 

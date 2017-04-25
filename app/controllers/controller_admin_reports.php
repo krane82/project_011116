@@ -118,4 +118,8 @@ class Controller_Admin_Reports extends Controller
     header('Location:/login');
   }
 
+  function action_getPending(){
+        $this->model->getPending();
+  }
+
 }

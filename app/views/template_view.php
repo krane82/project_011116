@@ -25,6 +25,7 @@
   <link href="<?php echo __HOST__; ?>/assets/css/custom.css" rel="stylesheet" type="text/css"/>
   <link rel="stylesheet" href="<?php echo __HOST__; ?>/assets/plugins/bootstrap-datepicker/css/datepicker.css">
   <link rel="stylesheet" href="<?php echo __HOST__; ?>/css/bootstrap-switch.min.css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet"/>
   <style>
     div.checker {
       display: none;
@@ -328,6 +329,8 @@
 <script src="<?php echo __HOST__; ?>/assets/js/modern.min.js"></script>
 <script src="<?php echo __HOST__; ?>/js/bootstrap-switch.min.js"></script>
 <script src="<?php echo __HOST__; ?>/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+
   <script>
     // $(document).ready(function(){
     //   $("select, input:radio, input:file").uniform();

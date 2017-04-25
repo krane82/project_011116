@@ -36,7 +36,8 @@
             <label class="control-label" for="Sources">
               Select Client
             </label>
-            <select name="client" class="form-control">
+            <select name="client" class="form-control js-example-basic-single">
+                <span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-l5j9-container"><span class="select2-selection__rendered" id="select2-l5j9-container" title="Hawaii">Hawaii</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
               <option value="0">All</option>
 
               <?php
@@ -226,5 +227,11 @@
     $('.input-daterange').datepicker({
       multidate: "true"
     });
+//      search clients
+//      $('.search_client').keyup(function(){
+//
+//      });
+      $(".js-example-basic-single").select2();
+
   });
 </script>

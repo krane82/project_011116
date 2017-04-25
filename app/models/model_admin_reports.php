@@ -271,7 +271,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
     $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
     $sql .= ' LEFT JOIN `leads_lead_fields_rel` as lf ON lf.id=ld.lead_id';
-    $sql .= ' WHERE (lr.approval > 0 OR lr.approval IS NULL)';
+    $sql .= ' WHERE (lr.approval = 1 OR lr.approval IS NULL)';
     $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
     if (!($client == 0)) {
       $sql .= ' AND ld.client_id =' . $client;
@@ -300,6 +300,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     if($state){
       $sql2 .= " AND lf.state = '$state'";
     }
+
     $res = $con->query($sql2);
     if ($res) {
       $rejected = $res->fetch_assoc();
@@ -330,9 +331,18 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     } else {
       $rejectedP = 0;
     }
-//    dd($sql);
 
-    $ds =  $distributed["amount"] . " leads <br>Distributed";
+    $sqlleadrej = "SELECT COUNT(id) as pendrej FROM `leads_rejection`";
+    $sqlleadrej .=" WHERE `approval` IN (2, 3, 4) AND (`date` BETWEEN '$start' AND '$end')";
+    $resrej = $con->query($sqlleadrej);
+
+    if($resrej){
+      $resultrej = $resrej->fetch_assoc();
+    }
+//    dd($sql);
+      $pend_rej = "Pending rejections: ".$resultrej['pendrej'];
+
+      $ds =  $distributed["amount"] . " leads <br>Distributed";
     // $ds_beg = "leads <br>Distributed 1 to 15 ";
     $acs = $approved['amount']. " leads Accepted by clients";
     $ras = $rejected["amount"] . " leads Rejected <br>by clients";
@@ -344,6 +354,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     echo $this->formStatView($ras, 'window-close', 'getRejected');
     echo $this->formStatView($rejectedPercent, 'window-close', 'getRejected');
     echo $this->formStatView($rev, 'shopping-cart');
+    echo $this->formStatView($pend_rej, 'user');
     // echo $this->formStatView($ds_beg, 'users', 'getDistributed');
     if(!empty($_POST["start"])) {
       $uq = http_build_query(array(
@@ -532,7 +543,28 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
         $rejectedP = $rejected["amount"] / $distributed["amount"];
     }
 
-    $ds =  $distributed["amount"] . " leads <br>distributed";
+      $sqlleadrej = "SELECT COUNT(id) as pendrej FROM `leads_rejection`";
+      $sqlleadrej .=" WHERE `approval` IN (2, 3, 4) AND (`date` BETWEEN '$start' AND '$end')";
+      $resrej = $con->query($sqlleadrej);
+
+      if($resrej){
+          $resultrej = $resrej->fetch_assoc();
+      }
+
+      $today = time();
+      $today = date("m/d/Y", $today);
+      $today = strtotime($today);
+      $sqlleadrejtoday = "SELECT COUNT(id) as pendtoday FROM `leads_rejection`";
+      $sqlleadrejtoday .=" WHERE `approval` IN (2, 3, 4) AND `date`= '$today'";
+
+      $resrejtoday = $con->query($sqlleadrejtoday);
+
+      if($resrejtoday){
+          $resultrejtoday = $resrejtoday->fetch_assoc();
+      }
+
+
+      $ds =  $distributed["amount"] . " leads <br>distributed";
     $acs = $approved['amount']. " leads <br>accepted";
     $ras = $rejected["amount"] . " leads <br>rejected";
     //$trs = $approved["total_cost"] . " total Revenue";
@@ -543,7 +575,9 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $totalcost ="$".$resCoast. " <br>total profit";
     $totalAverage ="$".$average. " average <br>lead sale price";
     $av_sel ="Leads are sold an average of ". $average_sales. " times";
-//    echo $mes;
+    $pend_rej = "Pending rejections: ".$resultrej['pendrej'];
+    $pend_rejtoday = "Pending rejections for today:".$resultrejtoday['pendtoday'];
+
     echo $this->formStatView($ds, 'users', 'getDistributed');
     echo $this->formStatView($acs, 'check', 'getAccepted');
     echo $this->formStatView($ras, 'window-close', 'getRejected');
@@ -554,6 +588,8 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     echo $this->formStatView($totalcost, 'shopping-cart');
     echo $this->formStatView($totalAverage, 'user');
     echo $this->formStatView($av_sel, 'user');
+    echo $this->formStatView($pend_rej, 'user');
+    echo $this->formStatView($pend_rejtoday, 'user');
 
   }
 
@@ -592,5 +628,10 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       echo "No data for this ctriteria.";
     }
   }
+
+    public function getPending()
+    {
+
+    }
 }
 
