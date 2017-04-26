@@ -194,6 +194,7 @@
         <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Clients</p><span class="arrow"></span></a>
           <ul class="sub-menu">
           <li><a href="/clients/">Clients</a>
+          <li><a href="/clients/covermap">Map of Cover</a>
           <li><a href="<?php echo __HOST__; ?>/leads_limits/">Clients Caps</a> </li>
           <li><a href="<?php echo __HOST__; ?>/leads_limits/matches">PostCodes Matches</a></li>
           </ul>
@@ -223,6 +224,7 @@
           </ul>
         </li>
         <li><a href="<?php echo __HOST__; ?>/admin_reports/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-stats"></span><p>Reports</p></a>
+        <li><a href="<?php echo __HOST__; ?>/invoice/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p>Invoices</p></a>
         <li><a href="<?php echo __HOST__; ?>/settings/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-wrench"></span><p>Settings</p></a>
 <!--          <ul class="sub-menu">-->
 <!--            <li><a href="charts-sparkline">Sparkline</a></li>-->
