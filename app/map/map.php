@@ -47,7 +47,8 @@
 		  left:0px;
 		  z-index:10;
 		  background-color:white;
-		  display:none
+		  display:none;
+          word-wrap:break-word;
 	  }
 	  .sk-circle {
   margin: 100px auto;
@@ -191,7 +192,9 @@
 </div>
 </div>
 <div id="modalRespond">
-<div><button type="button" style="float:right" id="closeButton" onclick="modalRespond.style.display='none'">Close List</button></div>
+<div>
+    <button type="button" onclick="saveAll()">Save postcodes to profile</button>
+    <button type="button" style="float:right" id="closeButton" onclick="modalRespond.style.display='none'">Close List</button></div>
 <div></div>
 </div>
     <div id="floating-panel">
@@ -209,12 +212,22 @@
 	  var latitude=-25.274398;
 	  var longitude=133.77513599999997;
 	  var radius=30;
-	  		  var modalWait=document.getElementById('modalWait');
-	  		  var modalRespond=document.getElementById('modalRespond');
-
+      var codes;
+      var marker;
+      var modalWait=document.getElementById('modalWait');
+      var modalRespond=document.getElementById('modalRespond');
+      function saveAll()
+      {
+          var coords=window.parent.document.getElementsByName('coords');
+          var postcodes=window.parent.document.getElementsByName('postcodes');
+          for(var i=0;i<coords.length;i++)
+          {
+              coords[i].value=latitude+':'+longitude+':'+radius;
+              postcodes[i].value=codes;
+          }
+      }
 	  seek.onclick=function(){
-		  
-		  modalWait.style.display="block";
+          modalWait.style.display="block";
 		  $('#editClient').show;
 		  radius=document.getElementById('radius').value || radius;
 		  
@@ -223,7 +236,8 @@
 			  radius=500;
 			  document.getElementById('radius').value=500;
 		  }
-		  if(cityCircle) {cityCircle.setMap(null);}
+
+          if(cityCircle) {cityCircle.setMap(null);}
 		  drawCircle();
 		  $.ajax({
             type: "POST",
@@ -231,10 +245,9 @@
             data:  {"ltd":latitude,"lng":longitude,"radius":radius},
             success: function (data) {
 			modalWait.style.display="none";
-			//modalRespond.innerHTML=data;
 			modalRespond.children[1].innerHTML=data;
 			modalRespond.style.display="block";
-			console.log(data);
+			codes=data;
 		;}
         });
 		  };
@@ -257,36 +270,35 @@
 		map.addListener('click', function(e) {
     placeMarkerAndPanTo(e.latLng, map);
   });
-  function placeMarkerAndPanTo(latLng, map) {
- // var marker = new google.maps.Marker({
- //   position: latLng,
- //   map: map
- // });
- latitude=latLng.lat();
- longitude=latLng.lng();
-  map.panTo(latLng);
-}
+
         var geocoder = new google.maps.Geocoder();
 
         document.getElementById('submit').addEventListener('click', function() {
           geocodeAddress(geocoder, map);
         });
       }
-
+      function placeMarkerAndPanTo(latLng, map) {
+          if(marker) {
+              marker.setMap(null);
+          }
+          marker = new google.maps.Marker({
+              position: latLng,
+              map: map
+          });
+          latitude=latLng.lat();
+          longitude=latLng.lng();
+          map.panTo(latLng);
+      }
       function geocodeAddress(geocoder, resultsMap) {
         var address = document.getElementById('address').value;
         geocoder.geocode({'address': address,componentRestrictions: {
     country: 'AU'
-  }}, function(results, status) {
+  }},
+            function(results, status) {
           if (status === 'OK') {
-            resultsMap.setCenter(results[0].geometry.location);
-            latitude=results[0].geometry.location.lat();
-            longitude=results[0].geometry.location.lng();
-			//var marker = new google.maps.Marker({
-            //  map: resultsMap,
-            //  position: results[0].geometry.location
-            //});
-          } else {
+              placeMarkerAndPanTo(results[0].geometry.location, resultsMap);
+          }
+          else {
             alert('Geocode was not successful for the following reason: ' + status);
           }
         });

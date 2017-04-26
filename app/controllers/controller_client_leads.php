@@ -122,7 +122,7 @@ class Controller_client_leads extends Controller
         }
       }),
       array( 'db' => '`a`.`decline_reason`',  'dt' => 8, 'formatter'=>function($d, $row) {
-        if (!$d and $row[5] > 1) {
+        if ($row[5] > 1) {
           return "<a href='#' class='RejectionDetails btn btn-primary' attr-lead-id='$row[0]' data-toggle=\"modal\" data-target=\"#LeadInfo\"  >View</a>";
         }
       },

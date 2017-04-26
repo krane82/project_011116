@@ -20,6 +20,13 @@ class Controller_CLients extends Controller {
             //    Route::ErrorPage404();
         }
     }
+    function action_covermap()
+    {
+        $data['coords']=$this->model->getCoords();
+        $data['coords']=json_encode($data['coords']);
+        $data['cover']=$this->model->getCover();
+        $this->view->generate('covermap_view.php', 'template_view.php', $data);
+    }
     function action_ajax_get()
     {
         $table = 'clients';
@@ -133,12 +140,12 @@ class Controller_CLients extends Controller {
                     } else if($k=="postcodes") {
                         echo '<div class="form-group">
                         <p>PostCodes<button type="button" style="float:right" class="btn btn-sm btn-success" data-toggle="collapse" data-target="#map">Select by radius</button></p>
+                <input type="hidden" name="coords">
                 <textarea class="form-control" placeholder="Post codes" type="text" id="postcode" name="postcodes">'. $v .'</textarea> 
               <div id="map" class="collapse">
-              <iframe src="/app/map/map.php" style="width:100%; height:400px">Не работает</iframe>
+              <iframe src="/app/map/map.php" id="frame" style="width:100%; height:400px">Не работает</iframe>
               </div>
-              
-              </div>';
+</div>';
                     }else if($k=="weekly") {
                         echo "<div class='form-group' onclick='limits(this,event)'>";
                         echo "<label for='$k'>".$form_keys["$k"]."</label><br>";
@@ -180,6 +187,7 @@ class Controller_CLients extends Controller {
         $phone = phone_valid($_POST["phone"]);
         $city = $_POST["city"];
         $state = $_POST["state"];
+        $coords=$_POST['coords'];
         $postcodes = postcodes_valid($_POST["postcodes"]);
         $country = $_POST["country"];
         $states_filter = $_POST["states_filter"];
@@ -203,7 +211,7 @@ class Controller_CLients extends Controller {
         $sql1.= " WHERE id='$id'";
         if($con->query($sql1)) $res1 = 1;
         $sql2 = "UPDATE `clients_criteria`";
-        $sql2.= " SET weekly = $weekly, states_filter='$states_filter', postcodes='$postcodes'";
+        $sql2.= " SET weekly = $weekly, states_filter='$states_filter', coords='$coords', postcodes='$postcodes'";
         $sql2.= " WHERE id='$id'";
         if($con->query($sql2)) $res2 = 1;
         if(trim($_POST["password"]) === "") {
@@ -265,6 +273,7 @@ class Controller_CLients extends Controller {
             $phone = phone_valid($_POST["phone"]);
             $city = $_POST["city"];
             $state = $_POST["state"];
+            $coords=$_POST['coords'];
             $postcodes = postcodes_valid($_POST["postcodes"]);
             $country = $_POST["country"];
             $states_filter = $_POST["states_filter"];
@@ -289,8 +298,8 @@ class Controller_CLients extends Controller {
             $sql2.= " VALUES ('$last_id', '$client_name','$email','$full_name', '$lead_cost', '$status', '$phone', '$city', '$state', '$country' )";
             if($con->query($sql2)) $clients_aded = 1;
             $sql3 = 'INSERT INTO `clients_criteria`';
-            $sql3.= '(id, weekly, states_filter, postcodes )';
-            $sql3.= " VALUES ($last_id, $weekly, '$states_filter', '$postcodes' )";
+            $sql3.= '(id, weekly, states_filter, coords, postcodes )';
+            $sql3.= " VALUES ($last_id, $weekly, '$states_filter', '$coords', '$postcodes' )";
 
             if($con->query($sql3)) $criteria_added = 1;
             if($user_added && $billing_added && $clients_aded && $criteria_added ) {
