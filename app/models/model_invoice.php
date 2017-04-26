@@ -35,7 +35,10 @@ class Model_Invoice extends Model
     $sql.="and led.timedate between '".$start."' AND '".$end."'";
     $res=$con->query($sql);
     if($res) {
-        $result = $res->fetch_all();
+        while($row=$res->fetch_array(MYSQLI_NUM))
+        {
+           $result[]=$row;
+        }
         return $result;
     }
     return false;
