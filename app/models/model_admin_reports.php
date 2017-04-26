@@ -332,10 +332,10 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       $rejectedP = 0;
     }
 
-    $sqlleadrej = "SELECT COUNT(id) as pendrej FROM `leads_rejection`";
+    $sqlleadrej = "SELECT COUNT(*) as pendrej FROM `leads_rejection`";
     $sqlleadrej .=" WHERE `approval` IN (2, 3, 4) AND (`date` BETWEEN '$start' AND '$end')";
     $resrej = $con->query($sqlleadrej);
-
+var_dump($sqlleadrej);
     if($resrej){
       $resultrej = $resrej->fetch_assoc();
     }

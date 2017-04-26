@@ -5,7 +5,7 @@ class Controller_Login extends Controller {
 	function __construct() {
 		$this->model = new Model_Login();
 		$this->view = new View();
-//        var_dump($_COOKIE);
+
 	}
 
 	function action_index() {
@@ -13,6 +13,7 @@ class Controller_Login extends Controller {
         if(!isset($_POST['rem_sys'])){
             setcookie("hash_sys", "", time() - 100);
 
+        }
 
         if(isset($_COOKIE['hash_sys'])){
             $res = $this->model->rem_in_sys();
@@ -32,7 +33,8 @@ class Controller_Login extends Controller {
                 }
             }
         }
-        }
+//
+
 		session_start();
 		if(isset($_POST['login']) && isset($_POST['password']))
 		{
