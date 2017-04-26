@@ -271,7 +271,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
     $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
     $sql .= ' LEFT JOIN `leads_lead_fields_rel` as lf ON lf.id=ld.lead_id';
-    $sql .= ' WHERE (lr.approval = 1 OR lr.approval IS NULL)';
+    $sql .= ' WHERE lr.approval = 1'; //  OR lr.approval IS NULL )
     $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
     if (!($client == 0)) {
       $sql .= ' AND ld.client_id =' . $client;
@@ -288,6 +288,19 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     } else {
       echo "No data\n";
     }
+
+      $sqlnew = 'SELECT COUNT(*) as amount FROM `leads_rejection` as lj ';
+//      $sqlnew .= ' LEFT JOIN `clients` as c ON lj.client_id = c.id';
+      $sqlnew .= ' WHERE (lj.approval = 1 OR lj.approval IS NULL)';
+      $sqlnew .= ' AND (lj.date BETWEEN '.$start.' AND '.$end.')';
+      if (!($client == 0)) {
+          $sqlnew .= ' AND lj.client_id =' . $client;
+      }
+
+      $resam = $con->query($sqlnew);
+      if($resam){
+          $approvednew = $resam->fetch_assoc();
+      }
 
     $sql2 = 'SELECT COUNT(*) as amount FROM `leads_delivery` as ld ';
     $sql2 .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
@@ -308,12 +321,42 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       echo "0";
     }
 
+      $sqlrej = 'SELECT COUNT(*) as amount FROM `leads_rejection` as lr ';
+      $sqlrej .= ' WHERE lr.approval=0';
+      $sqlrej .= ' AND (lr.date BETWEEN '.$start.' AND '.$end.')';
+      if ($client != 0) {
+          $sqlrej .= ' AND lr.client_id =' . $client;
+      }
+      if($state){
+          $sqlrej .= " AND lr.state = '$state'";
+      }
+      $resrej = $con->query($sqlrej);
+      if($resrej){
+          $rejectnew = $resrej->fetch_assoc();
+      }
+
 //  Distributed
-    $sqlDistributed  = 'SELECT COUNT(ld.lead_id) as amount, SUM(c.cost) as camp_cost FROM `leads_delivery` as ld';
+    $sqlDistributed  = 'SELECT SUM(c.cost) as camp_cost FROM `leads_delivery` as ld';
     $sqlDistributed .= ' INNER JOIN `leads` as l ON l.id=ld.lead_id';
     $sqlDistributed .= ' INNER JOIN `campaigns` as c ON c.id = l.campaign_id';
     $sqlDistributed .= ' LEFT JOIN `leads_lead_fields_rel` as lf ON lf.id=ld.lead_id';
     $sqlDistributed .= ' WHERE 1=1 AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+
+      $sqlDistributednew  = 'SELECT COUNT(*) as amount FROM `leads_rejection` as ld';
+      $sqlDistributednew .= ' WHERE `approval` >= 0 AND (ld.date BETWEEN '.$start.' AND '.$end.')';
+
+      if (!($client == 0)) {
+          $sqlDistributednew .= ' AND ld.client_id =' . $client;
+      }
+      if($state){
+          $sqlDistributednew .= " AND ld.state = '$state'";
+      }
+      $resultdis = $con->query($sqlDistributednew);
+      if($resultdis){
+          $distributednew = $resultdis->fetch_assoc();
+      }
+
+
     if (!($client == 0)) {
       $sqlDistributed .= ' AND ld.client_id =' . $client;
     }
@@ -326,27 +369,33 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       $distributed = $res->fetch_assoc();
     }
 
-    if($rejected["amount"]){
-      $rejectedP = $rejected["amount"] / $distributed["amount"];
+    if($rejectnew["amount"]){
+      $rejectedP = $rejectnew["amount"] / $distributednew["amount"];
     } else {
       $rejectedP = 0;
     }
 
     $sqlleadrej = "SELECT COUNT(*) as pendrej FROM `leads_rejection`";
     $sqlleadrej .=" WHERE `approval` IN (2, 3, 4) AND (`date` BETWEEN '$start' AND '$end')";
+      if (!($client == 0)) {
+          $sqlleadrej .= ' AND `client_id` =' . $client;
+      }
+      if($state){
+          $sqlleadrej .= " AND `state` = '$state'";
+      }
     $resrej = $con->query($sqlleadrej);
-var_dump($sqlleadrej);
+
     if($resrej){
       $resultrej = $resrej->fetch_assoc();
     }
 //    dd($sql);
       $pend_rej = "Pending rejections: ".$resultrej['pendrej'];
 
-      $ds =  $distributed["amount"] . " leads <br>Distributed";
+      $ds =  $distributednew["amount"] . " leads <br>Distributed";
     // $ds_beg = "leads <br>Distributed 1 to 15 ";
-    $acs = $approved['amount']. " leads Accepted by clients";
-    $ras = $rejected["amount"] . " leads Rejected <br>by clients";
-    $trs = $approved["total_cost"] . " total Revenue";
+    $acs = $approvednew['amount']. " leads Accepted by clients";
+    $ras = $rejectnew["amount"] . " leads Rejected <br>by clients";
+    $trs = $approvednew["total_cost"] . " total Revenue";
     $rejectedPercent =  number_format($rejectedP * 100, 0) . '% Rejected<br> by clients';
     $rev = $approved["total_cost"] ? $approved["total_cost"] . " $<br>Lead Revenue" : 0 . " $<br>Lead Revenue";
     echo $this->formStatView($ds, 'users', 'getDistributed');
@@ -436,12 +485,20 @@ var_dump($sqlleadrej);
 //      }
     $begs = date('Y-m-d', $start);
     $ends = date('Y-m-d', $end);
-   
+
     $sql = 'SELECT COUNT(*) as amount, SUM(c.lead_cost) as total_cost  FROM `leads_delivery` as ld ';
     $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
     $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
     $sql .= ' WHERE (lr.approval > 0 OR lr.approval IS NULL)';
     $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+
+      $sqlnew = 'SELECT COUNT(*) as amount FROM `leads_rejection` as lj ';
+      $sqlnew .= ' WHERE (lj.approval = 1 OR lj.approval IS NULL)';
+      $sqlnew .= ' AND (lj.date BETWEEN '.$start.' AND '.$end.')';
+      $resam = $con->query($sqlnew);
+      if($resam){
+          $approvednew = $resam->fetch_assoc();
+      }
 //    if (!($client == 0)) {
 //      $sql .= ' AND ld.client_id =' . $client;
 //    }
@@ -469,10 +526,19 @@ var_dump($sqlleadrej);
       echo "0";
     }
 //  Distributed
-    $sqlDistributed  = 'SELECT COUNT(ld.lead_id) as amount, SUM(c.cost) as camp_cost FROM `leads_delivery` as ld';
+    $sqlDistributed  = 'SELECT SUM(c.cost) as camp_cost FROM `leads_delivery` as ld';
     $sqlDistributed .= ' INNER JOIN `leads` as l ON l.id=ld.lead_id';
     $sqlDistributed .= ' INNER JOIN `campaigns` as c ON c.id = l.campaign_id';
     $sqlDistributed .= ' WHERE 1=1 AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
+
+      $sqlDistributednew  = 'SELECT COUNT(*) as amount FROM `leads_rejection` as ld';
+      $sqlDistributednew .= ' WHERE `approval` >= 0 AND (ld.date BETWEEN '.$start.' AND '.$end.')';
+      $resultdis = $con->query($sqlDistributednew);
+      if($resultdis){
+          $distributednew = $resultdis->fetch_assoc();
+      }
+
+
 //    if (!($client == 0)) {
 //      $sqlDistributed .= ' AND ld.client_id =' . $client;
 //    }
@@ -537,10 +603,10 @@ var_dump($sqlleadrej);
     }else{
       $average_sales = round($distributed["amount"] / $CountLids['amount'], 2);
     }
-    if($distributed["amount"] == 0){
+    if($distributednew["amount"] == 0){
         $rejectedP = 0;
     }else{
-        $rejectedP = $rejected["amount"] / $distributed["amount"];
+        $rejectedP = $rejected["amount"] / $distributednew["amount"];
     }
 
       $sqlleadrej = "SELECT COUNT(id) as pendrej FROM `leads_rejection`";
@@ -564,8 +630,8 @@ var_dump($sqlleadrej);
       }
 
 
-      $ds =  $distributed["amount"] . " leads <br>distributed";
-    $acs = $approved['amount']. " leads <br>accepted";
+      $ds =  $distributednew["amount"] . " leads <br>distributed";
+    $acs = $approvednew['amount']. " leads <br>accepted";
     $ras = $rejected["amount"] . " leads <br>rejected";
     //$trs = $approved["total_cost"] . " total Revenue";
     $rejectedPercent =  number_format($rejectedP * 100, 0) . '% of leads <br>are rejected';
