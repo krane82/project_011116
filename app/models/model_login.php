@@ -36,7 +36,6 @@ class Model_Login extends Model {
 //        setcookie("user_id", $data["id"]);
       }
 
-
         if(isset($rem_the_sys)){
             $ip = $_SERVER["REMOTE_ADDR"];
             $username = $data['full_name'];
@@ -46,10 +45,11 @@ class Model_Login extends Model {
             $hash_sys = $_COOKIE['hash_sys'];
 
             $sql = "UPDATE `users`";
-            $sql .= "SET `rem_the_sys`='$hash_sys'";
+            $sql .= "SET `rem_the_sys`='$res_cookie'";
             $sql .= " WHERE `email`='$login' AND `password`='$password'";
             $con = $this->db();
             $res = $con->query($sql);
+
         }else{
             $sql = "UPDATE `users`";
             $sql .= "SET `rem_the_sys`=''";
