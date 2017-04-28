@@ -59,7 +59,7 @@ echo $table;
             <div class="form-group">
               <input class="form-control" placeholder="States Filter - Ex: NSW,VIC,WA,QLD,SA,ACT,TAS" type="text" id="states_filter" name="states_filter">
               <label for="states_filter">
-               &nbsp;  (*comma seperated) Ex: NSW,VIC,WA,QLD,SA,ACT,TAS
+               &nbsp;  (*comma separated) Ex: NSW,VIC,WA,QLD,SA,ACT,TAS
               </label>
             </div>
             <hr>

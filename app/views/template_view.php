@@ -193,11 +193,13 @@
         <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Clients</p><span class="arrow"></span></a>
           <ul class="sub-menu">
           <li><a href="/clients/">Clients</a>
+          <li><a href="/clients/managers/">Affiliate Managers</a>
 
           <li><a href="/clients/covermap">Map of Cover</a>
 
-          <li><a href="<?php echo __HOST__; ?>/leads_limits/">Clients Caps</a> </li>
+          <li><a href="<?php echo __HOST__; ?>/leads_limits/">Clients Caps</a></li>
           <li><a href="<?php echo __HOST__; ?>/leads_limits/matches">PostCodes Matches</a></li>
+          <li><a href="<?php echo __HOST__; ?>/clients/sms">SMS service</a></li>
           </ul>
           <!--          <ul class="sub-menu">-->
 <!--            <li><a href="ui-alerts">Alerts</a></li>-->
