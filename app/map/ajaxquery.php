@@ -21,4 +21,5 @@ curl_setopt($cg, CURLOPT_HTTPHEADER, array(
 	 {$arr[]=$item->address->postcode;
 	 }
  }
- print implode(',',$arr);
+    sort($arr);
+    print implode(',',$arr);

@@ -180,10 +180,11 @@ $(document).ready(function () {
       modalka.find('.modal-header').text('Decline request');
       modalka.find('.modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
       modalka.find('.modal-body').html(
-        '<form action="decline"><div class="form-group"><textarea id="reason" name="decline" placeholder="Describe your decline reason" class="form-control"></textarea>' +
+        '<form action="decline" enctype="multipart/form-data" method="POST"><div class="form-group"><textarea id="reason" name="decline" placeholder="Describe your decline reason" class="form-control"></textarea>' +
         '<input type="hidden" name="lead_id" value="'+Number(id)+'" />' +
         '<input type="hidden" name="client_id" value="'+Number(client_id)+'" />' +
-        '<br><input class="btn" type="submit">' +
+        '<br><label class="btn btn-sm btn-success">Add audio attachment<input type="file" name="audiofile" accept="audio/*" style="display:none"></label>'+
+        '<br><br><input class="btn" type="submit">' +
         '</div>' +
         '</form>');
       modalka.on('shown', function() {

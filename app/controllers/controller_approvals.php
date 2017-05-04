@@ -156,11 +156,27 @@ class Controller_approvals extends Controller
     if ($_SESSION['admin'] == md5('admin')) {
       if (isset($_REQUEST["decline"]) AND isset($_REQUEST["lead_id"]) AND isset($_REQUEST["client_id"]) )
       {
+        //return var_dump($_FILES);
         $con = $this->db();
         $decline = mysqli_real_escape_string($con, $_REQUEST["decline"]);
         $id = $_REQUEST["lead_id"];
         $client_id = $_REQUEST["client_id"];
-        $sql = "UPDATE `leads_rejection` SET approval=3, decline_reason='$decline'  WHERE lead_id=$id AND client_id=$client_id";
+        $destination=NULL;
+        if($_FILES['audiofile']['tmp_name'])
+        {
+          $filename=$_FILES["audiofile"]['tmp_name'];
+          $dir=$_SERVER['DOCUMENT_ROOT'].'/docs/audios/'.$client_id;
+          if(!is_dir ($dir))
+          {
+            mkdir($dir, 0777);
+          }
+          $destination=$dir.'/'.$_FILES["audiofile"]["name"];
+          move_uploaded_file($filename, $destination);
+          $httpPath=__HOST__.'/docs/audios/'.$client_id.'/'.$_FILES["audiofile"]["name"];
+        }
+        $sql = "UPDATE `leads_rejection` SET approval=3, decline_reason='$decline'";
+        if($httpPath) $sql.=", audiofile='$destination'";
+        $sql.="WHERE lead_id=$id AND client_id=$client_id";
         $res = $con->query($sql);
         $con->close();
         return $this->action_index();

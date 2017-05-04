@@ -170,7 +170,7 @@ class Controller_client_leads extends Controller
     if($id = $_POST["id"]){
       $con = $this->db();
       $client_id = $_SESSION["user_id"];
-      $sql = "SELECT reason, note, decline_reason from `leads_rejection` WHERE lead_id=$id AND client_id=$client_id";
+      $sql = "SELECT reason, note, decline_reason, audiofile from `leads_rejection` WHERE lead_id=$id AND client_id=$client_id";
       //print_r($sql);
 
       if($res = $con->query($sql)){
@@ -179,6 +179,12 @@ class Controller_client_leads extends Controller
         $content.="<tr><td>Rejection reason: </td><td>".$leadInfo['reason']."</td></tr>";
         $content.="<tr><td>Notes: </td><td>".$leadInfo['note']."</td></tr>";
         $content.="<tr><td>Decline Reason: </td><td>".$leadInfo['decline_reason']."</td></tr>";
+        if($leadInfo['audiofile'])
+        {
+        $content.="<tr><td><form method='POST' action='". __HOST__ ."/docs/audios/download.php'>";
+        $content.="<input type='hidden' name='file' value='".basename($leadInfo['audiofile'])."'>";
+        $content.="<input type='submit' class='btn btn-sm btn-success' value='Download file'></form></td></tr>";
+        }
         $content .= '</table>';
         echo $content;
       }
