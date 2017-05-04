@@ -539,8 +539,9 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $sqlDistributed .= ' INNER JOIN `campaigns` as c ON c.id = l.campaign_id';
     $sqlDistributed .= ' WHERE 1=1 AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
 
-      $sqlDistributednew  = 'SELECT COUNT(*) as amount FROM `leads_rejection` as ld';
-      $sqlDistributednew .= ' WHERE `approval` >= 0 AND (ld.date BETWEEN '.$start.' AND '.$end.')';
+      $sqlDistributednew  = 'SELECT COUNT(*) as amount FROM `leads_delivery` as ld';
+      $sqlDistributednew .= ' INNER JOIN `leads_rejection` as l ON l.lead_id = ld.lead_id AND l.client_id = ld.client_id';
+      $sqlDistributednew .= ' WHERE l.approval >= 0 AND (ld.date BETWEEN '.$start.' AND '.$end.')';
       $resultdis = $con->query($sqlDistributednew);
       if($resultdis){
           $distributednew = $resultdis->fetch_assoc();
