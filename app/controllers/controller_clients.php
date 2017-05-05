@@ -350,6 +350,7 @@ class Controller_CLients extends Controller {
     }
     function action_logout()
     {
+        setcookie("hash_sys", null, -1, '/');
         session_start();
         session_destroy();
         header('Location:/login');
