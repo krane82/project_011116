@@ -99,7 +99,11 @@ class Controller_leads extends Controller
           } else {
             return "not opened";
           }
-        }, 'field'=>'open_time')
+        }, 'field'=>'open_time'),
+        array('db' => '`ld`.`id`','dt'=>7, 'formatter'=>function($d)
+        {
+          return '<button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalka" value="'.$d.'">open</button>';
+        },'field'=>'id')
     );
 
     $sql_details = array(
@@ -120,7 +124,10 @@ class Controller_leads extends Controller
     );
 
   }
-
+ function action_getConvForLead()
+ {
+   $this->model->getConvForLead();
+ }
   function action_getLeads()
   {
     session_start();

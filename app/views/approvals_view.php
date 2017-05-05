@@ -14,6 +14,7 @@
           <th>Note</th>
           <th>Decline Reason</th>
           <th>Status</th>
+          <th>Audiofile</th>
           <th>View</th>
           <th>Action</th>
         </tr>
@@ -28,6 +29,7 @@
           <th>Note</th>
           <th>Decline Reason</th>
           <th>Status</th>
+          <th>Audiofile</th>
           <th>View</th>
           <th>Action</th>
         </tr>
@@ -163,7 +165,21 @@ $(document).ready(function () {
         } );
     } );
 
+
 });
+function delbutfile(d){
+  var data=d.value;
+  console.log(data);
+  $.ajax({
+    type: "POST",
+    url: '<?php echo __HOST__ . '/approvals/deleteFile/' ?>',
+    data: { 'path':data},
+    success: function (respond) {
+      console.log(respond);
+      window.location.href='<?php print  __HOST__ . '/approvals/';?>';
+    }
+  });
+};
     function acceptLead(id, client_id){
       $.ajax({
         type: "POST",
@@ -174,6 +190,7 @@ $(document).ready(function () {
         }
       });
     }
+
     var modalka = $('#LeadInfo');
     function rejectLead(id, client_id){
       modalka.modal('show');

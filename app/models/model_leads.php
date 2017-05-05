@@ -27,6 +27,29 @@ class Model_Leads extends Model {
     $con->close();
     return $clients;
   }
+  public function getConvForLead()
+  {
+    $con=$this->db();
+    //return var_dump($_POST);
+    $leadId=$_POST['lead_id'];
+    $sql="SELECT us.full_name, con.message, con.time FROM lead_conversations con JOIN users us ON con.author=us.id WHERE con.lead_id='$leadId' ORDER BY con.time";
+    //$result=array();
+    $result='';
+    $res=$con->query($sql);
+    //var_dump($sql);
+    if($res)
+    {
+      while($row=$res->fetch_assoc())
+      {
+        $result.= '<p>'.$row['full_name'].'</p>';
+        $result.= '<p>'.$row['message'].'</p>';
+        $result.= '<p>'.$row['time'].'</p>';
+        $result.= '<hr>';
+      }
+      return print $result;
+    }
+    return false;
+  }
   private function getLeadInfo($id)
   {
     $con = $this->db();
