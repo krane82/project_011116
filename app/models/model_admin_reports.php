@@ -396,11 +396,15 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       $rejectedP = 0;
     }
 
-    $sqlleadrej = "SELECT COUNT(*) as pendrej FROM `leads_rejection` as lj";
-    $sqlleadrej .= ' LEFT JOIN `clients` as c ON lj.client_id = c.id';
-    $sqlleadrej .=" WHERE `approval` IN (2, 3, 4) AND (`date` BETWEEN '$start' AND '$end')";
+      $sqlleadrej  = ' SELECT COUNT(*) as pendrej FROM `leads_delivery` as ld';
+      $sqlleadrej .= ' INNER JOIN `leads_rejection` as l ON l.lead_id = ld.lead_id AND l.client_id = ld.client_id';
+      $sqlleadrej .= ' LEFT JOIN `clients` as c ON l.client_id = c.id';
+
+//    $sqlleadrej = "SELECT COUNT(*) as pendrej FROM `leads_rejection` as lj";
+//    $sqlleadrej .= ' LEFT JOIN `clients` as c ON lj.client_id = c.id';
+    $sqlleadrej .=" WHERE l.approval IN (2, 3, 4) AND (ld.timedate BETWEEN '$start' AND '$end')";
       if (!($client == 0)) {
-          $sqlleadrej .= ' AND lj.client_id =' . $client;
+          $sqlleadrej .= ' AND l.client_id =' . $client;
       }
       if($state){
           $sqlleadrej .= " AND c.state = '$state'";
@@ -503,8 +507,10 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
 //      }else{
         $start = $_POST['start'];
         $end = $_POST['end'];
+
           $start = strtotime($start);
-          $end = strtotime($end);
+          $end = strtotime($end) + 86400;
+
 //      }
     $begs = date('Y-m-d', $start);
     $ends = date('Y-m-d', $end);
@@ -589,6 +595,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $sqlCountLids = "SELECT COUNT(ld.id) as amount FROM `leads` as ld";
     $sqlCountLids .= " WHERE 1=1 AND (ld.datetime BETWEEN ".$start." AND ".$end.")";
 
+
     $res = $con->query($sqlCountLids);
     if($res){
       $CountLids = $res->fetch_assoc();
@@ -628,7 +635,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     if($CountLids['amount'] == 0){
       $average_sales = 0;
     }else{
-      $average_sales = round($distributed["amount"] / $CountLids['amount'], 2);
+      $average_sales = round($distributednew["amount"] / $CountLids['amount'], 2);
     }
     if($distributednew["amount"] == 0){
         $rejectedP = 0;
@@ -710,6 +717,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     if ($state){
       $sql .= " AND lf.state = '$state'";
     }
+
     $res = $con->query($sql);
     if($res){
       $d = $res->fetch_assoc();
