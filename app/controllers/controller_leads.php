@@ -126,7 +126,12 @@ class Controller_leads extends Controller
   }
  function action_getConvForLead()
  {
-   $this->model->getConvForLead();
+   $data=$this->model->getConvForLead();
+	include_once('app/views/convesation_view.php');
+ }
+ function action_addConv()
+ {
+	$this->model->addConv();
  }
   function action_getLeads()
   {

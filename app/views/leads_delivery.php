@@ -28,19 +28,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="exampleModalLabel">Conversation: </h4>
             </div>
-            <form id="editClientForm" method="post">
-                <input type="hidden" name="id" id="leadId">
-                <div class="modal-body">
-
-                    <div class="col-lg-12" id="chat" style="background-color:grey"></div>
-
-                    <button type="button" class="btn btn-sm btn-success" data-toggle="collapse" data-target="#map">Add comment</button>
-                    <div id="map" class="collapse">
-                        <textarea style="width:100%"></textarea>
-                        <button type="button">Save</button>
-                    </div>
-<!--                    <button type="submit" class="btn btn-primary">Update info</button>-->
-
+                 <div class="modal-body" id="chat">        
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -78,5 +66,5 @@
               $("#chat").html(respond);
           }
       });
-  })
+  });
 </script>

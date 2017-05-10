@@ -103,7 +103,7 @@ class Controller_client_leads extends Controller
           return 'Out of 7 days';
         } else
         if( $row[5] == 1 ) {
-          $button="<a href='#' class='btn leadreject btn-warning' attr-lead-id='$row[0]' attr-client='$row[1]' data-gb='$row[3]'";
+          $button="<a href='#' class='btn leadreject btn-warning' data-time='".strtotime('+7 days', $row[2])."000' attr-lead-id='$row[0]' attr-client='$row[1]' data-gb='$row[3]'";
         if( strtotime('+2 days', $row[2]) < time())
         {
           $button.=" data-permission='1'";

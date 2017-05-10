@@ -247,6 +247,24 @@ echo $table;
         });
         ev.preventDefault();
     });
+    //This is the function to add search fields in datatables
+    $('table thead th').each( function () {
+      var title = $(this).text();
+      if(title=='ID' || title=='Lead Cost' || title=='Delivery' || title=='Status' || title=='Actions') {return;}
+      $(this).html( '<input type="text" style="width:100px" placeholder="'+title+'" />' );
+    });
+    //
+    table.columns().every( function () {
+      var that = this;
+      $( 'input', this.header() ).on( 'keyup change', function () {
+        if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        }
+      } );
+    } );
+    //End of function
   });
   function limits(t,e){
     if (e.target.value=="unlimited")

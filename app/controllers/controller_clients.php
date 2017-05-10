@@ -1,5 +1,4 @@
 <?php
-include_once 'app/models/model_leads.php';
 class Controller_CLients extends Controller {
     function __construct() {
         $this->model = new Model_Clients();
@@ -21,36 +20,12 @@ class Controller_CLients extends Controller {
             //    Route::ErrorPage404();
         }
     }
-    function action_managers()
-    {
-        session_start();
-            if ( $_SESSION['admin'] == md5('admin')) {
-                $data = $this->model->getManagers();
-                $this->view->generate('managers_view.php', 'template_view.php', $data);
-            }
-            else
-            {
-                session_destroy();
-                //    echo "Access Denied! Please <a href='/login'>login</a>";
-                $this->view->generate('danied_view.php', 'template_view.php', $data);
-                //    Route::ErrorPage404();
-            }
-    }
     function action_covermap()
     {
         $data['coords']=$this->model->getCoords();
         $data['coords']=json_encode($data['coords']);
         $data['cover']=$this->model->getCover();
         $this->view->generate('covermap_view.php', 'template_view.php', $data);
-    }
-    function action_sms()
-    {
-        $data = $this->model->getAllClients();
-        $this->view->generate('sms_view.php', 'template_view.php', $data);
-    }
-    function action_smsSend()
-    {
-        print($this->model->smsSend());
     }
     function action_ajax_get()
     {
@@ -375,6 +350,7 @@ class Controller_CLients extends Controller {
     }
     function action_logout()
     {
+        setcookie("hash_sys", null, -1, '/');
         session_start();
         session_destroy();
         header('Location:/login');
