@@ -5,7 +5,7 @@
   <thead>
   <tr>
     <th>id</th>
-    <th>Name</th>
+    <th><input type="text" placeholder="Name" id="search"></th>
     <th>Source</th>
     <th>Cost</th>
     <th>Status</th>
@@ -244,6 +244,15 @@
         });
       }
     });
+    $('#search').click(function(e){
+      e.stopPropagation();
+    })
+    $('#search').on( 'keyup change', function () {
+      table
+          .columns( 1 )
+          .search( this.value )
+          .draw();
+    } );
 
     $("[name='status']").bootstrapSwitch()
       .on('switchChange.bootstrapSwitch', function(event, state) {

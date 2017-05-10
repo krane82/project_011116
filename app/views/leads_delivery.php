@@ -12,6 +12,7 @@
               <th>Campaign Name</th>
               <th>Open email</th>
               <th>Last open</th>
+              <th>Conversations</th>
             </tr>
             </thead>
           </table>
@@ -19,6 +20,23 @@
     </div>
     <!-- /.panel panel-white -->
   </div>
+</div>
+<div class="modal fade" id="modalka"  tabindex="-1" role="dialog" aria-labelledby="editCampaign">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Conversation: </h4>
+            </div>
+                 <div class="modal-body" id="chat">        
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+<!--                    <button type="submit" class="btn btn-primary">Update info</button>-->
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 
@@ -33,5 +51,44 @@
           }
     });
     table.order([3, 'desc']).draw();
+      $('table thead th').each(function () {
+          var title = $(this).text();
+          if (title == 'Campaign Name') {
+              $(this).html('<input type="text" style="width:100px" placeholder="' + title + '" />');
+          }
+          if (title == 'lead id' || title == 'Postcode match') {
+              $(this).html('<input type="text" style="width:4em" placeholder="' + title + '" />');
+          }
+      });
+      //
+      table.columns().every(function () {
+          var that = this;
+          $('input', this.header()).click(function (e) {
+              e.stopPropagation();
+          })
+          $('input', this.header()).on('keyup change', function () {
+              if (that.search() !== this.value) {
+                  that
+                      .search(this.value)
+                      .draw();
+              }
+          });
+      });
+  });
+
+  $('#leads_delivery').click(function(e)
+  {
+      if(e.target.type!='button')
+      {
+          return;
+      }
+       $.ajax({
+          type: "POST",
+          url: "<?php echo __HOST__ . "/leads/getConvForLead/"; ?>",
+          data: {'lead_id':e.target.value},
+          success: function(respond) {
+              $("#chat").html(respond);
+          }
+      });
   });
 </script>

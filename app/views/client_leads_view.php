@@ -76,8 +76,8 @@
 <script>
 
 
-    $(document).ready(function () {
-        var leads = $('#client_leads');
+    $(document).ready(function () {		
+		var leads = $('#client_leads');
 
         var table = leads.DataTable({
             //"processing": true,
@@ -214,7 +214,7 @@
             '<label><input type="radio" name="reason" value="6"> Unable to contact within 7 days (7 days to reject)</label><br>'+
             '<textarea style="width:100%" rows="3" name="notes" required></textarea>' +
             '</form>';
-        var modalFooter = '<input form="rejectForm" type="submit" class="btn btn-primary reject" value="Reject this lead"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+        var modalFooter = '<span id="timeLeft" class="pull-left"></span><input form="rejectForm" type="submit" class="btn btn-primary reject" value="Reject this lead"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
         var tt = document.querySelector('#client_leads');
         var modalka = $('#LeadInfo');
         tt.addEventListener('click', function(e){
@@ -240,6 +240,7 @@
                 var sure = true;
                 var id = btn.getAttribute('attr-lead-id');
                 var permission = btn.getAttribute('data-permission');
+				var closeTime=+btn.getAttribute('data-time');
                 var leadName = btn.getAttribute('attr-client');
                 console.log(e.target.dataset.info);
                 //console.log(permission);
@@ -256,6 +257,8 @@
                     modalka.find('.modal-body').html(modalBody);
                 }
                 document.querySelector('#LeadInfo .modal-footer').innerHTML = modalFooter;
+				clearTimeout(x);
+				x=countDateLeft(closeTime);
                 modalka.modal("show");
                 $('#rejectForm').submit(function(e){
                     e.preventDefault();
@@ -290,6 +293,27 @@
             }
 
         });
+		var x;
+	function countDateLeft(w){
+	var date1 = new Date();
+	var date2 = w;
+	console.log(w);
+    var delta = date2-date1;
+    var seconds = Math.round(delta / 1000);
+    var minutes = Math.floor(seconds / 60);
+    var hours = Math.floor(minutes / 60);
+    var days = Math.floor(hours / 24);
+    hours -= (days * 24);
+    minutes -= (hours * 60);
+    minutes -= (days * 1440);
+    seconds -= (minutes * 60);
+    seconds -= (hours * 3600);
+    seconds -= (days * 86400);
+    console.log(days+' Days, '+hours + ' Hours, ' + minutes+' Minutes '+ seconds+' Seconds');
+    $('#timeLeft').html(days+' Days, '+hours + ' Hours, ' + minutes+' Minutes '+ seconds+' Seconds left for rejection');
+	//return days+' Days, '+hours + ' Hours, ' + minutes+' Minutes '+ seconds+' Seconds';
+	x=setTimeout(countDateLeft,1000,w);
+}
         $('.input-daterange').datepicker({
             multidate: "true"
         });

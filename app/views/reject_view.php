@@ -48,7 +48,7 @@
 <script>
     $(document).ready(function () {
         var approvals = $("#approvals");
-        table = approvals.DataTable({
+        var table = approvals.DataTable({
             "processing": true,
             "serverSide": true,
             "ajax": {
@@ -89,6 +89,28 @@
                 "sInfoFiltered": ""
             }
         });
+        //This is the function to add search fields in datatables
+            $('table thead th').each(function () {
+                var title = $(this).text();
+                if (title == 'Client') {
+                    $(this).html('<input type="text" style="width:100px" placeholder="' + title + '" />');
+                }
+            });
+            //
+            table.columns().every(function () {
+                var that = this;
+                $('input', this.header()).click(function (e) {
+                    e.stopPropagation();
+                })
+                $('input', this.header()).on('keyup change', function () {
+                    if (that.search() !== this.value) {
+                        that
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+        //End of function
 
     });
     function delInfo(id, client_id) {

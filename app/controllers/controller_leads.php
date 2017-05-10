@@ -99,7 +99,11 @@ class Controller_leads extends Controller
           } else {
             return "not opened";
           }
-        }, 'field'=>'open_time')
+        }, 'field'=>'open_time'),
+        array('db' => '`ld`.`id`','dt'=>7, 'formatter'=>function($d)
+        {
+          return '<button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalka" value="'.$d.'">open</button>';
+        },'field'=>'id')
     );
 
     $sql_details = array(
@@ -109,18 +113,27 @@ class Controller_leads extends Controller
         'host' => DB_HOST
     );
 
-    $joinQuery = "FROM `{$table}` AS `ld` INNER JOIN `clients` AS `c`  ON `c`.`id`=`ld`.`client_id` LEFT JOIN `leads_lead_fields_rel` as `ll` on `ll`.`id`=`ld`.`lead_id`  group by `ld`.`id`";
+    $joinQuery = "FROM `{$table}` AS `ld` INNER JOIN `clients` AS `c`  ON `c`.`id`=`ld`.`client_id` LEFT JOIN `leads_lead_fields_rel` as `ll` on `ll`.`id`=`ld`.`lead_id`";
+    $groupBy='`ld`.`id`';
 //    $where = ' (`l`.`datetime` BETWEEN '.$start.' AND '.$end.')';
     //  if($source) $where .= " AND `l`.`campaign_id`=".$campaign_id;
     //   if($state) $where .= " AND `lf`.`state`='$state'";
 
 
     echo json_encode(
-        SSP::simple( $_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery )
+        SSP::simple( $_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery, $groupBy )
     );
 
   }
-
+ function action_getConvForLead()
+ {
+   $data=$this->model->getConvForLead();
+	include_once('app/views/convesation_view.php');
+ }
+ function action_addConv()
+ {
+	$this->model->addConv();
+ }
   function action_getLeads()
   {
     session_start();

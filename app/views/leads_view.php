@@ -239,6 +239,7 @@
             });
           }
         });
+        addSearch();
         counter++;
       }
       else {
@@ -276,8 +277,33 @@
             });
           }
         });
+        addSearch();
       }
     });
+    //This is the function to add search fields in datatables
+    function addSearch() {
+      $('table thead th').each(function () {
+        var title = $(this).text();
+        if (title == 'Campaign Name' || title == 'State') {
+          $(this).html('<input type="text" style="width:100px" placeholder="' + title + '" />');
+        }
+      });
+      //
+      table.columns().every(function () {
+        var that = this;
+        $('input', this.header()).click(function (e) {
+          e.stopPropagation();
+        })
+        $('input', this.header()).on('keyup change', function () {
+          if (that.search() !== this.value) {
+            that
+                .search(this.value)
+                .draw();
+          }
+        });
+      });
+    }
+    //End of function
     $('.input-daterange').datepicker({
       multidate: "true"
     });

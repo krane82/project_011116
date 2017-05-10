@@ -123,10 +123,24 @@ class Controller_approvals extends Controller
         }
       },
         'field' => 'approval'),
-      array('db'=> '`a`.`id`', 'dt'=> 8, 'formatter'=>function($d, $row){
-        return "<a href='#' class='viewLeadInfo btn btn-info' attr-id='$row[0]' data-toggle=\"modal\" data-target=\"#LeadInfo\">View</a>";
-      }, 'field'=>'id'),
-      array('db'=>'`a`.`client_id`', 'dt'=>9, 'formatter'=>function($d, $row){
+        array( 'db' => '`a`.`audiofile`',  'dt' => 8,'formatter' => function( $d, $row ) {
+          if($d) {
+            $str="<tr><td><form method='POST' action='". __HOST__ ."/docs/audios/download.php'>
+            <input type='hidden' name='file' value='".basename($d)."'>
+            <input type='hidden' name='folder' value='".$row[10]."'>
+            <input type='submit' class='btn btn-xs btn-success' value='Download file'></form><br><br>
+            <button type='button' class='btn btn-xs btn-danger' onclick='delbutfile(this)' value='".$d."'>Delete file</button></td></tr>";
+            return $str;
+           // return "<a href='" . __HOST__ . "/docs/audios/" . $row[10] . "/" . basename($d) . "' download class='btn btn-success btn-xs'>audio</a>";
+          }
+          return '';
+        }, 'field' => 'audiofile'),
+        array('db'=> '`a`.`id`', 'dt'=> 9, 'formatter'=>function($d, $row){
+          return "<a href='#' class='viewLeadInfo btn btn-info' attr-id='$row[0]' data-toggle=\"modal\" data-target=\"#LeadInfo\">View</a>
+";
+        }, 'field'=>'id'),
+
+      array('db'=>'`a`.`client_id`', 'dt'=>10, 'formatter'=>function($d, $row){
         return '<a href="#" role="button" onclick="rejectLead('.$row[0]. ', '. $d .');" class="btn btn-small btn-danger hidden-tablet hidden-phone" data-toggle="modal" data-original-title="">
 						    Disapprove Request </a><br>
 						    <a href="#" role="button" onclick="acceptLead('.$row[0]. ', '. $d .');" class="btn btn-small btn-success hidden-tablet hidden-phone" data-toggle="modal" data-original-title="">
@@ -156,18 +170,46 @@ class Controller_approvals extends Controller
     if ($_SESSION['admin'] == md5('admin')) {
       if (isset($_REQUEST["decline"]) AND isset($_REQUEST["lead_id"]) AND isset($_REQUEST["client_id"]) )
       {
+        //return var_dump($_FILES);
         $con = $this->db();
         $decline = mysqli_real_escape_string($con, $_REQUEST["decline"]);
         $id = $_REQUEST["lead_id"];
         $client_id = $_REQUEST["client_id"];
-        $sql = "UPDATE `leads_rejection` SET approval=3, decline_reason='$decline'  WHERE lead_id=$id AND client_id=$client_id";
+        $destination=NULL;
+        if($_FILES['audiofile']['tmp_name'])
+        {
+          $filename=$_FILES["audiofile"]['tmp_name'];
+          $dir=$_SERVER['DOCUMENT_ROOT'].'/docs/audios/'.$client_id;
+          if(!is_dir ($dir))
+          {
+            mkdir($dir, 0777);
+          }
+          $destination=$dir.'/'.$_FILES["audiofile"]["name"];
+          move_uploaded_file($filename, $destination);
+          $httpPath=__HOST__.'/docs/audios/'.$client_id.'/'.$_FILES["audiofile"]["name"];
+        }
+        //HERE IS ABILITY TO DELETE PREVIOUS FILE IF DOWNLOAD NEW ONE
+        $sql1="SELECT audiofile from leads_rejection WHERE lead_id=$id AND client_id=$client_id";
+        $res1 = $con->query($sql1);
+        $result1 = $res1->fetch_assoc();
+        if(is_file($result1['audiofile']))
+        {
+          unlink($result1['audiofile']);
+        }
+        //
+        $sql = "UPDATE `leads_rejection` SET approval=3, decline_reason='$decline'";
+        if($httpPath) $sql.=", audiofile='$destination'";
+        $sql.="WHERE lead_id=$id AND client_id=$client_id";
         $res = $con->query($sql);
         $con->close();
         return $this->action_index();
       }
     }
   }
-
+ function action_deleteFile()
+ {
+   print $this->model->deleteFile();
+ }
   function action_LeadInfo(){
     if($id = $_POST["id"]){
       $con = $this->db();

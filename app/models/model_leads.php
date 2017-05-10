@@ -27,6 +27,43 @@ class Model_Leads extends Model {
     $con->close();
     return $clients;
   }
+  public function getConvForLead()
+  {
+	session_start();
+    $con=$this->db();
+    //return var_dump($_POST);
+    $leadId=$_POST['lead_id'];
+	$author=$_SESSION['user_id'];
+    $sql="SELECT us.full_name, con.message, con.time FROM lead_conversations con JOIN users us ON con.author=us.id WHERE con.lead_id='$leadId' ORDER BY con.time";
+    $result=array();
+    $res=$con->query($sql);                  
+    if($res)
+    {
+      while($row=$res->fetch_assoc())
+      {
+        $result['conversations'][]=$row;
+      }
+	  $result['leadid']=$leadId;
+	  $result['author']=$author;
+      return $result;
+    }
+    return false;
+  }
+  public function addConv()
+  {
+	  $con=$this->db();
+	  $leadId=$_POST['leadId'];
+	  $userId=$_POST['userId'];
+	  $message=$_POST['message'];
+	  $message=$this->clean($message);
+	  $sql="INSERT INTO lead_conversations (lead_id, author, message) VALUES ('$leadId', '$userId', '$message')";
+	$res=$con->query($sql);
+	if($res)
+	{
+		return true;
+	}
+	return false;
+  }
   private function getLeadInfo($id)
   {
     $con = $this->db();
@@ -269,6 +306,13 @@ class Model_Leads extends Model {
       }
     }
     return $p;
+  }
+  private function clean($item)
+  {
+	  $item=htmlspecialchars($item);
+	  $item=addslashes($item);
+	  $item=trim($item);
+	  return $item;
   }
 }
 ?>
