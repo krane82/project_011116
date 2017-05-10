@@ -200,7 +200,7 @@
     <div id="floating-panel">
       <input id="address" type="textbox" placeholder="Address or ZIP">
       <input id="submit" type="button" value="Search">
-	  <input id="radius" type="textbox" placeholder="betw. 500 and 30, 30Km default,">
+	  <input id="radius" type="textbox" placeholder="betw. 1000 and 30, 30Km default,">
       <input id="seekCodes" type="button" value="Search Codes!">
     </div>
     <div id="map"></div>
@@ -234,9 +234,9 @@
 //          (radius>500)?radius=500:(radius<30)?radius=30:radius;
 //          document.getElementById('radius').value=radius;
 
-          if(radius>500)
+          if(radius>1000)
 		  {
-			  radius=500;
+			  radius=1000;
 			  document.getElementById('radius').value=radius;
 		  }
           if(radius<30)

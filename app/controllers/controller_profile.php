@@ -59,9 +59,11 @@ class Controller_Profile extends Controller {
       $con = $this->db();
       $res = $con->query($sql);
       echo "<form action='" .__HOST__. "/profile/UpdateProfileSuccess' method='post'>";
+      $previousData=array();
       while($row = $res->fetch_assoc()) {
+        $previousData[]=$row;
         foreach ($row as $k=>$v) {
-          if ($k == "id"){
+            if ($k == "id"){
             echo "<input type='hidden' name='$k' value='$v' />";
           } elseif($k == "lead_cost" || $k == "xero_id" || $k == "xero_name" ) {
             // blank - only admin can change
@@ -96,6 +98,7 @@ class Controller_Profile extends Controller {
           }
         }
       }
+      echo '<input type="hidden" name="previousData" value='.htmlspecialchars(serialize($previousData)).'">';
       echo '<button attr-id="'.$id.'" type="submit" class="btn btn-primary">Update profile</button>';
       echo '</form>';
     }
@@ -120,6 +123,7 @@ class Controller_Profile extends Controller {
     $states_filter = $chekedPOST["states_filter"];
     $weekly = (int)$chekedPOST["weekly"];
     //$monthly = (int)$chekedPOST["monthly"];
+    $previousData=$chekedPOST["previousData"];
 
     $con = $this->db();
 
@@ -148,7 +152,7 @@ class Controller_Profile extends Controller {
     if($con->query($sql3)) $res3 = 1;
 
     if($res1 && $res2 && $res3 ) {
-      echo $this->model->UserChangeNotif($chekedPOST);
+      echo $this->model->UserChangeNotif($chekedPOST,$previousData);
       redirect('/profile');
     } else {
       echo "<script>alert('DB error')</script>";

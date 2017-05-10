@@ -19,12 +19,14 @@ class Model_Profile extends Model {
       );
 
   public function UserChangeNotif($p, $before=''){
+      var_dump($before);die();
+    $previousData=unserialize($before);
     $profile = '<h2>Client "'.$p["campaign_name"].'" have change their profile information</h2>';
-    $profile .= "<table>";
+    $profile .= "<table style='width:50%'>";
     // prepeare info
     $profile .= '<tr>';
     foreach ($p as $k => $v) {
-      if( $k == "id" || $k == "lead_cost" || $k == "xero_id" || $k == "xero_name" ){
+      if( $k == "id" || $k == "lead_cost" || $k == "xero_id" || $k == "xero_name" || $k == "coords" || $k=="previousData"){
         // blank
       }elseif ($k=="password") {
           $profile.= "<tr>";
@@ -36,6 +38,7 @@ class Model_Profile extends Model {
       } else {
           $profile.= "<tr>";
           $profile.= "<td>".$this->form_keys["$k"]."</td>";
+          $profile.= "<td>".$previousData."</td>";
           $profile.=  "<td>$v</td>";
           $profile.= "</tr>";
       }
@@ -62,7 +65,8 @@ class Model_Profile extends Model {
     $mail->SetFrom('info@energysmart.com.au', 'Energy Smart Notification');
 
     
-    $mail->AddAddress(ADMINEMAIL, 'Joash Boyton');
+    //$mail->AddAddress(ADMINEMAIL, 'Joash Boyton');
+    $mail->AddAddress('krane82@gmail.com', 'Joash Boyton');
 
     $mail->Subject = 'Client "'.$p["campaign_name"].'" have change their profile information';
 
