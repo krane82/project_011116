@@ -4,11 +4,11 @@
     <table class="display table table-condensed table-striped table-hover table-bordered pull-left dataTable no-footer" id="limits">
         <thead>
         <tr>
-            <td>Campaign Name</td>
-            <td>This Week</td>
-            <td>Week Limit</td>
-            <td>This Month</td>
-            <td>Month Limit</td>
+            <th><input type="text" id="search" placeholder="Campaign Name"></th>
+            <th>This Week</th>
+            <th>Week Limit</th>
+            <th>This Month</th>
+            <th>Month Limit</th>
         </tr>
         </thead>
         <?php
@@ -33,6 +33,15 @@
         //"aoColumnDefs":[{},{"sType": 'numeric'},{"sType":"numeric"}]
     }
     $(document).ready(function(){
-$('#limits').DataTable(options);
+var table=$('#limits').DataTable(options);
+        $('#search').click(function(e){
+            e.stopPropagation();
+        })
+        $('#search').on( 'keyup change', function () {
+            table
+                .columns( 0 )
+                .search( this.value )
+                .draw();
+        } );
     });
 </script>

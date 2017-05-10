@@ -113,14 +113,15 @@ class Controller_leads extends Controller
         'host' => DB_HOST
     );
 
-    $joinQuery = "FROM `{$table}` AS `ld` INNER JOIN `clients` AS `c`  ON `c`.`id`=`ld`.`client_id` LEFT JOIN `leads_lead_fields_rel` as `ll` on `ll`.`id`=`ld`.`lead_id`  group by `ld`.`id`";
+    $joinQuery = "FROM `{$table}` AS `ld` INNER JOIN `clients` AS `c`  ON `c`.`id`=`ld`.`client_id` LEFT JOIN `leads_lead_fields_rel` as `ll` on `ll`.`id`=`ld`.`lead_id`";
+    $groupBy='`ld`.`id`';
 //    $where = ' (`l`.`datetime` BETWEEN '.$start.' AND '.$end.')';
     //  if($source) $where .= " AND `l`.`campaign_id`=".$campaign_id;
     //   if($state) $where .= " AND `lf`.`state`='$state'";
 
 
     echo json_encode(
-        SSP::simple( $_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery )
+        SSP::simple( $_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery, $groupBy )
     );
 
   }

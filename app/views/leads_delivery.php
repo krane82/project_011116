@@ -51,7 +51,31 @@
           }
     });
     table.order([3, 'desc']).draw();
+      $('table thead th').each(function () {
+          var title = $(this).text();
+          if (title == 'Campaign Name') {
+              $(this).html('<input type="text" style="width:100px" placeholder="' + title + '" />');
+          }
+          if (title == 'lead id' || title == 'Postcode match') {
+              $(this).html('<input type="text" style="width:4em" placeholder="' + title + '" />');
+          }
+      });
+      //
+      table.columns().every(function () {
+          var that = this;
+          $('input', this.header()).click(function (e) {
+              e.stopPropagation();
+          })
+          $('input', this.header()).on('keyup change', function () {
+              if (that.search() !== this.value) {
+                  that
+                      .search(this.value)
+                      .draw();
+              }
+          });
+      });
   });
+
   $('#leads_delivery').click(function(e)
   {
       if(e.target.type!='button')

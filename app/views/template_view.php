@@ -193,7 +193,7 @@
         <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Clients</p><span class="arrow"></span></a>
           <ul class="sub-menu">
           <li><a href="/clients/">Clients</a>
-<!--          <li><a href="/clients/managers/">Affiliate Managers</a>-->
+          <li><a href="/clients/managers/">Affiliate Managers</a>
 
           <li><a href="/clients/covermap">Map of Cover</a>
 
