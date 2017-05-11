@@ -1,33 +1,37 @@
-<div class="col-lg-12" id="messages" style="background-color:rgba(214,214,214,0.45)">
+<div class="col-lg-12" id="messages" style="height:500px; overflow:auto; background-color:rgba(173,228,188,0.12)">
 <?php
 foreach ($data['conversations'] as $item)
-{
-		print '<p class="label-success align-middle">'.$item['full_name'].'<span class="pull-right badge">'.$item['time'].'</span></p>
-        '.$item['message'];
+{       if($data['author']==$item['author'])
+    {
+        print '<div class="alert alert-info btn-rounded pull-right col-lg-7 col-sm-7 p"><span class="text-success pull-right">'.$item['time'].'</span><br><span class="f-s-14">'.$item['message'].'</span></div>';
+    }
+    else {
+        print '<div class="alert alert-success btn-rounded pull-left col-lg-7 p"><span class="text-info">' . $item['full_name'] .'</span><span class="text-danger pull-right">'. $item['time'] . '</span><br><span class="f-s-14">' . $item['message'] . '</span></div>';
+    }
 }
 ?>
 </div>
-<button type="button" class="btn btn-sm btn-success" data-toggle="collapse" data-target="#map">Add comment</button>
+<button type="button" class="btn btn-sm btn-info btn-rounded m-b-md" data-toggle="collapse" data-target="#map">Add comment</button>
                     <div id="map" class="collapse">
                         <form id="addComment" method="post">
 						<input type="hidden" name="leadId" value="<?php print $data['leadid']?>">
 						<input type="hidden" name="userId" value="<?php print $data['author']?>">
-						<textarea name="message" id="msg" style="width:100%"></textarea>
-                        <input type="submit">
+						<textarea name="message" id="msg" class="input-rounded form-control" style="max-width:100%"></textarea>
+                        <input class="btn btn-sm btn-success btn-rounded m-t-md" type="submit">
                     </div>
-<script>	
-	$("#addComment").submit(function(e){
+<script>
+    var div = $("#messages");
+    $("#addComment").submit(function(e){
 	 e.preventDefault();
-	var data=$(this).serialize();
-	console.log($('#msg').val());
-	// console.log(data);
-		$.ajax({
+	    var data=$(this).serialize();
+        $.ajax({
           type: "POST",
           url: "<?php echo __HOST__ . "/leads/addConv/"; ?>",
           data: data,
-          success: function(respond) {
-			  var oldHtml = $("#messages").html();
-              $("#messages").html(oldHtml+'<p  class="label-success">You <span class="badge pull-right">(Just added)</span></p>'+$("#msg").val());
+          success: function() {
+			  var oldHtml = div.html();
+              div.html(oldHtml+'<div class="alert alert-info btn-rounded pull-right col-lg-7 col-sm-7 p"><span class="text-success pull-right">(Just added)</span><br><span class="f-s-14">'+$("#msg").val()+'</span></div>');
+              div.scrollTop(div.prop('scrollHeight'));
           }
       });
   });

@@ -79,7 +79,12 @@ class Controller_approvals extends Controller
     $primaryKey = 'id';
 
     $columns = array(
-      array( 'db' => '`a`.`lead_id`',          'dt' => 0, 'field' => 'lead_id'  ),
+      array( 'db' => '`a`.`lead_id`',          'dt' => 0, 'formatter'=>function($d)
+      {
+        $str=$d.'<div><button type="button" data-act="conversation" class="btn btn-xs btn-success" data-toggle="modal" data-target="#modalka" value="'.$d.'">open</button></div>';
+      return $str;
+      },
+    'field' => 'lead_id'  ),
       array( 'db' => '`c`.`campaign_name`',          'dt' => 1, 'field' => 'campaign_name'  ),
 //      array('db'=>'`a`.`date`', 'dt' => 2, 'formatter' => function( $d, $row ) {
 //        return date('m/d/Y', $d);

@@ -19,12 +19,13 @@ class Model_Profile extends Model {
       );
 
   public function UserChangeNotif($p, $before=''){
-      var_dump($before);die();
-    $previousData=unserialize($before);
-    $profile = '<h2>Client "'.$p["campaign_name"].'" have change their profile information</h2>';
+     $previousData=urldecode($before);
+    $previousData=unserialize($previousData);
+     //var_dump($previousData);
+      $profile = '<h2>Client "'.$p["campaign_name"].'" have change their profile information</h2>';
     $profile .= "<table style='width:50%'>";
     // prepeare info
-    $profile .= '<tr>';
+    $profile .= '<tr><td><b>Field Name</b></td><td><b>Previous</b></td><td><b>Current</b></td></tr>';
     foreach ($p as $k => $v) {
       if( $k == "id" || $k == "lead_cost" || $k == "xero_id" || $k == "xero_name" || $k == "coords" || $k=="previousData"){
         // blank
@@ -32,14 +33,23 @@ class Model_Profile extends Model {
           $profile.= "<tr>";
           $profile.= "<td>".$this->form_keys["$k"]."</td>";
           // var_dump($v); exit();
-          if($v===''){ $v= 'password not changed'; } 
+          if($v===''){ $v= 'password not changed'; }
+          $profile.= "<td></td>";
           $profile.=  "<td>$v</td>";
           $profile.= "</tr>";
       } else {
           $profile.= "<tr>";
           $profile.= "<td>".$this->form_keys["$k"]."</td>";
-          $profile.= "<td>".$previousData."</td>";
-          $profile.=  "<td>$v</td>";
+          $profile.= "<td>".$previousData[0]["$k"]."</td>";
+          if ($previousData[0]["$k"]!=$v)
+          {
+              $profile.= "<td style='background-color:yellow'>";
+          }
+          else
+          {
+              $profile.=  "<td>";
+          }
+          $profile.="$v</td>";
           $profile.= "</tr>";
       }
     }
@@ -64,9 +74,9 @@ class Model_Profile extends Model {
 
     $mail->SetFrom('info@energysmart.com.au', 'Energy Smart Notification');
 
-    
-    //$mail->AddAddress(ADMINEMAIL, 'Joash Boyton');
-    $mail->AddAddress('krane82@gmail.com', 'Joash Boyton');
+    $mail->AddAddress(ADMINEMAIL, 'Joash Boyton');
+    $mail->AddAddress('ariel@energysmart.com.au', 'Ariel');
+    $mail->AddAddress('Emma@energysmart.com.au', 'Emma Boyton');
 
     $mail->Subject = 'Client "'.$p["campaign_name"].'" have change their profile information';
 

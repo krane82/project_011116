@@ -34,7 +34,7 @@ class Model_Leads extends Model {
     //return var_dump($_POST);
     $leadId=$_POST['lead_id'];
 	$author=$_SESSION['user_id'];
-    $sql="SELECT us.full_name, con.message, con.time FROM lead_conversations con JOIN users us ON con.author=us.id WHERE con.lead_id='$leadId' ORDER BY con.time";
+    $sql="SELECT us.full_name, con.author, con.message, con.time FROM lead_conversations con JOIN users us ON con.author=us.id WHERE con.lead_id='$leadId' ORDER BY con.time";
     $result=array();
     $res=$con->query($sql);                  
     if($res)

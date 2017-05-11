@@ -98,7 +98,9 @@ class Controller_Profile extends Controller {
           }
         }
       }
-      echo '<input type="hidden" name="previousData" value='.htmlspecialchars(serialize($previousData)).'">';
+      $previousData=serialize($previousData);
+      $previousData=urlencode($previousData);
+      echo '<input type="hidden" name="previousData" value="'.$previousData.'">';
       echo '<button attr-id="'.$id.'" type="submit" class="btn btn-primary">Update profile</button>';
       echo '</form>';
     }

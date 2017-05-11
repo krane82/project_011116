@@ -56,6 +56,23 @@
     </div>
   </div>
 </div>
+  <div class="modal fade" id="modalka"  tabindex="-1" role="dialog" aria-labelledby="editCampaign">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="exampleModalLabel">Conversation: </h4>
+        </div>
+        <div class="modal-body" id="chat">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <!--                    <button type="submit" class="btn btn-primary">Update info</button>-->
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
 
 <script type="text/javascript">
@@ -228,5 +245,21 @@ function delbutfile(d){
         }
       });
     }
+$('#approvals').click(function(e)
+{
+  if(e.target.dataset.act!="conversation")
+  {
+    return;
+  }
+  console.log(e.target.value);
+  $.ajax({
+    type: "POST",
+    url: "<?php echo __HOST__ . "/leads/getConvForLead/"; ?>",
+    data: {'lead_id':e.target.value},
+    success: function(respond) {
+      $("#chat").html(respond);
+    }
+  });
+});
 
 </script>
