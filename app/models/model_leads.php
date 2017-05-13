@@ -34,7 +34,7 @@ class Model_Leads extends Model {
     //return var_dump($_POST);
     $leadId=$_POST['lead_id'];
 	$author=$_SESSION['user_id'];
-    $sql="SELECT us.full_name, con.author, con.message, con.time FROM lead_conversations con JOIN users us ON con.author=us.id WHERE con.lead_id='$leadId' ORDER BY con.time";
+    $sql="SELECT us.full_name, con.id, con.author, con.message, con.seen, con.time FROM lead_conversations con JOIN users us ON con.author=us.id WHERE con.lead_id='$leadId' ORDER BY con.time";
     $result=array();
     $res=$con->query($sql);                  
     if($res)
@@ -43,7 +43,13 @@ class Model_Leads extends Model {
       {
         $result['conversations'][]=$row;
       }
-	  $result['leadid']=$leadId;
+      $whoSeen=explode(',',$result['conversations'][0]['seen']);
+      if(!in_array($author,$whoSeen)) {
+        $ins = $result['conversations'][0]['id'];
+        $sql1 = "UPDATE `lead_conversations` SET `seen`=CONCAT(`seen`,'$author,') WHERE id='$ins'";
+        $con->query($sql1);
+      }
+        $result['leadid']=$leadId;
 	  $result['author']=$author;
       return $result;
     }
@@ -56,9 +62,17 @@ class Model_Leads extends Model {
 	  $userId=$_POST['userId'];
 	  $message=$_POST['message'];
 	  $message=$this->clean($message);
-	  $sql="INSERT INTO lead_conversations (lead_id, author, message) VALUES ('$leadId', '$userId', '$message')";
+	  $sql="INSERT INTO lead_conversations (lead_id, author, message, seen) VALUES ('$leadId', '$userId', '$message','$userId,')";
 	$res=$con->query($sql);
-	if($res)
+	$sql1="SELECT id FROM lead_conversations WHERE lead_id='$leadId' LIMIT 1";
+    $res1=$con->query($sql1);
+    $result=$res1->fetch_assoc();
+    $ins=$result['id'];
+    if($ins)
+    {
+      $con->query("UPDATE lead_conversations SET seen='$userId,' WHERE id='$ins'");
+    }
+    if($res)
 	{
 		return true;
 	}

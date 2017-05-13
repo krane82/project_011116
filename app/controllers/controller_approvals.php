@@ -53,6 +53,7 @@ class Controller_approvals extends Controller
     }
   }
   function action_GetApprovals(){
+    session_start();
     $table = 'leads_rejection';
     //    $table = <<<EOT
     //    SELECT  l.id, lf.state AS state, c.name AS campaign_name, l.datetime as date FROM leads l
@@ -79,10 +80,21 @@ class Controller_approvals extends Controller
     $primaryKey = 'id';
 
     $columns = array(
-      array( 'db' => '`a`.`lead_id`',          'dt' => 0, 'formatter'=>function($d)
+      array( 'db' => '`a`.`lead_id`',          'dt' => 0, 'formatter'=>function($d, $row)
       {
-        $str=$d.'<div><button type="button" data-act="conversation" class="btn btn-xs btn-success" data-toggle="modal" data-target="#modalka" value="'.$d.'">open</button></div>';
-      return $str;
+        if($row[11]==NULL)
+        {
+          return $d.'<div><button type="button" data-act="conversation" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modalka" value="'.$row[9].'">open</button></div>';
+        }
+        $whoSeen=explode(',',$row[11]);
+        if(!in_array($_SESSION['user_id'],$whoSeen))
+        {
+          $str=$d.'<div><button type="button" data-act="conversation" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalka" value="'.$row[9].'">open</button></div>';
+        }
+        else {
+          $str = $d . '<div><button type="button" data-act="conversation" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modalka" value="' . $row[9] . '">open</button></div>';
+        }
+          return $str;
       },
     'field' => 'lead_id'  ),
       array( 'db' => '`c`.`campaign_name`',          'dt' => 1, 'field' => 'campaign_name'  ),
@@ -152,8 +164,11 @@ class Controller_approvals extends Controller
 						    Approve Request</a><br>  
 						    <a href="#" role="button" onclick="moreInfo('.$row[0]. ', '. $d .');" class="btn btn-small btn-info hidden-tablet hidden-phone" data-toggle="modal" data-original-title="">
 						    Request More Info</a>';
-      }, 'field'=>'client_id')
-    );
+      }, 'field'=>'client_id'),
+        array('db'=> '`con`.`seen`', 'dt'=> 11, 'field'=>'seen')//,
+        //array('db'=> '`con`.`lead_id`', 'dt'=> 12, 'field'=>'lead_id')*/
+    )
+    ;
 
     $sql_details = array(
       'user' => DB_USER,
@@ -162,10 +177,11 @@ class Controller_approvals extends Controller
       'host' => DB_HOST
     );
 
-    $joinQuery = "FROM `{$table}` AS `a` INNER JOIN `leads_delivery` as `ld` ON (`a`.`lead_id` = `ld`.`lead_id` AND a.client_id=ld.client_id) INNER JOIN clients as c ON a.client_id=c.id";
+    $joinQuery = "FROM `{$table}` AS `a` INNER JOIN `leads_delivery` as `ld` ON (`a`.`lead_id` = `ld`.`lead_id` AND a.client_id=ld.client_id) INNER JOIN clients as c ON a.client_id=c.id LEFT JOIN lead_conversations con ON `a`.`id`=`con`.`lead_id`";
     $where = "`a`.`approval` != 1 ";
+    $groupBy="`a`.`id`";
     echo json_encode(
-      SSP::simple( $_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where )
+      SSP::simple( $_POST, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where, $groupBy )
     );
   }
 
