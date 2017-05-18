@@ -6,7 +6,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
  * Date: 17.05.2017
  * Time: 12:22
  */
-class Controller_Infusionsoft extends Controller
+class Model_Infusionsoft extends Model
 {
       private function gettoken()
     {
@@ -17,7 +17,7 @@ class Controller_Infusionsoft extends Controller
         $oldToken=$result['token'];
         return $oldToken;
     }
-    function action_sendLead($p)
+    function sendLead($p)
     {
         session_start();
         $_SESSION['token']=$this->gettoken();
@@ -28,8 +28,22 @@ class Controller_Infusionsoft extends Controller
         ));
             $infusionsoft->setToken(unserialize($_SESSION['token']));
         if ($infusionsoft->getToken()) {
-            print ('added');
-            $infusionsoft->contacts->add(array('FirstName' => 'Ivanka', 'LastName' => 'Trump'));
+            $infusionsoft->sendLead($p);
+        }
+
+    }
+    function sendClient($p)
+    {
+        session_start();
+        $_SESSION['token']=$this->gettoken();
+        $infusionsoft = new \Infusionsoft\Infusionsoft(array(
+            'clientId' => '5fdsmkxjb6h9k6g2y7nkx2tu',
+            'clientSecret' => 'jDUKwcvSg4',
+            'redirectUri' => 'http://project008/test.php',
+        ));
+        $infusionsoft->setToken(unserialize($_SESSION['token']));
+        if ($infusionsoft->getToken()) {
+            $infusionsoft->contacts->add(array('FirstName' => 'John', 'LastName' => 'SmithFromCRM'));
         }
 
     }

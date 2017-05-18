@@ -54,5 +54,26 @@ class cron1
     }
 
   }
+	public function renewToken()
+	{
+		require_once '../../vendor/autoload.php';
+		$con = $this->db();
+		$gettokenQuery="SELECT token FROM token";
+		$gettokenResult=mysqli_query($con, $gettokenQuery);
+		$result=mysqli_fetch_assoc($gettokenResult);
+		$oldToken=$result['token'];
+// echo $oldToken.'<pre>';
+		$infusionsoft = new \Infusionsoft\Infusionsoft(array(
+			'clientId' => '5fdsmkxjb6h9k6g2y7nkx2tu',
+			'clientSecret' => 'jDUKwcvSg4',
+			'redirectUri' => 'http://project008/test.php',
+		));
+		$infusionsoft->setToken(unserialize($oldToken));
+		$newTok=$infusionsoft->refreshAccessToken();
+		$newToken=addslashes(serialize($newTok));
+		$settokenQuery="UPDATE token set token='$newToken'";
+		mysqli_query($con, $settokenQuery);
 
+//This method must renew token every 21 hours.
+	}
 }

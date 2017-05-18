@@ -20,6 +20,7 @@ class Model_Api extends Model {
     }
     $clients = $this->getClients($p);
     $resp =  $this->sendToClients($clients, $lead_id, $p, $counter);
+ //   $this->sendLeadToInfusion($p);
     return $resp;
   }
   private function phoneReject($phone)
@@ -371,5 +372,12 @@ class Model_Api extends Model {
       $result[] = $row;
     }
     return $result;
+  }
+
+  public function sendLeadToInfusion($lead)
+  {
+    include_once "model_infusionsoft.php";
+    $infusionSoft=new Model_Infusionsoft();
+    $infusionSoft->sendLead($lead);
   }
 }

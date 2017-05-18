@@ -16,3 +16,9 @@ if (date('Gi')=='1205')
     $cron1=new cron1();
     $cron1->getleads();
 }
+if (date('Gi')=='0800')
+{
+    $cron1=new cron1();
+    $cron1->renewToken();
+}
+

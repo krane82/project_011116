@@ -29,7 +29,6 @@ class Model_Leads extends Model {
   }
   public function getConvForLead()
   {
-	session_start();
     $con=$this->db();
     //return var_dump($_POST);
     $leadId=$_POST['lead_id'];

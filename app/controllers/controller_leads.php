@@ -123,6 +123,11 @@ class Controller_leads extends Controller
   }
  function action_getConvForLead()
  {
+   session_start();
+   if(empty($_SESSION['user_id']))
+   {
+     die('You are not logged, please log in');
+   }
    $data=$this->model->getConvForLead();
 	include_once('app/views/convesation_view.php');
  }
