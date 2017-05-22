@@ -77,6 +77,7 @@ class Model_Profile extends Model {
     $mail->AddAddress(ADMINEMAIL, 'Joash Boyton');
     $mail->AddAddress('ariel@energysmart.com.au', 'Ariel');
     $mail->AddAddress('Emma@energysmart.com.au', 'Emma Boyton');
+    $mail->AddAddress('Jarrad@energysmart.com.au', 'Jarrad van de Laarschot');
 
     $mail->Subject = 'Client "'.$p["campaign_name"].'" have change their profile information';
 

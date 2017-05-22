@@ -218,12 +218,10 @@
             <li><a href="<?php echo __HOST__; ?>/leads/">Leads Delivery</a></li>
             <li><a href="<?php echo __HOST__; ?>/approvals/">Leads Approvals</a></li>
             <li><a href="<?php echo __HOST__; ?>/reject/">Leads Rejection</a></li>
-
             <li><a href="<?php echo __HOST__; ?>/rerouting/">Lead Rerouting</a></li>
-
             <li><a href="<?php echo __HOST__; ?>/leads/distribution/">Leads distribution</a></li>
           <li><a href="<?php echo __HOST__; ?>/penetration/">Penetration</a></li>
-
+          <li><a href="<?php echo __HOST__; ?>/leads/csvUpload/">Upload Leads from CSV</a></li>
           </ul>
         </li>
         <li><a href="<?php echo __HOST__; ?>/admin_reports/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-stats"></span><p>Reports</p></a>

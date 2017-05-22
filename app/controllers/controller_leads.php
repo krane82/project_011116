@@ -54,11 +54,14 @@ class Controller_leads extends Controller
       $client_id = $_POST["client"];
       echo $this->model->senManyLeads($client_id, $start, $end, $state, $source);
     } else {
-//      // Sending one lead to one client
       $client_id =$_POST["id"];
       $lead_id = $_POST["lead_id"];
       echo $this->model->senOneLead($client_id,$lead_id);
       }
+  }
+  function action_csvUpload()
+  {
+        $this->view->generate('csvuploader_view.php', 'template_view.php', $data);
   }
 
 

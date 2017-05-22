@@ -99,8 +99,8 @@ class Controller_client_leads extends Controller
         }
       },'field'=> 'approval' ),
       array('db'=> '`a`.`id`', 'dt'=>6, 'formatter'=>function($d, $row){
-        if( strtotime('+7 days', $row[2]) < time()){
-          return 'Out of 7 days';
+        if( strtotime('+8 days', $row[2]) < time()){
+          return 'Out of 8 days';
         } else
         if( $row[5] == 1 ) {
           $button="<a href='#' class='btn leadreject btn-warning' data-time='".strtotime('+7 days', $row[2])."000' attr-lead-id='$row[0]' attr-client='$row[1]' data-gb='$row[3]'";
