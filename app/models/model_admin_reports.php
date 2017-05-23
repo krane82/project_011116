@@ -438,7 +438,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     if(!empty($_POST["start"])) {
       $uq = http_build_query(array(
         'start'   => strtotime($_REQUEST["start"]),
-        'end'     => strtotime($_REQUEST["end"]) + 86400,
+        'end'     => strtotime($_REQUEST["end"]),
         'client'  => $_REQUEST["client"]
       ));
       echo "<div class='clearfix'></div><a href='downloadAcceptedRejected?$uq' class='btn btn-primary'>Download Accepted or Rejected leads</a>";
@@ -521,7 +521,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $sql = 'SELECT COUNT(*) as amount, SUM(c.lead_cost) as total_cost  FROM `leads_delivery` as ld ';
     $sql .= ' LEFT JOIN `clients` as c ON ld.client_id = c.id';
     $sql .= ' LEFT JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
-    $sql .= ' WHERE (lr.approval > 0 OR lr.approval IS NULL)';
+    $sql .= ' WHERE (lr.approval = 1 OR lr.approval IS NULL)';
     $sql .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
 
       $sqlnew = 'SELECT COUNT(*) as amount FROM `leads_delivery` as ld ';
@@ -674,7 +674,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $ras = $rejected["amount"] . " leads <br>rejected";
     //$trs = $approved["total_cost"] . " total Revenue";
     $rejectedPercent =  number_format($rejectedP * 100, 0) . '% of leads <br>are rejected';
-    $rev = $approved["total_cost"] ? "$".$approved["total_cost"] . " <br>total revenue" : "$0 <br>total revenue";
+    $rev = $income["cost"] ? "$".$income["cost"] . " <br>total revenue" : "$0 <br>total revenue";
     $countld = $CountLids['amount']. " leads <br>generated in total";
     $coastld = "$".$CoastLids['cost']. " <br> is the total<br> lead cost";
     $totalcost ="$".$resCoast. " <br>total profit";
