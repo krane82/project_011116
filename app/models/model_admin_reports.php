@@ -298,7 +298,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       $sqlnew .= ' INNER JOIN `leads_rejection` as lr ON lr.lead_id = ld.lead_id AND lr.client_id = ld.client_id';
       $sqlnew .= ' LEFT JOIN `clients` as c ON lr.client_id = c.id';
       $sqlnew .= ' LEFT JOIN `leads_lead_fields_rel` as lf ON lf.id=ld.lead_id';
-      $sqlnew .= ' WHERE (lr.approval = 1 OR lr.approval IS NULL)';
+      $sqlnew .= ' WHERE (lr.approval IN (1, 3) OR lr.approval IS NULL)';
       $sqlnew .= ' AND (ld.timedate BETWEEN '.$start.' AND '.$end.')';
 
       if (!($client == 0)) {
@@ -405,7 +405,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       $sqlleadrej .= ' LEFT JOIN `leads_lead_fields_rel` as lf ON lf.id=ld.lead_id';
 //    $sqlleadrej = "SELECT COUNT(*) as pendrej FROM `leads_rejection` as lj";
 //    $sqlleadrej .= ' LEFT JOIN `clients` as c ON lj.client_id = c.id';
-    $sqlleadrej .=" WHERE l.approval IN (2, 3, 4) AND (ld.timedate BETWEEN '$start' AND '$end')";
+    $sqlleadrej .=" WHERE l.approval IN (2, 4) AND (ld.timedate BETWEEN '$start' AND '$end')";
       if (!($client == 0)) {
           $sqlleadrej .= ' AND l.client_id =' . $client;
       }
@@ -427,7 +427,7 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     $ras = $rejectnew["amount"] . " leads Rejected <br>by clients";
     $trs = $approvednew["total_cost"] . " total Revenue";
     $rejectedPercent =  number_format($rejectedP * 100, 0) . '% Rejected<br> by clients';
-    $rev = $approvednew["total_cost"] ? $approvednew["total_cost"] . " $<br>Lead Revenue" : 0 . " $<br>Lead Revenue";
+    $rev = $distributed["camp_cost"] ? $distributed["camp_cost"] . " $<br>Lead Revenue" : 0 . " $<br>Lead Revenue";
     echo $this->formStatView($ds, 'users', 'getDistributed');
     echo $this->formStatView($acs, 'check', 'getAccepted');
     echo $this->formStatView($ras, 'window-close', 'getRejected');
