@@ -64,6 +64,11 @@ class Controller_leads extends Controller
         $this->view->generate('csvuploader_view.php', 'template_view.php', $data);
   }
 
+  function action_sendLeadsFromCSV()
+  {
+    print $this->model->sendLeadsFromCSV();
+  }
+
 
   function action_distribution()
   {

@@ -77,6 +77,20 @@ class Model_Leads extends Model {
 	}
 	return false;
   }
+
+  public function sendLeadsFromCSV()
+ {
+   $api=new Model_Api();
+   $arr=$_POST['array'];
+   $arr=urldecode($arr);
+   $arr=unserialize($arr);
+   $str='';
+   foreach($arr as $item)
+   {
+     $str.=$api->proccess_lead($item).'<br>';
+   }
+   return $str;
+ }
   private function getLeadInfo($id)
   {
     $con = $this->db();
