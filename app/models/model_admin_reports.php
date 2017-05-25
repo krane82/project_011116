@@ -439,7 +439,8 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
       $uq = http_build_query(array(
         'start'   => strtotime($_REQUEST["start"]),
         'end'     => strtotime($_REQUEST["end"]),
-        'client'  => $_REQUEST["client"]
+        'client'  => $_REQUEST["client"],
+        'state'   => $_REQUEST['State']
       ));
       echo "<div class='clearfix'></div><a href='downloadAcceptedRejected?$uq' class='btn btn-primary'>Download Accepted or Rejected leads</a>";
     }
@@ -447,12 +448,14 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
 
   public function downloadAcceptedRejected()
   {
+    
     $con = $this->db();
     $client = $_REQUEST["client"];
     $start = $_REQUEST["start"];
     $end = $_REQUEST["end"] + 86400;
     $timestamp = time();
-    $state = $_REQUEST["State"];
+    $state = $_REQUEST["state"];
+    
     if(empty($_REQUEST["start"])){
       $start = strtotime("midnight", $timestamp);
       $end = strtotime("tomorrow", $start) - 1;
@@ -471,6 +474,10 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
     if (!($client == 0)) {
       $sql .= ' AND ld.client_id =' . $client;
     }
+     if ($state) {
+      $sql .= ' AND lf.state =' . " '$state'";
+    }
+ 
     $res = $con->query($sql);
     $approved = array();
     if ($res) {
