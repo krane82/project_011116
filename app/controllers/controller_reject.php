@@ -43,13 +43,13 @@ class Controller_Reject extends Controller
             array( 'db' => '`a`.`approval`',  'dt' => 4, 'formatter'=>function($d){
                 switch ($d) {
                     case 0:
-                        return "<span class=\"bg-primary pdfive\">Approved</span>";
+                        return "<span class=\"bg-primary pdfive\">Approved reject</span>";
                         break;
                     case 1:
                         return "<span class=\"bg-success pdfive\">Approved</span>";
                         break;
                     case 2:
-                        return "<span class=\"bg-warning\">Reject lead</span>";
+                        return "<span class=\"bg-warning\">Requested to Reject</span>";
                         break;
                     case 3:
                         return "<span class=\"bg-danger pdfive\">Reject not Approved</span>";
