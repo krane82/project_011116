@@ -675,16 +675,20 @@ WHERE 1=1 AND (`l`.`datetime` BETWEEN 1488027600 AND 1488891600)";
           $resultrejtoday = $resrejtoday->fetch_assoc();
       }
 
+      $total_revenue = $distributednew["amount"]*$average;
+      $profit = $total_revenue - $CoastLids['cost'] - ($rejected["amount"]*$average);
 
-      $ds =  $distributednew["amount"] . " leads <br>distributed";
+    $ds =  $distributednew["amount"] . " leads <br>distributed";
     $acs = $approvednew['amount']. " leads <br>accepted";
     $ras = $rejected["amount"] . " leads <br>rejected";
     //$trs = $approved["total_cost"] . " total Revenue";
     $rejectedPercent =  number_format($rejectedP * 100, 0) . '% of leads <br>are rejected';
-    $rev = $income["cost"] ? "$".$income["cost"] . " <br>total revenue" : "$0 <br>total revenue";
+    $rev = $total_revenue ? "$".  $total_revenue . " <br>total revenue" : "$0 <br>total revenue";
+    // $rev = $income["cost"] ? "$".$income["cost"] . " <br>total revenue" : "$0 <br>total revenue";
     $countld = $CountLids['amount']. " leads <br>generated in total";
     $coastld = "$".$CoastLids['cost']. " <br> is the total<br> lead cost";
-    $totalcost ="$".$resCoast. " <br>total profit";
+    $totalcost ="$".$profit. " <br>total profit";
+    // $totalcost ="$".$resCoast. " <br>total profit";
     $totalAverage ="$".$average. " average <br>lead sale price";
     $av_sel ="Leads are sold an average of ". $average_sales. " times";
     $pend_rej = "Pending rejections: ".$resultrej['pendrej'];
