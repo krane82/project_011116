@@ -243,6 +243,7 @@ class Model_Leads extends Model {
       $id = $c["id"];
       if(in_array($id,$receivers))
       {
+        $sentTo.="User $c[full_name] already has this lead<br>";
         continue;
       }
       $passedCaps = $this->checkClientsLimits($id);
@@ -253,11 +254,16 @@ class Model_Leads extends Model {
           $sentTo .= "Lead #$lead_id sent to $c[full_name] : $c[email]<br>\n";
           $this->api->addToDeliveredTable($id, $lead_id, $readyLeadInfo);
           $delivery_id+=1;
-          return 'Lead sent and added to database';
+         // return 'Lead sent and added to database';
         }
-        return 'for some reason lead can not be sent';
+          else
+        {
+          $sentTo.= 'for some reason lead can not be sent<br>';
+        }
       }
-      return 'Out of clients caps';
+      else {
+        $sentTo = "Weekly limit of client $c[full_name] is out<br>";
+      }
     }
     return $sentTo;
   }
@@ -287,10 +293,10 @@ class Model_Leads extends Model {
     }
     $con->close();
     if ($result["count(led.id)"] < $result["weekly"]) {
-      return $id;
+      return true;
     } else {
-      echo "weekly not passed!";
-      return FALSE;
+     // echo "weekly limit of client $id is out!<br>";
+      return false;
     }
   }
   private function getClients($post){
