@@ -14,6 +14,7 @@ class Model_Clients extends Model {
   }
   public function smsSend()
   {
+	  $testVariable='xxx';
     $to=$_POST['client'];
     $to="+380500109092";
     $to="+380995591095";
